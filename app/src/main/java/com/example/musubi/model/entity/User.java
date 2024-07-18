@@ -3,9 +3,9 @@ package com.example.musubi.model.entity;
 public class User extends Person{
     private final DiseaseType diseaseType;
     private final int rating;
-    private final User guardian;
+    private final Person guardian;
 
-    protected User(int id, String email, String name, String nickname, String phone, String address, DiseaseType type, int rating, User guardian) {
+    protected User(int id, String email, String name, String nickname, String phone, String address, DiseaseType type, int rating, Person guardian) {
         super(id, email, name, nickname, phone, address);
         this.diseaseType = type;
         this.rating = rating;
@@ -20,7 +20,7 @@ public class User extends Person{
         return rating;
     }
 
-    public User getGuardian() {
+    public Person getGuardian() {
         return guardian;
     }
 }
