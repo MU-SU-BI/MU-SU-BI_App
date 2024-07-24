@@ -1,11 +1,15 @@
 package com.example.musubi.view.activity;
 
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,6 +40,7 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
     private EditText addressEditText;
     private EditText ageEditText;
     private RadioGroup genderRadioGroup;
+    private TextView passwordMessageTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +67,36 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
         addressEditText = findViewById(R.id.address);
         ageEditText = findViewById(R.id.age);
         genderRadioGroup = findViewById(R.id.genderRadioGroup);
+        passwordMessageTextView = findViewById(R.id.passwordMessage);
 
         Button signupButton = findViewById(R.id.signup);
         signupButton.setOnClickListener(v -> {
             presenter.userSignup(readSignupData());
         });
+
+        // password 일치 여부 검사
+        passwordReEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String password1 = passwordEditText.getText().toString();
+                String password2 = passwordReEditText.getText().toString();
+                presenter.checkPasswordMatch(password1, password2);
+            }
+        });
+
+        // 휴대폰 번호 자동 하이픈(-) 설정
+        phoneEditText.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+
     }
 
     private UserDto readSignupData() {
@@ -95,5 +125,15 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
     @Override
     public void onSignupFailure(String message) {
 
+    }
+
+    @Override
+    public void onPasswordMatchSuccess() {
+        passwordMessageTextView.setText("");
+    }
+
+    @Override
+    public void onPasswordMatchFailure() {
+        passwordMessageTextView.setText("비밀번호가 일치하지 않습니다.");
     }
 }

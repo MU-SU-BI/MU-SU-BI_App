@@ -28,4 +28,13 @@ public class SignupPresenter implements SignupContract.Presenter {
             }
         });
     }
+
+    @Override
+    public void checkPasswordMatch(String password, String passwordRe) {
+        if (!password.equals(passwordRe)) {
+            view.onPasswordMatchFailure();
+        }else{
+            view.onPasswordMatchSuccess();
+        }
+    }
 }
