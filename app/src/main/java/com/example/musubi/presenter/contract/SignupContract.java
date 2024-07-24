@@ -4,12 +4,11 @@ import com.example.musubi.model.dto.UserDto;
 
 public interface SignupContract {
     interface View {
-        void showSignupSuccess(String message);
-        void showSignupFailure(String message);
+        void onSignupSuccess(String message);
+        void onSignupFailure(String message);
     }
 
     interface Presenter {
-
         void userSignup(UserDto user);
     }
 }

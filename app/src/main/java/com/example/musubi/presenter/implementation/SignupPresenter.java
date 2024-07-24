@@ -19,12 +19,12 @@ public class SignupPresenter implements SignupContract.Presenter {
         retrofitClient.postSignupUser(user, new ResultCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                view.showSignupSuccess(result);
+                view.onSignupSuccess(result);
             }
 
             @Override
             public void onFailure(String result, Throwable t) {
-                view.showSignupFailure(result);
+                view.onSignupFailure(result);
             }
         });
     }

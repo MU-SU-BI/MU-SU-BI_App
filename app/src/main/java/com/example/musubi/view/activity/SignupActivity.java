@@ -83,7 +83,7 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
     }
 
     @Override
-    public void showSignupSuccess(String message) {
+    public void onSignupSuccess(String message) {
         FrameLayout frameLayout = findViewById(R.id.completedFragment);
         frameLayout.setVisibility(View.VISIBLE);
         // Fragment 교체
@@ -93,7 +93,7 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
     }
 
     @Override
-    public void showSignupFailure(String message) {
+    public void onSignupFailure(String message) {
 
     }
 }
