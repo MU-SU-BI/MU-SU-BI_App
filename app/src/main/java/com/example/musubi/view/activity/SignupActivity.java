@@ -1,8 +1,10 @@
 package com.example.musubi.view.activity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 
 import androidx.activity.EdgeToEdge;
@@ -10,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.musubi.R;
 import com.example.musubi.model.dto.UserDto;
@@ -18,6 +21,7 @@ import com.example.musubi.model.entity.Person;
 import com.example.musubi.model.entity.User;
 import com.example.musubi.presenter.contract.SignupContract;
 import com.example.musubi.presenter.implementation.SignupPresenter;
+import com.example.musubi.view.fragment.CompletedSignupFragment;
 
 public class SignupActivity extends AppCompatActivity implements SignupContract.View {
     private SignupPresenter presenter;
@@ -80,7 +84,12 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
 
     @Override
     public void showSignupSuccess(String message) {
-
+        FrameLayout frameLayout = findViewById(R.id.completedFragment);
+        frameLayout.setVisibility(View.VISIBLE);
+        // Fragment 교체
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.completedFragment, new CompletedSignupFragment());
+        fragmentTransaction.commit();
     }
 
     @Override
