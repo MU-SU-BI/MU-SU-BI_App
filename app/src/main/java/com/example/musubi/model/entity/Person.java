@@ -4,11 +4,11 @@ public abstract class Person {
     private final long id;
     private final String email;
     private final String name;
+    private final Gender gender;
+    private final int age;
     private final String nickname;
     private final String phone;
     private final String address;
-    private final Gender gender;
-    private final int age;
     private double latitude;
     private double longitude;
 
@@ -70,4 +70,5 @@ public abstract class Person {
     public int getAge() {
         return age;
     }
+
 }
