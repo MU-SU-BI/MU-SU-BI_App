@@ -23,17 +23,17 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/moveSignup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="회원가입"
-            android:layout_marginEnd="10dp"/>
-
-        <Button
-            android:id="@+id/moveLogin"
+            android:id="@+id/redirectLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="로그인"
+            android:layout_marginEnd="10dp"/>
+
+        <Button
+            android:id="@+id/redirectSignup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="회원가입"
             android:layout_marginStart="10dp"/>
 
     </LinearLayout>
