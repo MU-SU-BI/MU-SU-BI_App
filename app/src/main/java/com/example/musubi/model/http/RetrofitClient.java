@@ -1,5 +1,7 @@
 package com.example.musubi.model.http;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.example.musubi.model.dto.Dto;
@@ -21,7 +23,7 @@ public class RetrofitClient {
     private RetrofitURL retrofitService;
 
     public void initRetrofit() {
-        final String BASEURL = "https://9a7793e7-8dfa-4fa8-b1f7-406f60dfd051.mock.pstmn.io/";
+        final String BASEURL = "http://43.202.1.81/";
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASEURL)
                 .addConverterFactory(ScalarsConverterFactory.create())
@@ -52,11 +54,7 @@ public class RetrofitClient {
         }));
     }
 
-    public void postLoginUser(String email,  String password, ResultCallback<Dto<UserDto>> resultCallback){
-        Map<String, String> loginData = new HashMap<>();
-        loginData.put("email", email);
-        loginData.put("password", password);
-
+    public void postLoginUser(Map<String, String> loginData, ResultCallback<Dto<UserDto>> resultCallback){
         Call<Dto<UserDto>> call = retrofitService.userLogin(loginData);
 
         call.enqueue(new Callback<Dto<UserDto>>() {
@@ -64,9 +62,8 @@ public class RetrofitClient {
             public void onResponse(@NonNull Call<Dto<UserDto>> call, @NonNull Response<Dto<UserDto>> response) {
                 assert response.body() != null;
 
-                if (response.isSuccessful()) {
+                if (response.isSuccessful())
                     resultCallback.onSuccess(response.body());
-                }
                 else
                     resultCallback.onFailure("FUCK", new Exception("status code is not 200"));
             }
@@ -76,5 +73,5 @@ public class RetrofitClient {
                 resultCallback.onFailure("NETWORK_ERROR", t);
             }
         });
-    };
+    }
 }

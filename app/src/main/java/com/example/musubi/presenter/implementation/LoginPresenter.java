@@ -9,6 +9,9 @@ import com.example.musubi.model.http.RetrofitClient;
 import com.example.musubi.model.http.callback.ResultCallback;
 import com.example.musubi.presenter.contract.LoginContract;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LoginPresenter  implements LoginContract.Presenter {
     private final LoginContract.View view;
     private final RetrofitClient retrofitClient;
@@ -21,7 +24,11 @@ public class LoginPresenter  implements LoginContract.Presenter {
 
     @Override
     public void loginUser(String email, String password) {
-        retrofitClient.postLoginUser(email, password, new ResultCallback<Dto<UserDto>>() {
+        Map<String, String> loginData = new HashMap<>();
+        loginData.put("email", email);
+        loginData.put("password", password);
+
+        retrofitClient.postLoginUser(loginData, new ResultCallback<Dto<UserDto>>() {
             @Override
             public void onSuccess(Dto<UserDto> result) {
                 User.getInstance().initUser(result.getData());
