@@ -48,12 +48,20 @@
                 android:text="보호자" />
         </RadioGroup>
 
+        <TextView
+            android:id="@+id/errorMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:textColor="#FF0000"
+            android:layout_below="@id/userTypeRadioGroup"/>
+
         <Button
             android:id="@+id/login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Login"
-            android:layout_below="@id/userTypeRadioGroup"
+            android:layout_below="@id/errorMessage"
             />
 
     </RelativeLayout>
