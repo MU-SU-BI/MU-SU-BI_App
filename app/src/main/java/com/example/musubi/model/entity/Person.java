@@ -12,15 +12,15 @@ public abstract class Person {
     private double latitude;
     private double longitude;
 
-    protected Person(long id, String email, String name, String nickname, String phone, String address, Gender gender, int age) {
+    protected Person(long id, String email, String name, Gender gender, int age, String nickname, String phone, String address) {
         this.id = id;
         this.email = email;
         this.name = name;
+        this.gender = gender;
+        this.age = age;
         this.nickname = nickname;
         this.phone = phone;
         this.address = address;
-        this.gender = gender;
-        this.age = age;
     }
 
     public long getId() {
@@ -33,6 +33,14 @@ public abstract class Person {
 
     public String getName() {
         return name;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public int getAge() {
+        return age;
     }
 
     public String getNickname() {
@@ -61,14 +69,6 @@ public abstract class Person {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public int getAge() {
-        return age;
     }
 
 }

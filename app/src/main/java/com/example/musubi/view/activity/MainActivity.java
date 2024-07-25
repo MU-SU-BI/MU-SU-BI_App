@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private MainPresenter presenter;
 
     private Button redirectSignupButton;
+    private Button redirectLoginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +37,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     private void initView() {
         redirectSignupButton = findViewById(R.id.redirectSignup);
+        redirectLoginButton = findViewById(R.id.redirectLogin);
+
         redirectSignupButton.setOnClickListener(v -> presenter.redirectToSignup());
+        redirectLoginButton.setOnClickListener(v -> presenter.redirectToLogin());
     }
 
     @Override
     public void redirectToLogin() {
-
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
     }
 
     @Override
