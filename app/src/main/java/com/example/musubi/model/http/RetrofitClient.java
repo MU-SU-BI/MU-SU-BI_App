@@ -17,7 +17,7 @@ public class RetrofitClient {
     private RetrofitURL retrofitService;
 
     public void initRetrofit() {
-        final String BASEURL = "https://9a7793e7-8dfa-4fa8-b1f7-406f60dfd051.mock.pstmn.io/";
+        final String BASEURL = "http://43.202.1.81/";
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASEURL)
                 .addConverterFactory(ScalarsConverterFactory.create())
