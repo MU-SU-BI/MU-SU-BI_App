@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.RadioGroup;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -21,8 +21,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.musubi.R;
 import com.example.musubi.model.dto.UserDto;
 import com.example.musubi.model.entity.Gender;
-import com.example.musubi.model.entity.Person;
-import com.example.musubi.model.entity.User;
 import com.example.musubi.presenter.contract.SignupContract;
 import com.example.musubi.presenter.implementation.SignupPresenter;
 import com.example.musubi.view.fragment.CompletedSignupFragment;
@@ -39,7 +37,6 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
     private  EditText phoneEditText;
     private EditText addressEditText;
     private EditText ageEditText;
-    private RadioGroup genderRadioGroup;
     private TextView passwordMessageTextView;
 
     @Override
@@ -66,7 +63,6 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
         phoneEditText = findViewById(R.id.phone);
         addressEditText = findViewById(R.id.address);
         ageEditText = findViewById(R.id.age);
-        genderRadioGroup = findViewById(R.id.genderRadioGroup);
         passwordMessageTextView = findViewById(R.id.passwordMessage);
 
         Button signupButton = findViewById(R.id.signup);
@@ -106,10 +102,25 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
         String nickname = nicknameEditText.getText().toString();
         String phone = phoneEditText.getText().toString();
         String address = addressEditText.getText().toString();
-        Gender gender = genderRadioGroup.getCheckedRadioButtonId() == 0 ? Gender.MALE : Gender.FEMALE;
+        Gender gender = getGender();
         int age = Integer.parseInt(ageEditText.getText().toString());
 
         return new UserDto(-1, email, password, name, gender, age, nickname, phone, address);
+    }
+
+    public Gender getGender(){
+        RadioButton male = findViewById(R.id.maleRadioButton);
+        RadioButton female = findViewById(R.id.femaleRadioButton);
+        Gender gender = null;
+
+        /****"남자"radio button이 체크되면 => Sex값에 남자
+         "여자"radio button이 체크되면 => Sex값에 여자 ****/
+        if(male.isChecked()){
+            gender = Gender.MALE;
+        }else if(female.isChecked()){
+            gender = Gender.FEMALE;
+        }
+        return  gender;
     }
 
     @Override

@@ -12,6 +12,7 @@ public class SignupPresenter implements SignupContract.Presenter {
     public SignupPresenter(SignupContract.View view) {
         this.view = view;
         this.retrofitClient = new RetrofitClient();
+        this.retrofitClient.initRetrofit();
     }
 
     @Override
