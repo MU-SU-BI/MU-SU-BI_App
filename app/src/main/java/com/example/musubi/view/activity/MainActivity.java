@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void redirectToSignup() {
-        Intent intent = new Intent(MainActivity.this, SignupActivity.class);
+        Intent intent = new Intent(MainActivity.this, BottomNavActivity.class);
         startActivity(intent);
     }
 }
