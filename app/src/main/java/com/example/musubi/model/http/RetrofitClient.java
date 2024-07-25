@@ -1,12 +1,18 @@
 package com.example.musubi.model.http;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.example.musubi.model.dto.GpsDto;
+import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.MsgDto;
 import com.example.musubi.model.dto.UserDto;
 import com.example.musubi.model.entity.User;
 import com.example.musubi.model.http.callback.ResultCallback;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,7 +25,7 @@ public class RetrofitClient {
     private RetrofitURL retrofitService;
 
     public void initRetrofit() {
-        final String BASEURL = "https://9a7793e7-8dfa-4fa8-b1f7-406f60dfd051.mock.pstmn.io/";
+        final String BASEURL = "http://43.202.1.81/";
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASEURL)
                 .addConverterFactory(ScalarsConverterFactory.create())
@@ -50,24 +56,22 @@ public class RetrofitClient {
         }));
     }
 
-    public void postLoginUser(String email,  String password, ResultCallback<UserDto> resultCallback){
-        Call<UserDto> call = retrofitService.userLogin(email, password);
+    public void postLoginUser(Map<String, String> loginData, ResultCallback<Dto<UserDto>> resultCallback){
+        Call<Dto<UserDto>> call = retrofitService.userLogin(loginData);
 
-        call.enqueue(new Callback<UserDto>() {
+        call.enqueue(new Callback<Dto<UserDto>>() {
             @Override
-            public void onResponse(@NonNull Call<UserDto> call, @NonNull Response<UserDto> response) {
+            public void onResponse(@NonNull Call<Dto<UserDto>> call, @NonNull Response<Dto<UserDto>> response) {
                 assert response.body() != null;
 
-                if (response.isSuccessful()) {
-                    UserDto user = response.body();
-                    resultCallback.onSuccess(user);
-                }
+                if (response.isSuccessful())
+                    resultCallback.onSuccess(response.body());
                 else
                     resultCallback.onFailure("FUCK", new Exception("status code is not 200"));
             }
 
             @Override
-            public void onFailure(@NonNull Call<UserDto> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Dto<UserDto>> call, @NonNull Throwable t) {
                 resultCallback.onFailure("NETWORK_ERROR", t);
             }
         });
@@ -92,4 +96,5 @@ public class RetrofitClient {
 //            }
 //        });
 //    }
+    }
 }

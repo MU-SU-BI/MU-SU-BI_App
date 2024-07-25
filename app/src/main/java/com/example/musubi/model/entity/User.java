@@ -19,7 +19,7 @@ public class User extends Person{
     }
 
     public void initUser (UserDto dto) {
-       instance = new User(dto.getId(), dto.getEmail(), dto.getName(), dto.getSex(), dto.getAge(), dto.getNickname(), dto.getPhoneNumber(), dto.getHomeAddress());
+       instance = new User(dto.getUserId(), dto.getEmail(), dto.getName(), dto.getSex(), dto.getAge(), dto.getNickname(), dto.getPhoneNumber(), dto.getHomeAddress());
     }
 
     public Person getGuardian() {
