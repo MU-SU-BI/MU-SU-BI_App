@@ -17,7 +17,7 @@ public class RetrofitClient {
     private RetrofitURL retrofitService;
 
     public void initRetrofit() {
-        final String BASEURL = "http://43.202.1.81/";
+        final String BASEURL = "https://9a7793e7-8dfa-4fa8-b1f7-406f60dfd051.mock.pstmn.io/";
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASEURL)
                 .addConverterFactory(ScalarsConverterFactory.create())
@@ -47,4 +47,27 @@ public class RetrofitClient {
             }
         }));
     }
+
+    public void postLoginUser(String email,  String password, ResultCallback<UserDto> resultCallback){
+        Call<UserDto> call = retrofitService.userLogin(email, password);
+
+        call.enqueue(new Callback<UserDto>() {
+            @Override
+            public void onResponse(@NonNull Call<UserDto> call, @NonNull Response<UserDto> response) {
+                assert response.body() != null;
+
+                if (response.isSuccessful()) {
+                    UserDto user = response.body();
+                    resultCallback.onSuccess(user);
+                }
+                else
+                    resultCallback.onFailure("FUCK", new Exception("status code is not 200"));
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<UserDto> call, @NonNull Throwable t) {
+                resultCallback.onFailure("NETWORK_ERROR", t);
+            }
+        });
+    };
 }
