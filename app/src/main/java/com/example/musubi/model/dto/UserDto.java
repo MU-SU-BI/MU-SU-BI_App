@@ -1,10 +1,9 @@
 package com.example.musubi.model.dto;
 
 import com.example.musubi.model.entity.Gender;
-import com.example.musubi.model.entity.User;
 
 public class UserDto {
-    private final long id;
+    private final long userId;
     private final String email;
     private final String password;
     private final String name;
@@ -14,8 +13,8 @@ public class UserDto {
     private final String phoneNumber;
     private final String homeAddress;
 
-    public UserDto(long id, String email, String password, String name, Gender sex, int age, String nickname, String phoneNumber, String homeAddress) {
-        this.id = id;
+    public UserDto(long userId, String email, String password, String name, Gender sex, int age, String nickname, String phoneNumber, String homeAddress) {
+        this.userId = userId;
         this.email = email;
         this.password = password;
         this.name = name;
@@ -26,8 +25,8 @@ public class UserDto {
         this.homeAddress = homeAddress;
     }
 
-    public long getId() {
-        return id;
+    public long getUserId() {
+        return userId;
     }
 
     public String getEmail() {

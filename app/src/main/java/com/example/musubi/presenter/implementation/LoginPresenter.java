@@ -2,6 +2,7 @@ package com.example.musubi.presenter.implementation;
 
 import android.util.Log;
 
+import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.UserDto;
 import com.example.musubi.model.entity.User;
 import com.example.musubi.model.http.RetrofitClient;
@@ -20,15 +21,16 @@ public class LoginPresenter  implements LoginContract.Presenter {
 
     @Override
     public void loginUser(String email, String password) {
-        retrofitClient.postLoginUser(email, password, new ResultCallback<UserDto>() {
+        retrofitClient.postLoginUser(email, password, new ResultCallback<Dto<UserDto>>() {
             @Override
-            public void onSuccess(UserDto result) {
-                User.getInstance().initUser(result);
+            public void onSuccess(Dto<UserDto> result) {
+                User.getInstance().initUser(result.getData());
+                view.onLoginSuccess("hello");
             }
 
             @Override
             public void onFailure(String result, Throwable t) {
-
+                view.onLoginFailure("이메일 또는 비밀번호가 틀립니다.");
             }
         });
     }
