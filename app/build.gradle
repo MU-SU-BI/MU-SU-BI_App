@@ -42,4 +42,7 @@ dependencies {
     implementation libs.retrofit
     implementation libs.converter.gson
     implementation libs.converter.scalars
+    implementation 'com.naver.maps:map-sdk:3.18.0'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'com.google.android.gms:play-services-location:21.0.1' // 최신 버전으로 변경해 주세요
 }
