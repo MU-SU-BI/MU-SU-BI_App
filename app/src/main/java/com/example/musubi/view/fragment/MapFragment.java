@@ -1,7 +1,9 @@
 package com.example.musubi.view.fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.musubi.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.NaverMap;
@@ -29,10 +34,12 @@ import com.example.musubi.presenter.implementation.MapPresenter;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, MapContract.View {
 
+    private static final String TAG = "MapFragment";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
     private MapView mapView;
     private NaverMap naverMap;
     private FusedLocationSource locationSource;
+    private FusedLocationProviderClient fusedLocationClient;
     private MapContract.Presenter presenter;
     private ActivityResultLauncher<String[]> requestPermissionLauncher;
 
@@ -70,6 +77,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
             }
         });
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+
         return view;
     }
 
@@ -77,11 +86,39 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMap = naverMap;
         presenter.requestLocationPermissions();
+        setupMap();
+    }
+
+    private void setupMap() {
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(requireActivity(), new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+                            double latitude = location.getLatitude();
+                            double longitude = location.getLongitude();
+                            Log.d(TAG, "현재 위치: " + latitude + ", " + longitude);
+                            showCurrentLocation(latitude, longitude);
+                            // 서버로 좌표 전송 로직 추가
+                            sendLocationToServer(latitude, longitude);
+                        }
+                    }
+                });
+
+        naverMap.setLocationSource(locationSource);
+        naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
+
+        UiSettings uiSettings = naverMap.getUiSettings();
+        uiSettings.setLocationButtonEnabled(true);
     }
 
     @Override
     public void showLocationPermissionRequest() {
-
         requestPermissionLauncher.launch(new String[]{
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
@@ -90,11 +127,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
 
     @Override
     public void showCurrentLocation(double latitude, double longitude) {
-        naverMap.setLocationSource(locationSource);
-        naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
-
-        UiSettings uiSettings = naverMap.getUiSettings();
-        uiSettings.setLocationButtonEnabled(true);
+        String Coordinate = latitude + ", " + longitude;
     }
 
     @Override
@@ -136,5 +169,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
+    }
+
+    private void sendLocationToServer(double latitude, double longitude) {
+        // 서버로 위치 정보를 전송하는 로직 구현
     }
 }

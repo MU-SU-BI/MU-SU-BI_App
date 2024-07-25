@@ -1,5 +1,6 @@
 package com.example.musubi.model.http;
 
+import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.MsgDto;
 import com.example.musubi.model.dto.UserDto;
@@ -10,6 +11,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 
 public interface RetrofitURL {
@@ -17,4 +19,6 @@ public interface RetrofitURL {
     Call<MsgDto> userSignup(@Body UserDto user);
     @POST("api/v1/users/login")
     Call<Dto<UserDto>> userLogin(@Body Map<String, String> loginData);
+//    @POST("api/v1/location")
+//    Call<Dto<String>> setCoordinate(@Body GpsDto gpsDto);
 }
