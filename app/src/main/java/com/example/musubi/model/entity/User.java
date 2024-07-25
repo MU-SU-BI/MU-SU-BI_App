@@ -4,8 +4,8 @@ public class User extends Person{
     private String failureLevel;
     private Person guardian;
 
-    public User(long id, String email, String name, String nickname, String phone, String address, Gender gender, int age) {
-        super(id, email, name, nickname, phone, address, gender, age);
+    public User(long id, String email, String name, int age, String nickname, String phone, String address, Gender gender) {
+        super(id, email, name, gender, age, nickname, phone, address);
     }
 
     public Person getGuardian() {
