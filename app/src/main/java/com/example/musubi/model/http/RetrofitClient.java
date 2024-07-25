@@ -2,8 +2,10 @@ package com.example.musubi.model.http;
 
 import androidx.annotation.NonNull;
 
+import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.MsgDto;
 import com.example.musubi.model.dto.UserDto;
+import com.example.musubi.model.entity.User;
 import com.example.musubi.model.http.callback.ResultCallback;
 
 import retrofit2.Call;
@@ -70,4 +72,24 @@ public class RetrofitClient {
             }
         });
     };
+
+//    public void postCoordinateUser(String coordinate, ResultCallback<UserDto> resultCallback){
+//        Call<GpsDto> call = retrofitService.setCoordinate(coordinate);
+//
+//        call.enqueue(new Callback<GpsDto>() {
+//            @Override
+//            public void onResponse(Call<GpsDto> call, Response<GpsDto> response) {
+//                assert response.body() != null;
+//
+//                if (response.isSuccessful()) {
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<GpsDto> call, Throwable t) {
+//
+//            }
+//        });
+//    }
 }
