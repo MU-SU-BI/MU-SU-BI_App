@@ -14,10 +14,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RetrofitClient {
-    private static RetrofitURL retrofitService;
+    private RetrofitURL retrofitService;
 
-    public static void initRetrofit() {
-        final String BASEURL = "http://210.123.135.176:5877/";
+    public void initRetrofit() {
+        final String BASEURL = "https://9a7793e7-8dfa-4fa8-b1f7-406f60dfd051.mock.pstmn.io/";
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASEURL)
                 .addConverterFactory(ScalarsConverterFactory.create())
