@@ -15,7 +15,6 @@ import retrofit2.http.POST;
 public interface RetrofitURL {
     @POST("api/v1/users/signup")
     Call<MsgDto> userSignup(@Body UserDto user);
-    @FormUrlEncoded
     @POST("api/v1/users/login")
-    Call<Dto<UserDto>> userLogin(Map<String, String> loginData);
+    Call<Dto<UserDto>> userLogin(@Body Map<String, String> loginData);
 }
