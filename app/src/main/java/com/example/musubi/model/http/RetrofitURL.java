@@ -18,11 +18,11 @@ import retrofit2.http.POST;
 public interface RetrofitURL {
     @POST("api/v1/users/signup")
     Call<MsgDto> userSignup(@Body UserDto user);
-    @POST("api/v1/guardian/signup")
+    @POST("api/v1/guardians/signup")
     Call<MsgDto> guardianSignup(@Body GuardianDto guardian);
     @POST("api/v1/users/login")
     Call<Dto<UserDto>> userLogin(@Body Map<String, String> loginData);
-    @POST("api/v1/guardian/login")
+    @POST("api/v1/guardians/login")
     Call<Dto<GuardianDto>> guardianLogin(@Body Map<String, String> loginData);
     @POST("api/v1/location")
     Call<Dto<String>> setMyDistrict(@Body GpsDto gpsDto);
