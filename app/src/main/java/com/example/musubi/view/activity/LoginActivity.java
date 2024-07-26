@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
     @Override
     public void onLoginSuccess(String message) {
-        Intent intent = new Intent(LoginActivity.this, BottomNavActivity.class);
+        Intent intent = new Intent(LoginActivity.this, PersonBottomActivity.class);
         startActivity(intent);
     }
 

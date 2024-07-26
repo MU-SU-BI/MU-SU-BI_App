@@ -6,8 +6,8 @@
         android:title="커뮤니티" />
     <item
         android:id="@+id/navigation_map"
-        android:icon="@drawable/baseline_map_24"
-        android:title="맵" />
+        android:icon="@drawable/baseline_call_24"
+        android:title="호출" />
     <item
         android:id="@+id/navigation_mypage"
         android:icon="@drawable/baseline_emoji_people_24"
