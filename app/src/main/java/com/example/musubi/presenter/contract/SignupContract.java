@@ -1,5 +1,6 @@
 package com.example.musubi.presenter.contract;
 
+import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.UserDto;
 
 public interface SignupContract {
@@ -12,6 +13,7 @@ public interface SignupContract {
 
     interface Presenter {
         void userSignup(UserDto user);
+        void guardianSignup(GuardianDto guardian);
         void checkPasswordMatch(String password, String passwordRe);
     }
 }

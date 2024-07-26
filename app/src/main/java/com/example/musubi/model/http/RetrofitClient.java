@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
+import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.MsgDto;
 import com.example.musubi.model.dto.UserDto;
 import com.example.musubi.model.entity.User;
@@ -55,6 +56,28 @@ public class RetrofitClient {
             }
         }));
     }
+
+    public void postSignupGuardian(GuardianDto guardian, ResultCallback<String> resultCallback){
+        Call<MsgDto> call = retrofitService.guardianSignup(guardian);
+
+        call.enqueue((new Callback<MsgDto>() {
+            @Override
+            public void onResponse(@NonNull Call<MsgDto> call, @NonNull Response<MsgDto> response) {
+                assert response.body() != null;
+                String responseMessage = response.body().getResponseMessage();
+
+                if (response.isSuccessful() && response.code() == 201)
+                    resultCallback.onSuccess(responseMessage);
+                else
+                    resultCallback.onFailure(responseMessage, new Exception("status code is not 201"));
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<MsgDto> call, @NonNull Throwable t) {
+                resultCallback.onFailure("NETWORK_ERROR", t);
+            }
+        }));
+    };
 
     public void postLoginUser(Map<String, String> loginData, ResultCallback<Dto<UserDto>> resultCallback){
         Call<Dto<UserDto>> call = retrofitService.userLogin(loginData);

@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.musubi.R;
+import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.UserDto;
 import com.example.musubi.model.entity.Gender;
 import com.example.musubi.presenter.contract.SignupContract;
@@ -38,6 +39,7 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
     private EditText addressEditText;
     private EditText ageEditText;
     private TextView passwordMessageTextView;
+    private RadioButton userRadioButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +66,14 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
         addressEditText = findViewById(R.id.address);
         ageEditText = findViewById(R.id.age);
         passwordMessageTextView = findViewById(R.id.passwordMessage);
+        userRadioButton = findViewById(R.id.userRadioButton);
 
         Button signupButton = findViewById(R.id.signup);
         signupButton.setOnClickListener(v -> {
-            presenter.userSignup(readSignupData());
+            if (userRadioButton.isChecked())
+                presenter.userSignup(readUserSignupData());
+            else
+                presenter.guardianSignup(readGuardianSignupData());
         });
 
         // password 일치 여부 검사
@@ -95,7 +101,7 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
 
     }
 
-    private UserDto readSignupData() {
+    private UserDto readUserSignupData() {
         String email = emailEditText.getText().toString();
         String password = passwordEditText.getText().toString();
         String name = nameEditText.getText().toString();
@@ -106,6 +112,19 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
         int age = Integer.parseInt(ageEditText.getText().toString());
 
         return new UserDto(-1, email, password, name, gender, age, nickname, phone, address, null);
+    }
+
+    private GuardianDto readGuardianSignupData() {
+        String email = emailEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+        String name = nameEditText.getText().toString();
+        String nickname = nicknameEditText.getText().toString();
+        String phone = phoneEditText.getText().toString();
+        String address = addressEditText.getText().toString();
+        Gender gender = getGender();
+        int age = Integer.parseInt(ageEditText.getText().toString());
+
+        return new GuardianDto(-1, email, password, name, gender, age, nickname, phone, address, null);
     }
 
     public Gender getGender(){
