@@ -1,5 +1,6 @@
 package com.example.musubi.model.http;
 
+import com.example.musubi.model.dto.CallDto;
 import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GuardianDto;
@@ -26,4 +27,6 @@ public interface RetrofitURL {
     Call<Dto<GuardianDto>> guardianLogin(@Body Map<String, String> loginData);
     @POST("api/v1/location")
     Call<Dto<String>> setMyDistrict(@Body GpsDto gpsDto);
+    @POST("api/v1/guardians/calling")
+    Call<Dto<Void>> guardianCallWithMessage(@Body CallDto callDto);
 }

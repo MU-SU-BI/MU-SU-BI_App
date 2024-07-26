@@ -3,7 +3,9 @@ package com.example.musubi.model.http;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.example.musubi.model.dto.CallDto;
 import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GuardianDto;
@@ -134,6 +136,25 @@ public class RetrofitClient {
             @Override
             public void onFailure(Call<Dto<String>> call, Throwable t) {
                 resultCallback.onFailure("NETWORK_ERROR", t);
+            }
+        });
+    }
+
+    public void postCallGuardianWithMessage(CallDto callDto, ResultCallback<Dto<Void>> resultCallback) {
+        Call<Dto<Void>> call = retrofitService.guardianCallWithMessage(callDto);
+
+        call.enqueue(new Callback<Dto<Void>>() {
+            @Override
+            public void onResponse(@NonNull Call<Dto<Void>> call, @NonNull Response<Dto<Void>> response) {
+                if (response.isSuccessful() && response.code() == 201)
+                    resultCallback.onSuccess(response.body());
+                else
+                    resultCallback.onFailure("장애인 등록에 실패했습니다.", new Exception("status code is not 201"));
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Dto<Void>> call, @NonNull Throwable t) {
+                resultCallback.onFailure(t.getMessage(), t);
             }
         });
     }
