@@ -1,8 +1,13 @@
 package com.example.musubi.model.dto;
 
 public class Dto<T> {
-    private String responseMessage;
-    private T data;
+    private final String responseMessage;
+    private final T data;
+
+    public Dto(String responseMessage, T data) {
+        this.responseMessage = responseMessage;
+        this.data = data;
+    }
 
     public String getResponseMessage() {
         return responseMessage;
