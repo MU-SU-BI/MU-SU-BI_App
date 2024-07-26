@@ -40,6 +40,7 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
     private EditText ageEditText;
     private TextView passwordMessageTextView;
     private RadioButton userRadioButton;
+    private RadioButton guardianRadioButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,13 +68,16 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
         ageEditText = findViewById(R.id.age);
         passwordMessageTextView = findViewById(R.id.passwordMessage);
         userRadioButton = findViewById(R.id.userRadioButton);
+        guardianRadioButton = findViewById(R.id.guardianRadioButton);
 
         Button signupButton = findViewById(R.id.signup);
         signupButton.setOnClickListener(v -> {
             if (userRadioButton.isChecked())
                 presenter.userSignup(readUserSignupData());
-            else
+            else if (guardianRadioButton.isChecked())
                 presenter.guardianSignup(readGuardianSignupData());
+            else
+                onSignupFailure("사용자 또는 보호자 구분을 필요합니다.");
         });
 
         // password 일치 여부 검사
@@ -154,7 +158,8 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
 
     @Override
     public void onSignupFailure(String message) {
-
+        TextView signupMessage = findViewById(R.id.signupMessage);
+        signupMessage.setText(message);
     }
 
     @Override

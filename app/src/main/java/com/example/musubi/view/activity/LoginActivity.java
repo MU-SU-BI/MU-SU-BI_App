@@ -26,6 +26,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     Button loginButton;
     Button signupButton;
     RadioButton userRadioButton;
+    RadioButton guardianRadioButton;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -49,12 +50,15 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         loginButton = findViewById(R.id.login);
         signupButton = findViewById(R.id.login_go_signup);
         userRadioButton = findViewById(R.id.userRadioButton);
+        guardianRadioButton = findViewById(R.id.guardianRadioButton);
 
         loginButton.setOnClickListener(v -> {
             if (userRadioButton.isChecked())
                 presenter.loginUser(emailEditText.getText().toString(), passEditText.getText().toString());
-            else
+            else if (guardianRadioButton.isChecked())
                 presenter.loginGuardian(emailEditText.getText().toString(), passEditText.getText().toString());
+            else
+                onLoginFailure("사용자 또는 보호자 구분을 필요합니다.");
         });
 
         signupButton.setOnClickListener(v -> {
