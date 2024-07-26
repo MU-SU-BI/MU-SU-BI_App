@@ -1,4 +1,4 @@
-package com.example.musubi.model.http.callback;
+package com.example.musubi.model.remote.callback;
 
 public interface ResultCallback<T> {
     void onSuccess(T result);

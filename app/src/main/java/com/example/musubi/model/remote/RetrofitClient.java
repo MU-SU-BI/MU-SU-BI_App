@@ -1,9 +1,6 @@
-package com.example.musubi.model.http;
-
-import android.util.Log;
+package com.example.musubi.model.remote;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.example.musubi.model.dto.CallDto;
 import com.example.musubi.model.dto.GpsDto;
@@ -11,11 +8,8 @@ import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.MsgDto;
 import com.example.musubi.model.dto.UserDto;
-import com.example.musubi.model.entity.Guardian;
-import com.example.musubi.model.entity.User;
-import com.example.musubi.model.http.callback.ResultCallback;
+import com.example.musubi.model.remote.callback.ResultCallback;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import retrofit2.Call;

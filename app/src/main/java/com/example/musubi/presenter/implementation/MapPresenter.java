@@ -1,15 +1,13 @@
 package com.example.musubi.presenter.implementation;
 
-import android.nfc.Tag;
 import android.util.Log;
 
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.entity.User;
-import com.example.musubi.model.http.RetrofitClient;
-import com.example.musubi.model.http.callback.ResultCallback;
+import com.example.musubi.model.remote.RetrofitClient;
+import com.example.musubi.model.remote.callback.ResultCallback;
 import com.example.musubi.presenter.contract.MapContract;
-import com.google.android.material.tabs.TabLayout;
 
 public class MapPresenter implements MapContract.Presenter {
 
