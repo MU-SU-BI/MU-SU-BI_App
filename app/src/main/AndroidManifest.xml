@@ -37,7 +37,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.BottomNavActivity" />
-        <activity android:name=".view.activity.PersonBottomActivity" /> <!-- 추가된 부분 -->
+        <activity android:name=".view.activity.GuardianNavActivity" />
+        <activity android:name=".view.activity.UserNavActivity" /> <!-- 추가된 부분 -->
     </application>
 </manifest>

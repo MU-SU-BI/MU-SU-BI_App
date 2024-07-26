@@ -11,12 +11,12 @@ import com.example.musubi.view.fragment.MyPageFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import android.view.MenuItem;
 
-public class PersonBottomActivity extends AppCompatActivity {
+public class UserNavActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_person_bottom_nav);
+        setContentView(R.layout.activity_guardian_nav);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
