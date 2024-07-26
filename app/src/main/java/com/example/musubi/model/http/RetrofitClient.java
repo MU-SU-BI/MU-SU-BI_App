@@ -44,13 +44,12 @@ public class RetrofitClient {
         call.enqueue((new Callback<MsgDto>() {
             @Override
             public void onResponse(@NonNull Call<MsgDto> call, @NonNull Response<MsgDto> response) {
-                assert response.body() != null;
-                String responseMessage = response.body().getResponseMessage();
-
-                if (response.isSuccessful() && response.code() == 201)
-                    resultCallback.onSuccess(responseMessage);
+                if (response.isSuccessful() && response.code() == 201) {
+                    assert response.body() != null;
+                    resultCallback.onSuccess(response.body().getResponseMessage());
+                }
                 else
-                    resultCallback.onFailure(responseMessage, new Exception("status code is not 201"));
+                    resultCallback.onFailure("이메일 또는 휴대폰 번호가 중복입니다.\n다시 시도해주세요.", new Exception("status code is not 201"));
             }
 
             @Override
@@ -66,13 +65,12 @@ public class RetrofitClient {
         call.enqueue((new Callback<MsgDto>() {
             @Override
             public void onResponse(@NonNull Call<MsgDto> call, @NonNull Response<MsgDto> response) {
-                assert response.body() != null;
-                String responseMessage = response.body().getResponseMessage();
-
-                if (response.isSuccessful() && response.code() == 201)
-                    resultCallback.onSuccess(responseMessage);
+                if (response.isSuccessful() && response.code() == 201) {
+                    assert response.body() != null;
+                    resultCallback.onSuccess(response.body().getResponseMessage());
+                }
                 else
-                    resultCallback.onFailure(responseMessage, new Exception("status code is not 201"));
+                    resultCallback.onFailure("이메일 또는 휴대폰 번호가 중복입니다.\n다시 시도해주세요.", new Exception("status code is not 201"));
             }
 
             @Override

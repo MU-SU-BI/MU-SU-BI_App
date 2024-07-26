@@ -33,9 +33,9 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
     private EditText emailEditText;
     private EditText passwordEditText;
     private EditText passwordReEditText;
-    private  EditText nameEditText;
+    private EditText nameEditText;
     private EditText nicknameEditText;
-    private  EditText phoneEditText;
+    private EditText phoneEditText;
     private EditText addressEditText;
     private EditText ageEditText;
     private TextView passwordMessageTextView;
@@ -72,30 +72,35 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
 
         Button signupButton = findViewById(R.id.signup);
         signupButton.setOnClickListener(v -> {
+            UserDto userDto = readUserSignupData();
+
+            if (isInputWrongSignupData(userDto)) {
+                onSignupFailure("작성하지 않은 항목이 존재합니다.");
+                return;
+            }
             if (userRadioButton.isChecked())
                 presenter.userSignup(readUserSignupData());
             else if (guardianRadioButton.isChecked())
                 presenter.guardianSignup(readGuardianSignupData());
             else
-                onSignupFailure("사용자 또는 보호자 구분을 필요합니다.");
+                onSignupFailure("사용자 또는 보호자 항목을 선택하세요.");
         });
 
         // password 일치 여부 검사
         passwordReEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 String password1 = passwordEditText.getText().toString();
                 String password2 = passwordReEditText.getText().toString();
+
                 presenter.checkPasswordMatch(password1, password2);
             }
         });
@@ -113,9 +118,16 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
         String phone = phoneEditText.getText().toString();
         String address = addressEditText.getText().toString();
         Gender gender = getGender();
-        int age = Integer.parseInt(ageEditText.getText().toString());
+        String ageStr = ageEditText.getText().toString();
+        int age = ageStr.isEmpty() ? 0 : Integer.parseInt(ageStr);
 
         return new UserDto(-1, email, password, name, gender, age, nickname, phone, address, null);
+    }
+
+    private boolean isInputWrongSignupData(UserDto user) {
+        return user.getEmail().isEmpty() || user.getPassword().isEmpty() || user.getName().isEmpty()
+                || user.getNickname().isEmpty() || user.getPhoneNumber().isEmpty() || user.getHomeAddress().isEmpty()
+                || user.getAge() == 0;
     }
 
     private GuardianDto readGuardianSignupData() {
@@ -131,19 +143,17 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
         return new GuardianDto(-1, email, password, name, gender, age, nickname, phone, address, null);
     }
 
-    public Gender getGender(){
+    public Gender getGender() {
         RadioButton male = findViewById(R.id.maleRadioButton);
         RadioButton female = findViewById(R.id.femaleRadioButton);
         Gender gender = null;
 
-        /****"남자"radio button이 체크되면 => Sex값에 남자
-         "여자"radio button이 체크되면 => Sex값에 여자 ****/
-        if(male.isChecked()){
+        if (male.isChecked()) {
             gender = Gender.MALE;
-        }else if(female.isChecked()){
+        } else if (female.isChecked()) {
             gender = Gender.FEMALE;
         }
-        return  gender;
+        return gender;
     }
 
     @Override
