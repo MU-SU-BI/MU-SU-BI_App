@@ -22,6 +22,8 @@ public interface RetrofitURL {
     Call<MsgDto> guardianSignup(@Body GuardianDto guardian);
     @POST("api/v1/users/login")
     Call<Dto<UserDto>> userLogin(@Body Map<String, String> loginData);
+    @POST("api/v1/guardian/login")
+    Call<Dto<GuardianDto>> guardianLogin(@Body Map<String, String> loginData);
     @POST("api/v1/location")
     Call<Dto<String>> setMyDistrict(@Body GpsDto gpsDto);
 }

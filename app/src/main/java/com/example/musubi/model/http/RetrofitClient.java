@@ -9,6 +9,7 @@ import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.MsgDto;
 import com.example.musubi.model.dto.UserDto;
+import com.example.musubi.model.entity.Guardian;
 import com.example.musubi.model.entity.User;
 import com.example.musubi.model.http.callback.ResultCallback;
 
@@ -93,6 +94,25 @@ public class RetrofitClient {
 
             @Override
             public void onFailure(@NonNull Call<Dto<UserDto>> call, @NonNull Throwable t) {
+                resultCallback.onFailure("NETWORK_ERROR", t);
+            }
+        });
+    };
+
+    public void postLoginGuardian(Map<String, String> loginData, ResultCallback<Dto<GuardianDto>> resultCallback){
+        Call<Dto<GuardianDto>> call = retrofitService.guardianLogin(loginData);
+
+        call.enqueue(new Callback<Dto<GuardianDto>>() {
+            @Override
+            public void onResponse(@NonNull Call<Dto<GuardianDto>> call, @NonNull Response<Dto<GuardianDto>> response) {
+                if (response.isSuccessful() && response.code() == 200)
+                    resultCallback.onSuccess(response.body());
+                else
+                    resultCallback.onFailure("이메일 또는 비밀번호가 틀립니다.", new Exception("status code is not 200"));
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Dto<GuardianDto>> call, @NonNull Throwable t) {
                 resultCallback.onFailure("NETWORK_ERROR", t);
             }
         });

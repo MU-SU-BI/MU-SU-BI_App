@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -24,6 +25,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     EditText passEditText;
     Button loginButton;
     Button signupButton;
+    RadioButton userRadioButton;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -48,7 +50,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         signupButton = findViewById(R.id.login_go_signup);
 
         loginButton.setOnClickListener(v -> {
-            presenter.loginUser(emailEditText.getText().toString(), passEditText.getText().toString());
+            if (userRadioButton.isChecked())
+                presenter.loginUser(emailEditText.getText().toString(), passEditText.getText().toString());
+            else
+                presenter.loginGuardian(emailEditText.getText().toString(), passEditText.getText().toString());
         });
 
         signupButton.setOnClickListener(v -> {

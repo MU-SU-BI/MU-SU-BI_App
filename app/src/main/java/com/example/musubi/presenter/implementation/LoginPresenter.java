@@ -1,7 +1,9 @@
 package com.example.musubi.presenter.implementation;
 
 import com.example.musubi.model.dto.Dto;
+import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.UserDto;
+import com.example.musubi.model.entity.Guardian;
 import com.example.musubi.model.entity.User;
 import com.example.musubi.model.http.RetrofitClient;
 import com.example.musubi.model.http.callback.ResultCallback;
@@ -30,7 +32,27 @@ public class LoginPresenter  implements LoginContract.Presenter {
             @Override
             public void onSuccess(Dto<UserDto> result) {
                 User.getInstance().initUser(result.getData());
-                view.onLoginSuccess("hello");
+                view.onLoginSuccess("사용자 로그인 성공");
+            }
+
+            @Override
+            public void onFailure(String result, Throwable t) {
+                view.onLoginFailure(result);
+            }
+        });
+    }
+
+    @Override
+    public void loginGuardian(String email, String password) {
+        Map<String, String> loginData = new HashMap<>();
+        loginData.put("email", email);
+        loginData.put("password", password);
+
+        retrofitClient.postLoginGuardian(loginData, new ResultCallback<Dto<GuardianDto>>() {
+            @Override
+            public void onSuccess(Dto<GuardianDto> result) {
+                Guardian.getInstance().initGuardian(result.getData());
+                view.onLoginSuccess("보호자 로그인 성공");
             }
 
             @Override
