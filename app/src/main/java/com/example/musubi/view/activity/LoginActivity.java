@@ -53,10 +53,17 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         guardianRadioButton = findViewById(R.id.guardianRadioButton);
 
         loginButton.setOnClickListener(v -> {
+            String email = emailEditText.getText().toString();
+            String password = passEditText.getText().toString();
+
+            if (isInputWrongLoginData(email, password)) {
+                onLoginFailure("이메일 또는 비밀번호를 작성하세요.");
+                return;
+            }
             if (userRadioButton.isChecked())
-                presenter.loginUser(emailEditText.getText().toString(), passEditText.getText().toString());
+                presenter.loginUser(email, password);
             else if (guardianRadioButton.isChecked())
-                presenter.loginGuardian(emailEditText.getText().toString(), passEditText.getText().toString());
+                presenter.loginGuardian(email, password);
             else
                 onLoginFailure("사용자 또는 보호자 구분을 필요합니다.");
         });
@@ -64,6 +71,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         signupButton.setOnClickListener(v -> {
             presenter.redirectToSignup();
         });
+    }
+
+    private boolean isInputWrongLoginData(String email, String password) {
+        return emailEditText.getText().toString().isEmpty() || passEditText.getText().toString().isEmpty();
     }
 
     @Override
