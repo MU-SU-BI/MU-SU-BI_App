@@ -1,7 +1,5 @@
 package com.example.musubi.presenter.implementation;
 
-import android.util.Log;
-
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.UserDto;
 import com.example.musubi.model.entity.User;
@@ -37,7 +35,7 @@ public class LoginPresenter  implements LoginContract.Presenter {
 
             @Override
             public void onFailure(String result, Throwable t) {
-                view.onLoginFailure("이메일 또는 비밀번호가 틀립니다.");
+                view.onLoginFailure(result);
             }
         });
     }

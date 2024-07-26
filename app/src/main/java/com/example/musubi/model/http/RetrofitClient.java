@@ -25,8 +25,8 @@ public class RetrofitClient {
     private RetrofitURL retrofitService;
 
     public void initRetrofit() {
-        final String BASEURL = "http://43.202.1.81/";
-        Retrofit retrofit = new Retrofit.Builder()
+        final String BASEURL = "http://43.202.1.81/";                                      // https://9a7793e7-8dfa-4fa8-b1f7-406f60dfd051.mock.pstmn.io/
+        Retrofit retrofit = new Retrofit.Builder()                      // http://43.202.1.81/
                 .baseUrl(BASEURL)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
@@ -43,7 +43,7 @@ public class RetrofitClient {
                 assert response.body() != null;
                 String responseMessage = response.body().getResponseMessage();
 
-                if (response.isSuccessful())
+                if (response.isSuccessful() && response.code() == 201)
                     resultCallback.onSuccess(responseMessage);
                 else
                     resultCallback.onFailure(responseMessage, new Exception("status code is not 201"));
@@ -62,12 +62,10 @@ public class RetrofitClient {
         call.enqueue(new Callback<Dto<UserDto>>() {
             @Override
             public void onResponse(@NonNull Call<Dto<UserDto>> call, @NonNull Response<Dto<UserDto>> response) {
-                assert response.body() != null;
-
-                if (response.isSuccessful())
+                if (response.isSuccessful() && response.code() == 200)
                     resultCallback.onSuccess(response.body());
                 else
-                    resultCallback.onFailure("FUCK", new Exception("status code is not 200"));
+                    resultCallback.onFailure("이메일 또는 비밀번호가 틀립니다.", new Exception("status code is not 200"));
             }
 
             @Override
@@ -76,25 +74,4 @@ public class RetrofitClient {
             }
         });
     };
-
-//    public void postCoordinateUser(String coordinate, ResultCallback<UserDto> resultCallback){
-//        Call<GpsDto> call = retrofitService.setCoordinate(coordinate);
-//
-//        call.enqueue(new Callback<GpsDto>() {
-//            @Override
-//            public void onResponse(Call<GpsDto> call, Response<GpsDto> response) {
-//                assert response.body() != null;
-//
-//                if (response.isSuccessful()) {
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<GpsDto> call, Throwable t) {
-//
-//            }
-//        });
-//    }
-    }
 }
