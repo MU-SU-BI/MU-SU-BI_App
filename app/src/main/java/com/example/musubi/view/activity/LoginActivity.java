@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         passEditText = findViewById(R.id.password);
         loginButton = findViewById(R.id.login);
         signupButton = findViewById(R.id.login_go_signup);
+        userRadioButton = findViewById(R.id.userRadioButton);
 
         loginButton.setOnClickListener(v -> {
             if (userRadioButton.isChecked())
