@@ -68,7 +68,11 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
     @Override
     public void onLoginSuccess(String message) {
-        Intent intent = new Intent(LoginActivity.this, UserNavActivity.class);
+        Intent intent = null;
+        if (userRadioButton.isChecked())
+            intent = new Intent(LoginActivity.this, UserNavActivity.class);
+        else
+            intent = new Intent(LoginActivity.this, GuardianNavActivity.class);
         startActivity(intent);
     }
 
