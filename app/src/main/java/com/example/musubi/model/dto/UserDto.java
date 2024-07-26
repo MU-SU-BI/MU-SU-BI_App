@@ -12,7 +12,7 @@ public class UserDto {
     private final String nickname;
     private final String phoneNumber;
     private final String homeAddress;
-    private String district;
+    private final String district;
 
     public UserDto(long userId, String email, String password, String name, Gender sex, int age, String nickname, String phoneNumber, String homeAddress, String district) {
         this.userId = userId;
