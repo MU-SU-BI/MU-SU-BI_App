@@ -74,4 +74,24 @@ public class RetrofitClient {
             }
         });
     };
+
+    public void setMyDistrict(GpsDto gps, ResultCallback<Dto<String>> resultCallback){
+        Call<Dto<String>> call = retrofitService.setMyDistrict(gps);
+
+        call.enqueue(new Callback<Dto<String>>() {
+            @Override
+            public void onResponse(Call<Dto<String>> call, Response<Dto<String>> response) {
+                assert response.body() != null;
+
+                if (response.isSuccessful()) {
+                    resultCallback.onSuccess(response.body());
+                } else
+                    resultCallback.onFailure(response.body().getResponseMessage(), new Exception("status code in not 200"));
+            }
+            @Override
+            public void onFailure(Call<Dto<String>> call, Throwable t) {
+                resultCallback.onFailure("NETWORK_ERROR", t);
+            }
+        });
+    }
 }

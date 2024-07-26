@@ -19,6 +19,6 @@ public interface RetrofitURL {
     Call<MsgDto> userSignup(@Body UserDto user);
     @POST("api/v1/users/login")
     Call<Dto<UserDto>> userLogin(@Body Map<String, String> loginData);
-//    @POST("api/v1/location")
-//    Call<Dto<String>> setCoordinate(@Body GpsDto gpsDto);
+    @POST("api/v1/location")
+    Call<Dto<String>> setMyDistrict(@Body GpsDto gpsDto);
 }

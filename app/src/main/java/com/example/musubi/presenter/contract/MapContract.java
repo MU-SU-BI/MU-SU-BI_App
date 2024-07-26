@@ -10,5 +10,6 @@ public interface MapContract {
     interface Presenter {
         void requestLocationPermissions();
         void onLocationPermissionsResult(boolean granted);
+        void createDistrict(double latitude, double longitude);
     }
 }

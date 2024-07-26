@@ -105,7 +105,7 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
         Gender gender = getGender();
         int age = Integer.parseInt(ageEditText.getText().toString());
 
-        return new UserDto(-1, email, password, name, gender, age, nickname, phone, address);
+        return new UserDto(-1, email, password, name, gender, age, nickname, phone, address, null);
     }
 
     public Gender getGender(){
