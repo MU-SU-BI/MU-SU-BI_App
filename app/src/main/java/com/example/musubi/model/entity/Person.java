@@ -11,8 +11,9 @@ public abstract class Person {
     private final String address;
     private double latitude;
     private double longitude;
+    private String district;
 
-    protected Person(long id, String email, String name, Gender gender, int age, String nickname, String phone, String address) {
+    protected Person(long id, String email, String name, Gender gender, int age, String nickname, String phone, String address, String district) {
         this.id = id;
         this.email = email;
         this.name = name;
@@ -21,6 +22,7 @@ public abstract class Person {
         this.nickname = nickname;
         this.phone = phone;
         this.address = address;
+        this.district = district;
     }
 
     public long getId() {
@@ -63,6 +65,8 @@ public abstract class Person {
         return phone;
     }
 
+    public String getDistrict() { return district; }
+
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
@@ -71,4 +75,5 @@ public abstract class Person {
         this.longitude = longitude;
     }
 
+    public void setDistrict(String district) { this.district = district; }
 }
