@@ -8,7 +8,7 @@ import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.MsgDto;
 import com.example.musubi.model.dto.UserDto;
-import com.example.musubi.model.remote.callback.ResultCallback;
+import com.example.musubi.util.callback.ResultCallback;
 
 import java.util.Map;
 

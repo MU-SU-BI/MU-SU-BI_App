@@ -3,7 +3,7 @@ package com.example.musubi.presenter.implementation;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.UserDto;
 import com.example.musubi.model.remote.RetrofitClient;
-import com.example.musubi.model.remote.callback.ResultCallback;
+import com.example.musubi.util.callback.ResultCallback;
 import com.example.musubi.presenter.contract.SignupContract;
 
 public class SignupPresenter implements SignupContract.Presenter {

@@ -6,7 +6,7 @@ import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.entity.User;
 import com.example.musubi.model.remote.RetrofitClient;
-import com.example.musubi.model.remote.callback.ResultCallback;
+import com.example.musubi.util.callback.ResultCallback;
 import com.example.musubi.presenter.contract.MapContract;
 
 public class MapPresenter implements MapContract.Presenter {
