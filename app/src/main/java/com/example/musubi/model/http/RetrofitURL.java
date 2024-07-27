@@ -4,6 +4,7 @@ import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.MsgDto;
+import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
 
 import java.util.Map;
@@ -26,4 +27,6 @@ public interface RetrofitURL {
     Call<Dto<GuardianDto>> guardianLogin(@Body Map<String, String> loginData);
     @POST("api/v1/location")
     Call<Dto<String>> setMyDistrict(@Body GpsDto gpsDto);
+    @POST("api/v1/guardians/connection")
+    Call<Dto<String>> connectGuardian(@Body UserConnectDto userDto);
 }

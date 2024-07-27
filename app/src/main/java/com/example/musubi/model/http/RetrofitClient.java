@@ -8,6 +8,7 @@ import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.MsgDto;
+import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
 import com.example.musubi.model.entity.Guardian;
 import com.example.musubi.model.entity.User;
@@ -131,6 +132,28 @@ public class RetrofitClient {
                 } else
                     resultCallback.onFailure(response.body().getResponseMessage(), new Exception("status code in not 200"));
             }
+            @Override
+            public void onFailure(Call<Dto<String>> call, Throwable t) {
+                resultCallback.onFailure("NETWORK_ERROR", t);
+            }
+        });
+    }
+
+    public void connectUserWithGuardian(UserConnectDto userDto, ResultCallback<Dto<String>> resultCallback) {
+        Call<Dto<String>> call = retrofitService.connectGuardian(userDto);
+
+        call.enqueue(new Callback<Dto<String>>() {
+            @Override
+            public void onResponse(Call<Dto<String>> call, Response<Dto<String>> response) {
+                if (response.body() != null && response.isSuccessful()) {
+                    resultCallback.onSuccess(response.body());
+                } else if (response.body() != null) {
+                    resultCallback.onFailure(response.body().getResponseMessage(), new Exception("status code in not 200"));
+                } else {
+                    resultCallback.onFailure("Response body is null", new Exception("Response body is null"));
+                }
+            }
+
             @Override
             public void onFailure(Call<Dto<String>> call, Throwable t) {
                 resultCallback.onFailure("NETWORK_ERROR", t);
