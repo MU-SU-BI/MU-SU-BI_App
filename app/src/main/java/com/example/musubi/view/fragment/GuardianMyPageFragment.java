@@ -16,8 +16,7 @@ import com.example.musubi.R;
 import com.example.musubi.presenter.contract.MyPageContract;
 import com.example.musubi.presenter.implementation.MyPagePresenter;
 import com.example.musubi.model.entity.Guardian;
-import com.example.musubi.model.dto.GuardianDto;
-import com.example.musubi.model.http.RetrofitClient;
+import com.example.musubi.model.remote.RetrofitClient;
 
 public class GuardianMyPageFragment extends Fragment implements MyPageContract.View {
 
