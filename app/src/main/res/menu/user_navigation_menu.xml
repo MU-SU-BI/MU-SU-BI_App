@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_map"
+        android:icon="@drawable/baseline_call_24"
+        android:title="보호자 호출" />
     <item
         android:id="@+id/navigation_community"
         android:icon="@drawable/baseline_group_24"
         android:title="커뮤니티" />
-    <item
-        android:id="@+id/navigation_map"
-        android:icon="@drawable/baseline_call_24"
-        android:title="호출" />
     <item
         android:id="@+id/navigation_mypage"
         android:icon="@drawable/baseline_emoji_people_24"

@@ -29,7 +29,7 @@ public class GuardianNavActivity extends AppCompatActivity {
                     selectedFragment = new MapFragment();
                 } else if (itemId == R.id.navigation_community) {
                     selectedFragment = new CommunityFragment();
-                } else if (itemId == R.id.navigation_mypage) {
+                } else if (itemId == R.id.navigation_guardian_mypage) {
                     selectedFragment = new GuardianMyPageFragment();
                 }
                 if (selectedFragment != null) {

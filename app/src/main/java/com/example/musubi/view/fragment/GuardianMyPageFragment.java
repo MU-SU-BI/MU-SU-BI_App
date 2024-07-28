@@ -5,6 +5,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,11 +66,14 @@ public class GuardianMyPageFragment extends Fragment implements MyPageContract.V
         EditText phoneEditText = dialogView.findViewById(R.id.editTextPhone);
         Button submitButton = dialogView.findViewById(R.id.submitButton);
 
+        phoneEditText.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         dialog = builder.create();
         submitButton.setOnClickListener(v -> {
             String name = nameEditText.getText().toString();
+
             String phone = phoneEditText.getText().toString();
             presenter.connectUser(name, phone);
+            Log.d("ConnectUser", "Name: " + name + ", Phone: " + phone);
         });
 
         dialog.show();
