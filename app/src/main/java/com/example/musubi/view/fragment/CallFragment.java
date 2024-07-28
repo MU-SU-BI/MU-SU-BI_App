@@ -1,11 +1,11 @@
 package com.example.musubi.view.fragment;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.example.musubi.R;
+import com.example.musubi.model.entity.User;
 import com.example.musubi.model.local.SPFManager;
 import com.example.musubi.presenter.contract.CallContract;
 import com.example.musubi.presenter.implementation.CallPresenter;
@@ -21,7 +22,6 @@ import com.example.musubi.view.dialog.CustomActionDialog;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class CallFragment extends Fragment implements CallContract.View, OnActionEnrollListener {
     View view;
@@ -31,8 +31,6 @@ public class CallFragment extends Fragment implements CallContract.View, OnActio
     Button button1;
     Button button2;
     Button button3;
-    Button button4;
-    Button button5;
     Button addCustomActionButton;
 
     SPFManager spfManager;
@@ -46,7 +44,7 @@ public class CallFragment extends Fragment implements CallContract.View, OnActio
         spfManager = new SPFManager(requireContext(), "CallFragment");
         initView();
         initButtonList();
-        spfManager.getEditor().clear();
+//        spfManager.getEditor().clear();
     }
 
     @Nullable
@@ -56,14 +54,24 @@ public class CallFragment extends Fragment implements CallContract.View, OnActio
     }
 
     private void initView() {
-        layout  = this.view.findViewById(R.id.main);
+        layout = this.view.findViewById(R.id.main);
         button1 = this.view.findViewById(R.id.button1);
         button2 = this.view.findViewById(R.id.button2);
         button3 = this.view.findViewById(R.id.button3);
-        button4 = this.view.findViewById(R.id.button4);
-        button5 = this.view.findViewById(R.id.button5);
         addCustomActionButton = this.view.findViewById(R.id.addCustomAction);
 
+        button1.setOnClickListener(v -> {
+            String actionName = ((Button) v).getText().toString();
+            presenter.callGuardian(User.getInstance().getId(), actionName);
+        });
+        button2.setOnClickListener(v -> {
+            String actionName = ((Button) v).getText().toString();
+            presenter.callGuardian(User.getInstance().getId(), actionName);
+        });
+        button3.setOnClickListener(v -> {
+            String actionName = ((Button) v).getText().toString();
+            presenter.callGuardian(User.getInstance().getId(), actionName);
+        });
         addCustomActionButton.setOnClickListener(v -> {
             CustomActionDialog customActionDialog = new CustomActionDialog();
 
@@ -74,18 +82,28 @@ public class CallFragment extends Fragment implements CallContract.View, OnActio
 
     private void createNewButton(String actionName) {
         MaterialButton newButton = new MaterialButton(requireContext());
-
-        // new 버튼 스타일 추가
-        newButton.setText(actionName);
-        newButton.setId(View.generateViewId());
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.MATCH_PARENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT
         );
+        // pixel to dp
+        int marginInDp = 10; // 원하는 마진 (dp)
+        float density = getResources().getDisplayMetrics().density;
+        int marginInPx = (int) (marginInDp * density);
+
+        // new 버튼 스타일 추가
+        newButton.setText(actionName);
+        newButton.setId(View.generateViewId());
+
         params.addRule(RelativeLayout.BELOW, buttonIdArray.get(buttonIdArray.size() - 1)); // 가장 마지막 버튼 아래에 위치
         params.addRule(RelativeLayout.CENTER_HORIZONTAL); // 가운데 정렬
-        params.setMargins(0, 16, 0, 16); // 마진 설정
+        params.setMargins(marginInPx, marginInPx, marginInPx, marginInPx); // 마진 설정
         layout.addView(newButton, params);
+
+        // new 버튼 클릭 리스너 추가
+        newButton.setOnClickListener(v -> {
+            presenter.callGuardian(User.getInstance().getId(), actionName);
+        });
         buttonIdArray.add(newButton.getId());
     }
 
@@ -96,8 +114,8 @@ public class CallFragment extends Fragment implements CallContract.View, OnActio
     }
 
     private void initButtonList() {
-        buttonIdArray  = new ArrayList<>();
-        buttonIdArray.add(button5.getId());
+        buttonIdArray = new ArrayList<>();
+        buttonIdArray.add(button3.getId());
 
         while (true) {
             String newBtnActionName = spfManager.getSharedPreferences().getString("newBtn" + buttonIdArray.size(), null);
