@@ -2,6 +2,7 @@ package com.example.musubi.presenter.implementation;
 
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.UserConnectDto;
+import com.example.musubi.model.dto.UserDto;
 import com.example.musubi.model.entity.Guardian;
 import com.example.musubi.model.remote.RetrofitClient;
 import com.example.musubi.util.callback.ResultCallback;
@@ -19,10 +20,10 @@ public class MyPagePresenter implements MyPageContract.Presenter {
 
     @Override
     public void connectUser(String userName, String phoneNumber) {
-        retrofitClient.connectUserWithGuardian(new UserConnectDto(Guardian.getInstance().getId(), userName, phoneNumber), new ResultCallback<Dto<String>>() {
+        retrofitClient.connectUserWithGuardian(new UserConnectDto(Guardian.getInstance().getId(), userName, phoneNumber), new ResultCallback<Dto<UserDto>>() {
             @Override
-            public void onSuccess(Dto<String> result) {
-                view.onConnectSuccess(result.getData());
+            public void onSuccess(Dto<UserDto> result) {
+                view.onConnectSuccess(result.getResponseMessage());
             }
 
             @Override
