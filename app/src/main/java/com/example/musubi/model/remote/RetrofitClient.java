@@ -141,7 +141,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 201)
                     resultCallback.onSuccess(response.body());
                 else
-                    resultCallback.onFailure("장애인 등록에 실패했습니다.", new Exception("status code is not 201"));
+                    resultCallback.onFailure("보호자 호출에 실패했습니다.", new Exception("status code is not 200"));
             }
 
             @Override
