@@ -6,7 +6,6 @@ import com.example.musubi.model.dto.CallDto;
 import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GuardianDto;
-import com.example.musubi.model.dto.MsgDto;
 import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
 import com.example.musubi.util.callback.ResultCallback;
@@ -34,11 +33,11 @@ public class RetrofitClient {
     }
 
     public void postSignupUser(UserDto user, ResultCallback<String> resultCallback){
-        Call<MsgDto> call = retrofitService.userSignup(user);
+        Call<Dto<Void>> call = retrofitService.userSignup(user);
 
-        call.enqueue((new Callback<MsgDto>() {
+        call.enqueue((new Callback<Dto<Void>>() {
             @Override
-            public void onResponse(@NonNull Call<MsgDto> call, @NonNull Response<MsgDto> response) {
+            public void onResponse(@NonNull Call<Dto<Void>> call, @NonNull Response<Dto<Void>> response) {
                 assert response.body() != null;
                 String responseMessage = response.body().getResponseMessage();
 
@@ -49,18 +48,18 @@ public class RetrofitClient {
             }
 
             @Override
-            public void onFailure(@NonNull Call<MsgDto> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Dto<Void>> call, @NonNull Throwable t) {
                 resultCallback.onFailure("NETWORK_ERROR", t);
             }
         }));
     }
 
     public void postSignupGuardian(GuardianDto guardian, ResultCallback<String> resultCallback){
-        Call<MsgDto> call = retrofitService.guardianSignup(guardian);
+        Call<Dto<Void>> call = retrofitService.guardianSignup(guardian);
 
-        call.enqueue((new Callback<MsgDto>() {
+        call.enqueue((new Callback<Dto<Void>>() {
             @Override
-            public void onResponse(@NonNull Call<MsgDto> call, @NonNull Response<MsgDto> response) {
+            public void onResponse(@NonNull Call<Dto<Void>> call, @NonNull Response<Dto<Void>> response) {
                 if (response.isSuccessful() && response.code() == 201) {
                     assert response.body() != null;
                     resultCallback.onSuccess(response.body().getResponseMessage());
@@ -70,7 +69,7 @@ public class RetrofitClient {
             }
 
             @Override
-            public void onFailure(@NonNull Call<MsgDto> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Dto<Void>> call, @NonNull Throwable t) {
                 resultCallback.onFailure("NETWORK_ERROR", t);
             }
         }));
@@ -134,12 +133,12 @@ public class RetrofitClient {
         });
     }
 
-    public void connectUserWithGuardian(UserConnectDto userDto, ResultCallback<Dto<UserDto>> resultCallback) {
-        Call<Dto<UserDto>> call = retrofitService.connectGuardian(userDto);
+    public void postConnectUserWithGuardian(UserConnectDto userDto, ResultCallback<Dto<Void>> resultCallback) {
+        Call<Dto<Void>> call = retrofitService.connectGuardian(userDto);
 
-        call.enqueue(new Callback<Dto<UserDto>>() {
+        call.enqueue(new Callback<Dto<Void>>() {
             @Override
-            public void onResponse(Call<Dto<UserDto>> call, Response<Dto<UserDto>> response) {
+            public void onResponse(Call<Dto<Void>> call, Response<Dto<Void>> response) {
                 if (response.body() != null && response.isSuccessful()) {
                     resultCallback.onSuccess(response.body());
                 } else if (response.body() != null) {
@@ -150,7 +149,7 @@ public class RetrofitClient {
             }
 
             @Override
-            public void onFailure(Call<Dto<UserDto>> call, Throwable t) {
+            public void onFailure(Call<Dto<Void>> call, Throwable t) {
                 resultCallback.onFailure("NETWORK_ERROR", t);
             }
         });

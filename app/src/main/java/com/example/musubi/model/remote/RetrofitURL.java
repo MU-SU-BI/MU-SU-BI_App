@@ -4,7 +4,6 @@ import com.example.musubi.model.dto.CallDto;
 import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GuardianDto;
-import com.example.musubi.model.dto.MsgDto;
 import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
 
@@ -16,9 +15,9 @@ import retrofit2.http.POST;
 
 public interface RetrofitURL {
     @POST("api/v1/users/signup")
-    Call<MsgDto> userSignup(@Body UserDto user);
+    Call<Dto<Void>> userSignup(@Body UserDto user);
     @POST("api/v1/guardians/signup")
-    Call<MsgDto> guardianSignup(@Body GuardianDto guardian);
+    Call<Dto<Void>> guardianSignup(@Body GuardianDto guardian);
     @POST("api/v1/users/login")
     Call<Dto<UserDto>> userLogin(@Body Map<String, String> loginData);
     @POST("api/v1/guardians/login")
@@ -26,7 +25,7 @@ public interface RetrofitURL {
     @POST("api/v1/location")
     Call<Dto<String>> setMyDistrict(@Body GpsDto gpsDto);
     @POST("api/v1/guardians/connection")
-    Call<Dto<UserDto>> connectGuardian(@Body UserConnectDto userDto);
+    Call<Dto<Void>> connectGuardian(@Body UserConnectDto userDto);
     @POST("api/v1/guardians/help")
     Call<Dto<Void>> guardianCallWithMessage(@Body CallDto callDto);
 }
