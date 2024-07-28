@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="사용자 정보"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="이름: "
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/tvUserEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="이메일: "
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/tvUserName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/tvUserPhoneNumber"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="전화번호: "
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/tvUserEmail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/tvUserHomeAddress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="주소: "
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/tvUserPhoneNumber"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/tvUserDistrict"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="구역: "
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/tvUserHomeAddress"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="16dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

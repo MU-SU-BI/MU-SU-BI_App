@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment;
 import com.example.musubi.R;
 import com.example.musubi.view.fragment.CallFragment;
 import com.example.musubi.view.fragment.CommunityFragment;
-import com.example.musubi.view.fragment.MyPageFragment;
+import com.example.musubi.view.fragment.UserMyPageFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import android.view.MenuItem;
 
@@ -29,7 +29,7 @@ public class UserNavActivity extends AppCompatActivity {
                 } else if (itemId == R.id.navigation_map) {
                     selectedFragment = new CallFragment();
                 } else if (itemId == R.id.navigation_mypage) {
-                    selectedFragment = new MyPageFragment();
+                    selectedFragment = new UserMyPageFragment();
                 }
                 if (selectedFragment != null) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();

@@ -7,6 +7,7 @@ import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.MsgDto;
+import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
 import com.example.musubi.util.callback.ResultCallback;
 
@@ -38,10 +39,11 @@ public class RetrofitClient {
         call.enqueue((new Callback<MsgDto>() {
             @Override
             public void onResponse(@NonNull Call<MsgDto> call, @NonNull Response<MsgDto> response) {
-                if (response.isSuccessful() && response.code() == 201) {
-                    assert response.body() != null;
-                    resultCallback.onSuccess(response.body().getResponseMessage());
-                }
+                assert response.body() != null;
+                String responseMessage = response.body().getResponseMessage();
+
+                if (response.isSuccessful() && response.code() == 201)
+                    resultCallback.onSuccess(responseMessage);
                 else
                     resultCallback.onFailure("이메일 또는 휴대폰 번호가 중복입니다.\n다시 시도해주세요.", new Exception("status code is not 201"));
             }
@@ -125,6 +127,28 @@ public class RetrofitClient {
                 } else
                     resultCallback.onFailure(response.body().getResponseMessage(), new Exception("status code in not 200"));
             }
+            @Override
+            public void onFailure(Call<Dto<String>> call, Throwable t) {
+                resultCallback.onFailure("NETWORK_ERROR", t);
+            }
+        });
+    }
+
+    public void connectUserWithGuardian(UserConnectDto userDto, ResultCallback<Dto<String>> resultCallback) {
+        Call<Dto<String>> call = retrofitService.connectGuardian(userDto);
+
+        call.enqueue(new Callback<Dto<String>>() {
+            @Override
+            public void onResponse(Call<Dto<String>> call, Response<Dto<String>> response) {
+                if (response.body() != null && response.isSuccessful()) {
+                    resultCallback.onSuccess(response.body());
+                } else if (response.body() != null) {
+                    resultCallback.onFailure(response.body().getResponseMessage(), new Exception("status code in not 200"));
+                } else {
+                    resultCallback.onFailure("Response body is null", new Exception("Response body is null"));
+                }
+            }
+
             @Override
             public void onFailure(Call<Dto<String>> call, Throwable t) {
                 resultCallback.onFailure("NETWORK_ERROR", t);
