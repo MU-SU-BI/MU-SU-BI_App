@@ -1,5 +1,7 @@
 package com.example.musubi.model.remote;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.example.musubi.model.dto.CallDto;
@@ -173,4 +175,42 @@ public class RetrofitClient {
             }
         });
     }
+
+    public void getFindMyUser(long guardianId, ResultCallback<Dto<UserDto>> resultCallback) {
+        Call<Dto<UserDto>> call = retrofitService.findMyUser(guardianId);
+
+        call.enqueue(new Callback<Dto<UserDto>>() {
+            @Override
+            public void onResponse(@NonNull Call<Dto<UserDto>> call, @NonNull Response<Dto<UserDto>> response) {
+                if (response.isSuccessful() && response.code() == 200)
+                    resultCallback.onSuccess(response.body());
+                else
+                    resultCallback.onFailure("나의 사용자 조회에 실패했습니다.", new Exception("status code is not 200"));
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Dto<UserDto>> call, @NonNull Throwable t) {
+                resultCallback.onFailure(t.getMessage(), t);
+            }
+        });
+    };
+
+    public void getFindMyGuardian(long userId, ResultCallback<Dto<GuardianDto>> resultCallback) {
+        Call<Dto<GuardianDto>> call = retrofitService.findMyGuardian(userId);
+
+        call.enqueue(new Callback<Dto<GuardianDto>>() {
+            @Override
+            public void onResponse(@NonNull Call<Dto<GuardianDto>> call, @NonNull Response<Dto<GuardianDto>> response) {
+                if (response.isSuccessful() && response.code() == 200)
+                    resultCallback.onSuccess(response.body());
+                else
+                    resultCallback.onFailure("나의 보호자 조회에 실패했습니다.", new Exception("status code is not 200"));
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Dto<GuardianDto>> call, @NonNull Throwable t) {
+                resultCallback.onFailure(t.getMessage(), t);
+            }
+        });
+    };
 }

@@ -11,7 +11,9 @@ import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface RetrofitURL {
     @POST("api/v1/users/signup")
@@ -28,4 +30,8 @@ public interface RetrofitURL {
     Call<Dto<Void>> connectGuardian(@Body UserConnectDto userDto);
     @POST("api/v1/guardians/help")
     Call<Dto<Void>> guardianCallWithMessage(@Body CallDto callDto);
+    @GET("api/v1/guardians/{id}/user")
+    Call<Dto<UserDto>> findMyUser(@Path("id") long id);
+    @GET("api/v1/users/{id}/guardian")
+    Call<Dto<GuardianDto>> findMyGuardian(@Path("id") long id);
 }

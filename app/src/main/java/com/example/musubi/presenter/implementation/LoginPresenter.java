@@ -1,5 +1,7 @@
 package com.example.musubi.presenter.implementation;
 
+import android.util.Log;
+
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.UserDto;
@@ -31,9 +33,20 @@ public class LoginPresenter  implements LoginContract.Presenter {
 
         retrofitClient.postLoginUser(loginData, new ResultCallback<Dto<UserDto>>() {
             @Override
-            public void onSuccess(Dto<UserDto> result) {
-                User.getInstance().initUser(result.getData());
-                view.onLoginSuccess("사용자 로그인 성공");
+            public void onSuccess(Dto<UserDto> result1) {
+                retrofitClient.getFindMyGuardian(result1.getData().getUserId(), new ResultCallback<Dto<GuardianDto>>() {
+                    @Override
+                    public void onSuccess(Dto<GuardianDto> result2) {
+                        User.getInstance().initUser(result1.getData(), result2.getData());
+                        view.onLoginSuccess("사용자 로그인 성공");
+                    }
+
+                    @Override
+                    public void onFailure(String result, Throwable t) {
+                        User.getInstance().initUser(result1.getData(), null);
+                        view.onLoginSuccess("사용자 로그인 성공");
+                    }
+                });
             }
 
             @Override
@@ -52,9 +65,20 @@ public class LoginPresenter  implements LoginContract.Presenter {
 
         retrofitClient.postLoginGuardian(loginData, new ResultCallback<Dto<GuardianDto>>() {
             @Override
-            public void onSuccess(Dto<GuardianDto> result) {
-                Guardian.getInstance().initGuardian(result.getData());
-                view.onLoginSuccess("보호자 로그인 성공");
+            public void onSuccess(Dto<GuardianDto> result1) {
+                retrofitClient.getFindMyUser(result1.getData().getUserId(), new ResultCallback<Dto<UserDto>>() {
+                    @Override
+                    public void onSuccess(Dto<UserDto> result2) {
+                        Guardian.getInstance().initGuardian(result1.getData(), result2.getData());
+                        view.onLoginSuccess("보호자 로그인 성공");
+                    }
+
+                    @Override
+                    public void onFailure(String result, Throwable t) {
+                        Guardian.getInstance().initGuardian(result1.getData(), null);
+                        view.onLoginSuccess("보호자 로그인 성공");
+                    }
+                });
             }
 
             @Override
