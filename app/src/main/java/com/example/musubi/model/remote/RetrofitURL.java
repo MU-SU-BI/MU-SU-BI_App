@@ -26,7 +26,7 @@ public interface RetrofitURL {
     @POST("api/v1/location")
     Call<Dto<String>> setMyDistrict(@Body GpsDto gpsDto);
     @POST("api/v1/guardians/connection")
-    Call<Dto<String>> connectGuardian(@Body UserConnectDto userDto);
-    @POST("api/v1/guardians/calling")
+    Call<Dto<UserDto>> connectGuardian(@Body UserConnectDto userDto);
+    @POST("api/v1/guardians/help")
     Call<Dto<Void>> guardianCallWithMessage(@Body CallDto callDto);
 }

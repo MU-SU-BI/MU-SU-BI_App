@@ -134,12 +134,12 @@ public class RetrofitClient {
         });
     }
 
-    public void connectUserWithGuardian(UserConnectDto userDto, ResultCallback<Dto<String>> resultCallback) {
-        Call<Dto<String>> call = retrofitService.connectGuardian(userDto);
+    public void connectUserWithGuardian(UserConnectDto userDto, ResultCallback<Dto<UserDto>> resultCallback) {
+        Call<Dto<UserDto>> call = retrofitService.connectGuardian(userDto);
 
-        call.enqueue(new Callback<Dto<String>>() {
+        call.enqueue(new Callback<Dto<UserDto>>() {
             @Override
-            public void onResponse(Call<Dto<String>> call, Response<Dto<String>> response) {
+            public void onResponse(Call<Dto<UserDto>> call, Response<Dto<UserDto>> response) {
                 if (response.body() != null && response.isSuccessful()) {
                     resultCallback.onSuccess(response.body());
                 } else if (response.body() != null) {
@@ -150,7 +150,7 @@ public class RetrofitClient {
             }
 
             @Override
-            public void onFailure(Call<Dto<String>> call, Throwable t) {
+            public void onFailure(Call<Dto<UserDto>> call, Throwable t) {
                 resultCallback.onFailure("NETWORK_ERROR", t);
             }
         });
