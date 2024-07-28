@@ -15,10 +15,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.musubi.R;
+import com.example.musubi.model.local.SPFManager;
 import com.example.musubi.presenter.contract.LoginContract;
 import com.example.musubi.presenter.implementation.LoginPresenter;
 
 public class LoginActivity extends AppCompatActivity implements LoginContract.View {
+    SPFManager spfManager;
     LoginPresenter presenter;
 
     EditText emailEditText;
@@ -39,9 +41,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        initView();
         presenter = new LoginPresenter(this);
+        spfManager = new SPFManager(getApplicationContext(), "ACCOUNT");
+        initView();
     }
 
     private void initView() {
@@ -55,15 +57,16 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         loginButton.setOnClickListener(v -> {
             String email = emailEditText.getText().toString();
             String password = passEditText.getText().toString();
+            String fcmToken = spfManager.getSharedPreferences().getString("FCM_TOKEN", "");
 
             if (isInputWrongLoginData(email, password)) {
                 onLoginFailure("이메일 또는 비밀번호를 작성하세요.");
                 return;
             }
             if (userRadioButton.isChecked())
-                presenter.loginUser(email, password);
+                presenter.loginUser(email, password, fcmToken);
             else if (guardianRadioButton.isChecked())
-                presenter.loginGuardian(email, password);
+                presenter.loginGuardian(email, password, fcmToken);
             else
                 onLoginFailure("사용자 또는 보호자 구분을 필요합니다.");
         });

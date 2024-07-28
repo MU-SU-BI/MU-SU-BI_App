@@ -23,10 +23,11 @@ public class LoginPresenter  implements LoginContract.Presenter {
     }
 
     @Override
-    public void loginUser(String email, String password) {
+    public void loginUser(String email, String password, String fcmToken) {
         Map<String, String> loginData = new HashMap<>();
         loginData.put("email", email);
         loginData.put("password", password);
+        loginData.put("fcmToken", fcmToken);
 
         retrofitClient.postLoginUser(loginData, new ResultCallback<Dto<UserDto>>() {
             @Override
@@ -43,10 +44,11 @@ public class LoginPresenter  implements LoginContract.Presenter {
     }
 
     @Override
-    public void loginGuardian(String email, String password) {
+    public void loginGuardian(String email, String password, String fcmToken) {
         Map<String, String> loginData = new HashMap<>();
         loginData.put("email", email);
         loginData.put("password", password);
+        loginData.put("fcmToken", fcmToken);
 
         retrofitClient.postLoginGuardian(loginData, new ResultCallback<Dto<GuardianDto>>() {
             @Override
