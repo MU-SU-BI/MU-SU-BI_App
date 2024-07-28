@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -45,4 +46,7 @@ dependencies {
     implementation libs.map.sdk
     implementation libs.material.v140
     implementation libs.play.services.location
+
+    implementation(platform(libs.firebase.bom))
+    implementation libs.firebase.messaging
 }
