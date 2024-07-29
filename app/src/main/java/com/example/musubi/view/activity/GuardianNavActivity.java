@@ -3,6 +3,7 @@ package com.example.musubi.view.activity;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import com.example.musubi.R;
@@ -17,6 +18,7 @@ public class GuardianNavActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_guardian_nav);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
