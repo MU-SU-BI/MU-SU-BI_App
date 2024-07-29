@@ -10,22 +10,4 @@ public class UserMyPagePresenter implements UserMyPageContract.Presenter {
     public UserMyPagePresenter(UserMyPageContract.View view) {
         this.view = view;
     }
-
-    @Override
-    public void loadUserInfo() {
-        User user = User.getInstance();
-        UserDto userDto = new UserDto(
-                user.getId(),
-                user.getEmail(),
-                null,
-                user.getName(),
-                user.getGender(),
-                user.getAge(),
-                user.getNickname(),
-                user.getPhone(),
-                user.getAddress(),
-                user.getDistrict()
-        );
-        view.showUserInfo(userDto);
-    }
 }

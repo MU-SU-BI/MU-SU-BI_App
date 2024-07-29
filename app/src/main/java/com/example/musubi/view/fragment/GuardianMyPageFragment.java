@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.telephony.PhoneNumberFormattingTextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,45 +15,48 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.musubi.R;
-import com.example.musubi.presenter.contract.MyPageContract;
-import com.example.musubi.presenter.implementation.MyPagePresenter;
+import com.example.musubi.presenter.contract.GuardianMyPageContract;
 import com.example.musubi.model.entity.Guardian;
-import com.example.musubi.model.remote.RetrofitClient;
+import com.example.musubi.presenter.implementation.GuardianMyPagePresenter;
 
-public class GuardianMyPageFragment extends Fragment implements MyPageContract.View {
+public class GuardianMyPageFragment extends Fragment implements GuardianMyPageContract.View {
+    private View view;
+    private GuardianMyPageContract.Presenter presenter;
 
-    private MyPageContract.Presenter presenter;
     private AlertDialog dialog;
+    private Button connectUserButton;
+    private TextView nameTextView, emailTextView, phoneNumberTextView, homeAddressTextView, districtTextView;
 
-    private TextView tvName, tvEmail, tvPhoneNumber, tvHomeAddress, tvDistrict;
+
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        this.view = view;
+
+        presenter = new GuardianMyPagePresenter(this);
+        nameTextView = view.findViewById(R.id.name);
+        emailTextView = view.findViewById(R.id.email);
+        phoneNumberTextView = view.findViewById(R.id.phoneNumber);
+        homeAddressTextView = view.findViewById(R.id.homeAddress);
+        districtTextView = view.findViewById(R.id.district);
+        connectUserButton = view.findViewById(R.id.btnRegisterUser);
+        connectUserButton.setOnClickListener(v -> showInputDialog());
+        showGuardianInfo();
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_guardian_my_page, container, false);
-        presenter = new MyPagePresenter(this, new RetrofitClient());
-
-        tvName = view.findViewById(R.id.tvName);
-        tvEmail = view.findViewById(R.id.tvEmail);
-        tvPhoneNumber = view.findViewById(R.id.tvPhoneNumber);
-        tvHomeAddress = view.findViewById(R.id.tvHomeAddress);
-        tvDistrict = view.findViewById(R.id.tvDistrict);
-
-        loadGuardianInfo();
-
-        Button button = view.findViewById(R.id.btnRegisterUser);
-        button.setOnClickListener(v -> showInputDialog());
-
-        return view;
+        return inflater.inflate(R.layout.fragment_guardian_my_page, container, false);
     }
 
-    private void loadGuardianInfo() {
+    private void showGuardianInfo() {
         Guardian guardian = Guardian.getInstance();
-        tvName.setText("이름: " + guardian.getName());
-        tvEmail.setText("이메일: " + guardian.getEmail());
-        tvPhoneNumber.setText("전화번호: " + guardian.getPhone());
-        tvHomeAddress.setText("주소: " + guardian.getAddress());
-        tvDistrict.setText("구역: " + guardian.getDistrict());
+
+        nameTextView.setText(guardian.getName());
+        emailTextView.setText(guardian.getEmail());
+        phoneNumberTextView.setText(guardian.getPhone());
+        homeAddressTextView.setText(guardian.getAddress());
+        districtTextView.setText(guardian.getDistrict());
     }
 
     private void showInputDialog() {
@@ -73,9 +75,7 @@ public class GuardianMyPageFragment extends Fragment implements MyPageContract.V
 
             String phone = phoneEditText.getText().toString();
             presenter.connectUser(name, phone);
-            Log.d("ConnectUser", "Name: " + name + ", Phone: " + phone);
         });
-
         dialog.show();
     }
 
@@ -85,7 +85,7 @@ public class GuardianMyPageFragment extends Fragment implements MyPageContract.V
             dialog.dismiss();
         }
         Toast.makeText(getActivity(), "연결 성공: " + message, Toast.LENGTH_SHORT).show();
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new GuardianMyPageFragment()).commit();
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new GuardianMyPageFragment()).commit();
     }
 
     @Override
