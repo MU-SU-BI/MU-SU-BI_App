@@ -80,7 +80,7 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
     private void showLinkedUserInfo() {
         User user = (User) Guardian.getInstance().getUser();
 
-        if (user.getId() == -1) {
+        if (user == null) {
             linkedUserCardView.setVisibility(View.GONE);
             return;
         }

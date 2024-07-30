@@ -75,7 +75,7 @@ public class UserMyPageFragment extends Fragment implements UserMyPageContract.V
     private void showGuardianInfo() {
         Guardian guardian = (Guardian) User.getInstance().getGuardian();
 
-        if (guardian.getId() == -1) {
+        if (guardian == null) {
             linkedGuardianCardView.setVisibility(View.GONE);
             return;
         }
