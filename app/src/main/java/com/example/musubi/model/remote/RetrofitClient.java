@@ -1,5 +1,7 @@
 package com.example.musubi.model.remote;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.example.musubi.model.dto.CallDto;
@@ -34,12 +36,12 @@ public class RetrofitClient {
         retrofitService = retrofit.create(RetrofitURL.class);
     }
 
-    public void postSignupUser(UserDto user, ResultCallback<String> resultCallback) {
-        Call<MsgDto> call = retrofitService.userSignup(user);
+    public void postSignupUser(UserDto user, ResultCallback<String> resultCallback){
+        Call<Dto<Void>> call = retrofitService.userSignup(user);
 
-        call.enqueue((new Callback<MsgDto>() {
+        call.enqueue((new Callback<Dto<Void>>() {
             @Override
-            public void onResponse(@NonNull Call<MsgDto> call, @NonNull Response<MsgDto> response) {
+            public void onResponse(@NonNull Call<Dto<Void>> call, @NonNull Response<Dto<Void>> response) {
                 assert response.body() != null;
                 String responseMessage = response.body().getResponseMessage();
 
@@ -50,18 +52,18 @@ public class RetrofitClient {
             }
 
             @Override
-            public void onFailure(@NonNull Call<MsgDto> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Dto<Void>> call, @NonNull Throwable t) {
                 resultCallback.onFailure("NETWORK_ERROR", t);
             }
         }));
     }
-
-    public void postSignupGuardian(GuardianDto guardian, ResultCallback<String> resultCallback) {
-        Call<MsgDto> call = retrofitService.guardianSignup(guardian);
-
-        call.enqueue((new Callback<MsgDto>() {
+  
+    public void postSignupGuardian(GuardianDto guardian, ResultCallback<String> resultCallback){
+        Call<Dto<Void>> call = retrofitService.guardianSignup(guardian);
+      
+        call.enqueue((new Callback<Dto<Void>>() {
             @Override
-            public void onResponse(@NonNull Call<MsgDto> call, @NonNull Response<MsgDto> response) {
+            public void onResponse(@NonNull Call<Dto<Void>> call, @NonNull Response<Dto<Void>> response) {
                 if (response.isSuccessful() && response.code() == 201) {
                     assert response.body() != null;
                     resultCallback.onSuccess(response.body().getResponseMessage());
@@ -70,7 +72,7 @@ public class RetrofitClient {
             }
 
             @Override
-            public void onFailure(@NonNull Call<MsgDto> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Dto<Void>> call, @NonNull Throwable t) {
                 resultCallback.onFailure("NETWORK_ERROR", t);
             }
         }));
@@ -141,12 +143,12 @@ public class RetrofitClient {
         });
     }
 
-    public void connectUserWithGuardian(UserConnectDto userDto, ResultCallback<Dto<UserDto>> resultCallback) {
-        Call<Dto<UserDto>> call = retrofitService.connectGuardian(userDto);
+    public void postConnectUserWithGuardian(UserConnectDto userDto, ResultCallback<Dto<Void>> resultCallback) {
+        Call<Dto<Void>> call = retrofitService.connectGuardian(userDto);
 
-        call.enqueue(new Callback<Dto<UserDto>>() {
+        call.enqueue(new Callback<Dto<Void>>() {
             @Override
-            public void onResponse(Call<Dto<UserDto>> call, Response<Dto<UserDto>> response) {
+            public void onResponse(Call<Dto<Void>> call, Response<Dto<Void>> response) {
                 if (response.body() != null && response.isSuccessful()) {
                     resultCallback.onSuccess(response.body());
                 } else if (response.body() != null) {
@@ -157,7 +159,7 @@ public class RetrofitClient {
             }
 
             @Override
-            public void onFailure(Call<Dto<UserDto>> call, Throwable t) {
+            public void onFailure(Call<Dto<Void>> call, Throwable t) {
                 resultCallback.onFailure("NETWORK_ERROR", t);
             }
         });
@@ -200,4 +202,43 @@ public class RetrofitClient {
             }
         });
     }
+}
+
+    public void getFindMyUser(long guardianId, ResultCallback<Dto<UserDto>> resultCallback) {
+        Call<Dto<UserDto>> call = retrofitService.findMyUser(guardianId);
+
+        call.enqueue(new Callback<Dto<UserDto>>() {
+            @Override
+            public void onResponse(@NonNull Call<Dto<UserDto>> call, @NonNull Response<Dto<UserDto>> response) {
+                if (response.isSuccessful() && response.code() == 200)
+                    resultCallback.onSuccess(response.body());
+                else
+                    resultCallback.onFailure("나의 사용자 조회에 실패했습니다.", new Exception("status code is not 200"));
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Dto<UserDto>> call, @NonNull Throwable t) {
+                resultCallback.onFailure(t.getMessage(), t);
+            }
+        });
+    };
+
+    public void getFindMyGuardian(long userId, ResultCallback<Dto<GuardianDto>> resultCallback) {
+        Call<Dto<GuardianDto>> call = retrofitService.findMyGuardian(userId);
+
+        call.enqueue(new Callback<Dto<GuardianDto>>() {
+            @Override
+            public void onResponse(@NonNull Call<Dto<GuardianDto>> call, @NonNull Response<Dto<GuardianDto>> response) {
+                if (response.isSuccessful() && response.code() == 200)
+                    resultCallback.onSuccess(response.body());
+                else
+                    resultCallback.onFailure("나의 보호자 조회에 실패했습니다.", new Exception("status code is not 200"));
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Dto<GuardianDto>> call, @NonNull Throwable t) {
+                resultCallback.onFailure(t.getMessage(), t);
+            }
+        });
+    };
 }

@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     }
 
     private boolean isInputWrongLoginData(String email, String password) {
-        return emailEditText.getText().toString().isEmpty() || passEditText.getText().toString().isEmpty();
+        return email.isEmpty() || password.isEmpty();
     }
 
     @Override

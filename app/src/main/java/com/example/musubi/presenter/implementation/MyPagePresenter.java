@@ -20,9 +20,9 @@ public class MyPagePresenter implements MyPageContract.Presenter {
 
     @Override
     public void connectUser(String userName, String phoneNumber) {
-        retrofitClient.connectUserWithGuardian(new UserConnectDto(Guardian.getInstance().getId(), userName, phoneNumber), new ResultCallback<Dto<UserDto>>() {
+        retrofitClient.postConnectUserWithGuardian(new UserConnectDto(Guardian.getInstance().getId(), userName, phoneNumber), new ResultCallback<Dto<Void>>() {
             @Override
-            public void onSuccess(Dto<UserDto> result) {
+            public void onSuccess(Dto<Void> result) {
                 view.onConnectSuccess(result.getResponseMessage());
             }
 
