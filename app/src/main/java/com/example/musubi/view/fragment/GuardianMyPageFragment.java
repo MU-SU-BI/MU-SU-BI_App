@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.telephony.PhoneNumberFormattingTextWatcher;
@@ -13,9 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.musubi.R;
+import com.example.musubi.model.entity.Gender;
 import com.example.musubi.model.entity.User;
 import com.example.musubi.presenter.contract.GuardianMyPageContract;
 import com.example.musubi.model.entity.Guardian;
@@ -30,6 +33,8 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
     private AlertDialog dialog;
     private Button connectUserButton, logoutButton;
     private TextView nameTextView, emailTextView, phoneNumberTextView, homeAddressTextView, districtTextView;
+    private TextView linkedUserNameTextView, linkedUserAgeTextView, linkedUserHomeAddressTextView, linkedUserGenderTextView;
+    private CardView linkedUserCardView;
 
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -47,6 +52,13 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
         logoutButton = view.findViewById(R.id.logout);
         logoutButton.setOnClickListener(v -> presenter.logoutGuardian());
         showGuardianInfo();
+
+        linkedUserNameTextView = view.findViewById(R.id.linkedUserName);
+        linkedUserAgeTextView = view.findViewById(R.id.linkedUserAge);
+        linkedUserHomeAddressTextView = view.findViewById(R.id.linkedUserHomeAddress);
+        linkedUserGenderTextView = view.findViewById(R.id.linkedUserGender);
+        linkedUserCardView = view.findViewById(R.id.linkedUserCardView);
+        showLinkedUserInfo();
     }
 
     @Nullable
@@ -63,6 +75,20 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
         phoneNumberTextView.setText(guardian.getPhone());
         homeAddressTextView.setText(guardian.getAddress());
         districtTextView.setText(guardian.getDistrict());
+    }
+
+    private void showLinkedUserInfo() {
+        User user = (User) Guardian.getInstance().getUser();
+
+        if (user.getId() == -1) {
+            linkedUserCardView.setVisibility(View.GONE);
+            return;
+        }
+        linkedUserNameTextView.setText(user.getName());
+        linkedUserAgeTextView.setText(String.valueOf(user.getAge()));
+        linkedUserHomeAddressTextView.setText(user.getAddress());
+        linkedUserGenderTextView.setText(user.getGender() == Gender.MALE ? "남성" : "여성");
+        connectUserButton.setVisibility(View.GONE);
     }
 
     private void showInputDialog() {
