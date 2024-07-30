@@ -20,8 +20,12 @@
 
     <Button
         android:id="@+id/submitButton"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="제출"/>
+        android:background="@android:color/transparent"
+        android:text="사용자 연동"
+        android:textColor="@android:color/holo_blue_light"
+        android:textSize="20dp"
+        android:layout_gravity="center"/>
 
 </LinearLayout>

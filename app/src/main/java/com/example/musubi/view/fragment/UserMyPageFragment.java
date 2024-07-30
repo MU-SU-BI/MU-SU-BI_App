@@ -32,7 +32,7 @@ public class UserMyPageFragment extends Fragment implements UserMyPageContract.V
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_guardian_my_page, container, false);
+        return inflater.inflate(R.layout.fragment_user_my_page, container, false);
     }
 
     private void showUserInfo() {

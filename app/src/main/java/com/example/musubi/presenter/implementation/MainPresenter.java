@@ -13,9 +13,4 @@ public class MainPresenter implements MainContract.Presenter{
     public void redirectToLogin() {
         view.redirectToLogin();
     }
-
-    @Override
-    public void redirectToSignup() {
-        view.redirectToSignup();
-    }
 }

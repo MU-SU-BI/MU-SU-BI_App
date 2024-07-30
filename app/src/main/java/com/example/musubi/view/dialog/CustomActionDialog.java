@@ -22,7 +22,6 @@ public class CustomActionDialog extends DialogFragment {
     private OnActionEnrollListener listener;
     private EditText actionNameEditText;
     private Button actionEnrollButton;
-    private Button exitButton;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -39,7 +38,6 @@ public class CustomActionDialog extends DialogFragment {
     private void initView() {
         actionNameEditText = view.findViewById(R.id.actionName);
         actionEnrollButton = view.findViewById(R.id.actionEnroll);
-        exitButton = view.findViewById(R.id.exit);
 
         actionEnrollButton.setOnClickListener(v -> {
             String actionName = actionNameEditText.getText().toString();
@@ -47,10 +45,6 @@ public class CustomActionDialog extends DialogFragment {
                 listener.onActionEnroll(actionName);
                 dismiss();
             }
-        });
-
-        exitButton.setOnClickListener(v -> {
-           dismiss();
         });
     }
 

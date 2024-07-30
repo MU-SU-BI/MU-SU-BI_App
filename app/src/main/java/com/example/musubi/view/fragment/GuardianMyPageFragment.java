@@ -61,7 +61,7 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
 
     private void showInputDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View dialogView = getLayoutInflater().inflate(R.layout.connect_user_dialog, null);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_connect_user, null);
         builder.setView(dialogView);
 
         EditText nameEditText = dialogView.findViewById(R.id.editTextName);

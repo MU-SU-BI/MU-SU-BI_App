@@ -1,79 +1,79 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/loginGroup"
+    <EditText
+        android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_above="@id/password"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="이메일"
+        android:inputType="textEmailAddress" />
 
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email"
-            android:inputType="textEmailAddress" />
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/userTypeRadioGroup"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="비밀번호"
+        android:inputType="textPassword" />
 
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:layout_below="@id/email"/>
+    <RadioGroup
+        android:id="@+id/userTypeRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-        <RadioGroup
-            android:id="@+id/userTypeRadioGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_below="@id/password"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/userRadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:text="사용자" />
-
-            <RadioButton
-                android:id="@+id/guardianRadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text="보호자" />
-        </RadioGroup>
-
-        <TextView
-            android:id="@+id/errorMessage"
+        <RadioButton
+            android:id="@+id/userRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:textColor="#FF0000"
-            android:layout_below="@id/userTypeRadioGroup"/>
+            android:layout_marginEnd="5dp"
+            android:text="사용자" />
 
-        <Button
-            android:id="@+id/login"
-            android:layout_width="match_parent"
+        <RadioButton
+            android:id="@+id/guardianRadioButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Login"
-            android:layout_below="@id/errorMessage"
-            />
+            android:layout_marginStart="5dp"
+            android:text="보호자" />
+    </RadioGroup>
 
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/errorMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userTypeRadioGroup"
+        android:layout_alignParentRight="true"
+        android:textColor="#FF0000" />
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/errorMessage"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"
+        android:text="로그인"
+        android:textColor="@android:color/holo_blue_light"
+        android:textSize="20dp" />
 
     <Button
         android:id="@+id/login_go_signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign Up"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@android:color/transparent"
+        android:text="회원가입"
         android:textColor="@android:color/holo_blue_light" />
 
 </RelativeLayout>
+

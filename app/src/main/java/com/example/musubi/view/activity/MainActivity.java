@@ -18,7 +18,6 @@ import com.example.musubi.presenter.implementation.MainPresenter;
 public class MainActivity extends AppCompatActivity implements MainContract.View {
     private MainPresenter presenter;
 
-    private Button redirectSignupButton;
     private Button redirectLoginButton;
 
     @Override
@@ -38,22 +37,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     private void initView() {
-        redirectSignupButton = findViewById(R.id.redirectSignup);
         redirectLoginButton = findViewById(R.id.redirectLogin);
 
-        redirectSignupButton.setOnClickListener(v -> presenter.redirectToSignup());
         redirectLoginButton.setOnClickListener(v -> presenter.redirectToLogin());
     }
 
     @Override
     public void redirectToLogin() {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
-    public void redirectToSignup() {
-        Intent intent = new Intent(MainActivity.this, SignupActivity.class);
         startActivity(intent);
     }
 }

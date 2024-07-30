@@ -80,16 +80,17 @@ public class CallFragment extends Fragment implements CallContract.View, OnActio
         });
     }
 
+    private int getPixelToDp(int pixel) {
+        float density = getResources().getDisplayMetrics().density;
+        return (int) (pixel * density);
+    }
+
     private void createNewButton(String actionName) {
         MaterialButton newButton = new MaterialButton(requireContext());
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT
+                getPixelToDp(75)
         );
-        // pixel to dp
-        int marginInDp = 10; // 원하는 마진 (dp)
-        float density = getResources().getDisplayMetrics().density;
-        int marginInPx = (int) (marginInDp * density);
 
         // new 버튼 스타일 추가
         newButton.setText(actionName);
@@ -97,7 +98,7 @@ public class CallFragment extends Fragment implements CallContract.View, OnActio
 
         params.addRule(RelativeLayout.BELOW, buttonIdArray.get(buttonIdArray.size() - 1)); // 가장 마지막 버튼 아래에 위치
         params.addRule(RelativeLayout.CENTER_HORIZONTAL); // 가운데 정렬
-        params.setMargins(marginInPx, marginInPx, marginInPx, marginInPx); // 마진 설정
+        params.setMargins(0, 0, 0, getPixelToDp(10)); // 마진 설정
         layout.addView(newButton, params);
 
         // new 버튼 클릭 리스너 추가
