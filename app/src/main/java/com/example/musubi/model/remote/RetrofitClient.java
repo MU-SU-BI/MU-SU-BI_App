@@ -6,6 +6,7 @@ import com.example.musubi.model.dto.CallDto;
 import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GuardianDto;
+import com.example.musubi.model.dto.LocationDto;
 import com.example.musubi.model.dto.MsgDto;
 import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
@@ -33,7 +34,7 @@ public class RetrofitClient {
         retrofitService = retrofit.create(RetrofitURL.class);
     }
 
-    public void postSignupUser(UserDto user, ResultCallback<String> resultCallback){
+    public void postSignupUser(UserDto user, ResultCallback<String> resultCallback) {
         Call<MsgDto> call = retrofitService.userSignup(user);
 
         call.enqueue((new Callback<MsgDto>() {
@@ -55,7 +56,7 @@ public class RetrofitClient {
         }));
     }
 
-    public void postSignupGuardian(GuardianDto guardian, ResultCallback<String> resultCallback){
+    public void postSignupGuardian(GuardianDto guardian, ResultCallback<String> resultCallback) {
         Call<MsgDto> call = retrofitService.guardianSignup(guardian);
 
         call.enqueue((new Callback<MsgDto>() {
@@ -64,8 +65,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 201) {
                     assert response.body() != null;
                     resultCallback.onSuccess(response.body().getResponseMessage());
-                }
-                else
+                } else
                     resultCallback.onFailure("이메일 또는 휴대폰 번호가 중복입니다.\n다시 시도해주세요.", new Exception("status code is not 201"));
             }
 
@@ -74,9 +74,11 @@ public class RetrofitClient {
                 resultCallback.onFailure("NETWORK_ERROR", t);
             }
         }));
-    };
+    }
 
-    public void postLoginUser(Map<String, String> loginData, ResultCallback<Dto<UserDto>> resultCallback){
+    ;
+
+    public void postLoginUser(Map<String, String> loginData, ResultCallback<Dto<UserDto>> resultCallback) {
         Call<Dto<UserDto>> call = retrofitService.userLogin(loginData);
 
         call.enqueue(new Callback<Dto<UserDto>>() {
@@ -93,9 +95,11 @@ public class RetrofitClient {
                 resultCallback.onFailure("NETWORK_ERROR", t);
             }
         });
-    };
+    }
 
-    public void postLoginGuardian(Map<String, String> loginData, ResultCallback<Dto<GuardianDto>> resultCallback){
+    ;
+
+    public void postLoginGuardian(Map<String, String> loginData, ResultCallback<Dto<GuardianDto>> resultCallback) {
         Call<Dto<GuardianDto>> call = retrofitService.guardianLogin(loginData);
 
         call.enqueue(new Callback<Dto<GuardianDto>>() {
@@ -112,9 +116,11 @@ public class RetrofitClient {
                 resultCallback.onFailure("NETWORK_ERROR", t);
             }
         });
-    };
+    }
 
-    public void setMyDistrict(GpsDto gps, ResultCallback<Dto<String>> resultCallback){
+    ;
+
+    public void setMyDistrict(GpsDto gps, ResultCallback<Dto<String>> resultCallback) {
         Call<Dto<String>> call = retrofitService.setMyDistrict(gps);
 
         call.enqueue(new Callback<Dto<String>>() {
@@ -127,6 +133,7 @@ public class RetrofitClient {
                 } else
                     resultCallback.onFailure(response.body().getResponseMessage(), new Exception("status code in not 200"));
             }
+
             @Override
             public void onFailure(Call<Dto<String>> call, Throwable t) {
                 resultCallback.onFailure("NETWORK_ERROR", t);
@@ -170,6 +177,25 @@ public class RetrofitClient {
 
             @Override
             public void onFailure(@NonNull Call<Dto<Void>> call, @NonNull Throwable t) {
+                resultCallback.onFailure(t.getMessage(), t);
+            }
+        });
+    }
+
+    public void putCurrentLocation(String type, LocationDto locationDto, ResultCallback<Dto<Void>> resultCallback) {
+        Call<Dto<Void>> call = retrofitService.currentLocation(type, locationDto);
+
+        call.enqueue(new Callback<Dto<Void>>() {
+            @Override
+            public void onResponse(Call<Dto<Void>> call, Response<Dto<Void>> response) {
+                if (response.isSuccessful() && response.code() == 201) {
+                    resultCallback.onSuccess(response.body());
+                } else
+                    resultCallback.onFailure("위치 정보 업데이트에 실패했습니다.", new Exception("status code is not 200"));
+            }
+
+            @Override
+            public void onFailure(Call<Dto<Void>> call, Throwable t) {
                 resultCallback.onFailure(t.getMessage(), t);
             }
         });

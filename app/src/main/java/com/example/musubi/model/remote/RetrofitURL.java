@@ -4,6 +4,7 @@ import com.example.musubi.model.dto.CallDto;
 import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GuardianDto;
+import com.example.musubi.model.dto.LocationDto;
 import com.example.musubi.model.dto.MsgDto;
 import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
@@ -13,6 +14,8 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Query;
 
 public interface RetrofitURL {
     @POST("api/v1/users/signup")
@@ -29,4 +32,6 @@ public interface RetrofitURL {
     Call<Dto<UserDto>> connectGuardian(@Body UserConnectDto userDto);
     @POST("api/v1/guardians/help")
     Call<Dto<Void>> guardianCallWithMessage(@Body CallDto callDto);
+    @PUT("api/v1/current-location")
+    Call<Dto<Void>> currentLocation(@Query("type") String type, @Body LocationDto locationDto);
 }
