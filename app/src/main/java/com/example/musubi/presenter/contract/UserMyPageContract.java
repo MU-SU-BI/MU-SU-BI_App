@@ -1,7 +1,12 @@
 package com.example.musubi.presenter.contract;
 
 public interface UserMyPageContract {
-    interface View { }
+    interface View {
+        void onLogoutSuccess();
+        void onLogoutFailure();
+    }
 
-    interface Presenter { }
+    interface Presenter {
+        void logoutUser();
+    }
 }

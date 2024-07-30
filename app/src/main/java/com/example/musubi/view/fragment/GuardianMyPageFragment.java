@@ -36,7 +36,7 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
 
-        presenter = new GuardianMyPagePresenter(this);
+        presenter = new GuardianMyPagePresenter(this, getContext());
         nameTextView = view.findViewById(R.id.name);
         emailTextView = view.findViewById(R.id.email);
         phoneNumberTextView = view.findViewById(R.id.phoneNumber);
@@ -45,7 +45,7 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
         connectUserButton = view.findViewById(R.id.btnRegisterUser);
         connectUserButton.setOnClickListener(v -> showInputDialog());
         logoutButton = view.findViewById(R.id.logout);
-        logoutButton.setOnClickListener(v -> logoutGuardian());
+        logoutButton.setOnClickListener(v -> presenter.logoutGuardian());
         showGuardianInfo();
     }
 
@@ -85,12 +85,17 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
         dialog.show();
     }
 
-    private void logoutGuardian() {
-        Intent serviceIntent = new Intent(requireActivity(), ForegroundService.class);
+    @Override
+    public void onLogoutSuccess() {
 
-        Guardian.getInstance().initGuardian(null, null);
         requireActivity().finish();
-        requireActivity().stopService(serviceIntent);
+        requireActivity().stopService(new Intent(requireActivity(), ForegroundService.class));
+        startActivity(new Intent(requireActivity(), MainActivity.class));
+    }
+
+    @Override
+    public void onLogoutFailure() {
+
     }
 
     @Override

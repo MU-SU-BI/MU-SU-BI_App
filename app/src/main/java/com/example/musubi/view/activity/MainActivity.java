@@ -1,10 +1,15 @@
 package com.example.musubi.view.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
@@ -14,10 +19,21 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.musubi.R;
 import com.example.musubi.model.entity.Guardian;
 import com.example.musubi.model.entity.User;
+import com.example.musubi.model.local.SPFManager;
 import com.example.musubi.presenter.contract.MainContract;
+import com.example.musubi.presenter.implementation.LoginPresenter;
 import com.example.musubi.presenter.implementation.MainPresenter;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
+    private final ActivityResultLauncher<Intent> mainLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // 로그인 성공 시 메인 액티비티 종료
+                    finish();
+                }
+            }
+    );
     private MainPresenter presenter;
 
     private Button redirectLoginButton;
@@ -34,8 +50,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             return insets;
         });
 
+        presenter = new MainPresenter(this, this);
+        checkAutoLogin();
         initView();
-        presenter = new MainPresenter(this);
     }
 
     @Override
@@ -46,27 +63,27 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     private void initView() {
         redirectLoginButton = findViewById(R.id.redirectLogin);
+        redirectLoginButton.setOnClickListener(v -> mainLauncher.launch(new Intent(MainActivity.this, LoginActivity.class)));
+    }
 
-        if (User.getInstance().getId() != -1 || Guardian.getInstance().getId() != -1) {
-            redirectLoginButton.setText("musubi 이용하기");
-            redirectLoginButton.setOnClickListener(v -> redirectToNav());
-        } else
-            redirectLoginButton.setOnClickListener(v -> presenter.redirectToLogin());
+    private void checkAutoLogin() {
+        presenter.autoLogin();
     }
 
     @Override
-    public void redirectToLogin() {
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(intent);
-    }
-
-    private void redirectToNav() {
+    public void onAutoLoginSuccess(String message, String userType) {
         Intent intent;
-        if (User.getInstance().getId() != -1)
+        if (userType.equals("USER"))
             intent = new Intent(MainActivity.this, UserNavActivity.class);
         else
             intent = new Intent(MainActivity.this, GuardianNavActivity.class);
 
         startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onAutoLoginFailure(String message) {
+
     }
 }

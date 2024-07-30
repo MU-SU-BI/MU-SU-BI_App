@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.musubi.R;
 import com.example.musubi.model.entity.User;
 import com.example.musubi.presenter.contract.UserMyPageContract;
+import com.example.musubi.presenter.implementation.UserMyPagePresenter;
 import com.example.musubi.util.service.ForegroundService;
 import com.example.musubi.view.activity.LoginActivity;
 import com.example.musubi.view.activity.MainActivity;
@@ -20,6 +21,7 @@ import com.example.musubi.view.activity.SignupActivity;
 
 public class UserMyPageFragment extends Fragment implements UserMyPageContract.View {
     private View view;
+    private UserMyPagePresenter presenter;
 
     private Button logoutButton;
     private TextView nameTextView, emailTextView, phoneNumberTextView, homeAddressTextView, districtTextView;
@@ -27,10 +29,11 @@ public class UserMyPageFragment extends Fragment implements UserMyPageContract.V
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
+        presenter = new UserMyPagePresenter(this, getContext());
 
         logoutButton = view.findViewById(R.id.logout);
         logoutButton.setOnClickListener(v -> {
-            logoutUser();
+            presenter.logoutUser();
         });
 
         nameTextView = view.findViewById(R.id.name);
@@ -57,11 +60,15 @@ public class UserMyPageFragment extends Fragment implements UserMyPageContract.V
         districtTextView.setText(user.getDistrict());
     }
 
-    private void logoutUser() {
-        Intent serviceIntent = new Intent(requireActivity(), ForegroundService.class);
-
-        User.getInstance().initUser(null, null);
+    @Override
+    public void onLogoutSuccess() {
         requireActivity().finish();
-        requireActivity().stopService(serviceIntent);
+        requireActivity().stopService(new Intent(requireActivity(), ForegroundService.class));
+        startActivity(new Intent(requireActivity(), MainActivity.class));
+    }
+
+    @Override
+    public void onLogoutFailure() {
+
     }
 }

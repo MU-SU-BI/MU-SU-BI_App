@@ -8,8 +8,8 @@ public interface LoginContract {
     }
 
     interface Presenter {
-        void loginUser(String email, String password, String fcmToken);
-        void loginGuardian(String email, String password, String fcmToken);
+        void loginUser(String email, String password);
+        void loginGuardian(String email, String password);
         void redirectToSignup();
     }
 }

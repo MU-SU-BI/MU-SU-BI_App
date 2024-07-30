@@ -1,12 +1,13 @@
 package com.example.musubi.presenter.implementation;
 
-import android.util.Log;
+import android.content.Context;
 
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.UserDto;
 import com.example.musubi.model.entity.Guardian;
 import com.example.musubi.model.entity.User;
+import com.example.musubi.model.local.SPFManager;
 import com.example.musubi.model.remote.RetrofitClient;
 import com.example.musubi.util.callback.ResultCallback;
 import com.example.musubi.presenter.contract.LoginContract;
@@ -17,16 +18,20 @@ import java.util.Map;
 public class LoginPresenter  implements LoginContract.Presenter {
     private final LoginContract.View view;
     private final RetrofitClient retrofitClient;
+    private final SPFManager spfManager;
 
-    public LoginPresenter(LoginContract.View view) {
+    public LoginPresenter(LoginContract.View view, Context context) {
         this.view = view;
         this.retrofitClient = new RetrofitClient();
         this.retrofitClient.initRetrofit();
+        this.spfManager = new SPFManager(context, "ACCOUNT");
     }
 
     @Override
-    public void loginUser(String email, String password, String fcmToken) {
+    public void loginUser(String email, String password) {
+        String fcmToken = spfManager.getSharedPreferences().getString("FCM_TOKEN", "");
         Map<String, String> loginData = new HashMap<>();
+
         loginData.put("email", email);
         loginData.put("password", password);
         loginData.put("fcmToken", fcmToken);
@@ -38,6 +43,7 @@ public class LoginPresenter  implements LoginContract.Presenter {
                     @Override
                     public void onSuccess(Dto<GuardianDto> result2) {
                         User.getInstance().initUser(result1.getData(), result2.getData());
+                        storeAutoLoginData(email, password, "USER");
                         view.onLoginSuccess("사용자 로그인 성공");
                     }
 
@@ -57,8 +63,10 @@ public class LoginPresenter  implements LoginContract.Presenter {
     }
 
     @Override
-    public void loginGuardian(String email, String password, String fcmToken) {
+    public void loginGuardian(String email, String password) {
+        String fcmToken = spfManager.getSharedPreferences().getString("FCM_TOKEN", "");
         Map<String, String> loginData = new HashMap<>();
+
         loginData.put("email", email);
         loginData.put("password", password);
         loginData.put("fcmToken", fcmToken);
@@ -70,6 +78,7 @@ public class LoginPresenter  implements LoginContract.Presenter {
                     @Override
                     public void onSuccess(Dto<UserDto> result2) {
                         Guardian.getInstance().initGuardian(result1.getData(), result2.getData());
+                        storeAutoLoginData(email, password, "GUARDIAN");
                         view.onLoginSuccess("보호자 로그인 성공");
                     }
 
@@ -91,5 +100,11 @@ public class LoginPresenter  implements LoginContract.Presenter {
     @Override
     public void redirectToSignup() {
         view.redirectToSignup();
+    }
+
+    private void storeAutoLoginData(String email, String password, String userType) {
+        spfManager.getEditor().putString("EMAIL", email).apply();
+        spfManager.getEditor().putString("PASSWORD", password).apply();
+        spfManager.getEditor().putString("USER_TYPE", userType).apply();
     }
 }

@@ -2,6 +2,7 @@ package com.example.musubi.view.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -31,7 +32,6 @@ import com.example.musubi.util.service.ForegroundService;
 public class LoginActivity extends AppCompatActivity implements LoginContract.View {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
-    SPFManager spfManager;
     LoginPresenter presenter;
 
     EditText emailEditText;
@@ -53,8 +53,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        presenter = new LoginPresenter(this);
-        spfManager = new SPFManager(getApplicationContext(), "ACCOUNT");
+        presenter = new LoginPresenter(this, getApplicationContext());
         initView();
     }
 
@@ -69,16 +68,15 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         loginButton.setOnClickListener(v -> {
             String email = emailEditText.getText().toString();
             String password = passEditText.getText().toString();
-            String fcmToken = spfManager.getSharedPreferences().getString("FCM_TOKEN", "");
 
             if (isInputWrongLoginData(email, password)) {
                 onLoginFailure("이메일 또는 비밀번호를 작성하세요.");
                 return;
             }
             if (userRadioButton.isChecked())
-                presenter.loginUser(email, password, fcmToken);
+                presenter.loginUser(email, password);
             else if (guardianRadioButton.isChecked())
-                presenter.loginGuardian(email, password, fcmToken);
+                presenter.loginGuardian(email, password);
             else
                 onLoginFailure("사용자 또는 보호자 구분을 필요합니다.");
         });
@@ -105,25 +103,24 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                     Manifest.permission.FOREGROUND_SERVICE_LOCATION,
                     Manifest.permission.POST_NOTIFICATIONS
             }, LOCATION_PERMISSION_REQUEST_CODE);
-        } else {
+        } else
             startServiceAndNavigate();
-        }
     }
     private void startServiceAndNavigate() {
         Intent intent;
-        if (userRadioButton.isChecked()) {
-            intent = new Intent(LoginActivity.this, UserNavActivity.class);
-        } else {
-            intent = new Intent(LoginActivity.this, GuardianNavActivity.class);
-        }
-
         Intent serviceIntent = new Intent(this, ForegroundService.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(serviceIntent);
-        } else {
-            startService(serviceIntent);
-        }
 
+        if (userRadioButton.isChecked())
+            intent = new Intent(LoginActivity.this, UserNavActivity.class);
+        else
+            intent = new Intent(LoginActivity.this, GuardianNavActivity.class);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            startForegroundService(serviceIntent);
+        else
+            startService(serviceIntent);
+
+        setResult(Activity.RESULT_OK, intent);  // MainActivity 종료
         startActivity(intent);
         finish();
     }

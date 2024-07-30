@@ -1,13 +1,12 @@
 package com.example.musubi.presenter.contract;
 
-import com.example.musubi.model.dto.UserDto;
-
 public interface MainContract {
     interface View {
-        void redirectToLogin();
+        void onAutoLoginSuccess(String message, String userType);
+        void onAutoLoginFailure(String message);
     }
 
     interface Presenter {
-        void redirectToLogin();
+        void autoLogin();
     }
 }
