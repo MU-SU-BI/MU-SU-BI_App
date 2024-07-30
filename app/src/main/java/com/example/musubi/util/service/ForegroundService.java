@@ -1,4 +1,4 @@
-package com.example.musubi.view.activity;
+package com.example.musubi.util.service;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
@@ -49,22 +50,19 @@ public class ForegroundService extends Service implements currentLocationContrac
 
         locationCallback = new LocationCallback() {
             @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
+            public void onLocationResult(@NonNull LocationResult locationResult) {
                 for (Location location : locationResult.getLocations()) {
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
                     String type;
+
                     if (User.getInstance().getId() == -1) {
                         type = "guardian";
                     } else if (Guardian.getInstance().getId() == -1) {
                         type = "user";
-                    } else {
-                        // Handle case where both IDs are not -1 or other logic as needed
+                    } else
                         continue;
-                    }
+
                     Log.d(TAG, "Location: " + latitude + ", " + longitude + " Type: " + type);
                     currentLocationPresenter.putCurrentLocation(type, latitude, longitude);
                 }
@@ -86,14 +84,12 @@ public class ForegroundService extends Service implements currentLocationContrac
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "Service started");
         return START_NOT_STICKY;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "Service destroyed");
         fusedLocationClient.removeLocationUpdates(locationCallback);
     }
 
@@ -111,6 +107,7 @@ public class ForegroundService extends Service implements currentLocationContrac
                     NotificationManager.IMPORTANCE_DEFAULT
             );
             NotificationManager manager = getSystemService(NotificationManager.class);
+
             manager.createNotificationChannel(serviceChannel);
         }
     }
