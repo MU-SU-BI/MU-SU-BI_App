@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
@@ -25,6 +26,7 @@ import com.example.musubi.R;
 import com.example.musubi.model.local.SPFManager;
 import com.example.musubi.presenter.contract.LoginContract;
 import com.example.musubi.presenter.implementation.LoginPresenter;
+import com.example.musubi.util.service.ForegroundService;
 
 public class LoginActivity extends AppCompatActivity implements LoginContract.View {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -90,21 +92,23 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         return email.isEmpty() || password.isEmpty();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     @Override
     public void onLoginSuccess(String message) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.FOREGROUND_SERVICE_LOCATION
+                    Manifest.permission.FOREGROUND_SERVICE_LOCATION,
+                    Manifest.permission.POST_NOTIFICATIONS
             }, LOCATION_PERMISSION_REQUEST_CODE);
         } else {
             startServiceAndNavigate();
         }
     }
-
     private void startServiceAndNavigate() {
         Intent intent;
         if (userRadioButton.isChecked()) {
