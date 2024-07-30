@@ -29,7 +29,10 @@ public class Guardian extends Person{
             myUser = null;
         else
             myUser = new User(userDto.getUserId(), userDto.getEmail(), userDto.getName(), userDto.getSex(), userDto.getAge(), userDto.getNickname(), userDto.getPhoneNumber(), userDto.getHomeAddress(), userDto.getDistrict());
-        instance = new Guardian(guardianDto.getUserId(), guardianDto.getEmail(), guardianDto.getName(), guardianDto.getSex(), guardianDto.getAge(), guardianDto.getNickname(), guardianDto.getPhoneNumber(), guardianDto.getHomeAddress(), guardianDto.getDistrict(), myUser);
+        if (guardianDto == null)
+            instance = null;
+        else
+            instance = new Guardian(guardianDto.getUserId(), guardianDto.getEmail(), guardianDto.getName(), guardianDto.getSex(), guardianDto.getAge(), guardianDto.getNickname(), guardianDto.getPhoneNumber(), guardianDto.getHomeAddress(), guardianDto.getDistrict(), myUser);
     }
 
     public Person getUser() {

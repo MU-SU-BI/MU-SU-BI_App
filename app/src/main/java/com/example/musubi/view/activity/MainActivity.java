@@ -12,6 +12,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.musubi.R;
+import com.example.musubi.model.entity.Guardian;
+import com.example.musubi.model.entity.User;
 import com.example.musubi.presenter.contract.MainContract;
 import com.example.musubi.presenter.implementation.MainPresenter;
 
@@ -36,15 +38,35 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         presenter = new MainPresenter(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initView();
+    }
+
     private void initView() {
         redirectLoginButton = findViewById(R.id.redirectLogin);
 
-        redirectLoginButton.setOnClickListener(v -> presenter.redirectToLogin());
+        if (User.getInstance().getId() != -1 || Guardian.getInstance().getId() != -1) {
+            redirectLoginButton.setText("musubi 이용하기");
+            redirectLoginButton.setOnClickListener(v -> redirectToNav());
+        } else
+            redirectLoginButton.setOnClickListener(v -> presenter.redirectToLogin());
     }
 
     @Override
     public void redirectToLogin() {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    private void redirectToNav() {
+        Intent intent;
+        if (User.getInstance().getId() != -1)
+            intent = new Intent(MainActivity.this, UserNavActivity.class);
+        else
+            intent = new Intent(MainActivity.this, GuardianNavActivity.class);
+
         startActivity(intent);
     }
 }

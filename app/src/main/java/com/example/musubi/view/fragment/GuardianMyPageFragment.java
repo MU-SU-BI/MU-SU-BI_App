@@ -1,6 +1,7 @@
 package com.example.musubi.view.fragment;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,16 +16,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.musubi.R;
+import com.example.musubi.model.entity.User;
 import com.example.musubi.presenter.contract.GuardianMyPageContract;
 import com.example.musubi.model.entity.Guardian;
 import com.example.musubi.presenter.implementation.GuardianMyPagePresenter;
+import com.example.musubi.util.service.ForegroundService;
+import com.example.musubi.view.activity.MainActivity;
 
 public class GuardianMyPageFragment extends Fragment implements GuardianMyPageContract.View {
     private View view;
     private GuardianMyPageContract.Presenter presenter;
 
     private AlertDialog dialog;
-    private Button connectUserButton;
+    private Button connectUserButton, logoutButton;
     private TextView nameTextView, emailTextView, phoneNumberTextView, homeAddressTextView, districtTextView;
 
 
@@ -40,6 +44,8 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
         districtTextView = view.findViewById(R.id.district);
         connectUserButton = view.findViewById(R.id.btnRegisterUser);
         connectUserButton.setOnClickListener(v -> showInputDialog());
+        logoutButton = view.findViewById(R.id.logout);
+        logoutButton.setOnClickListener(v -> logoutGuardian());
         showGuardianInfo();
     }
 
@@ -77,6 +83,14 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
             presenter.connectUser(name, phone);
         });
         dialog.show();
+    }
+
+    private void logoutGuardian() {
+        Intent serviceIntent = new Intent(requireActivity(), ForegroundService.class);
+
+        Guardian.getInstance().initGuardian(null, null);
+        requireActivity().finish();
+        requireActivity().stopService(serviceIntent);
     }
 
     @Override

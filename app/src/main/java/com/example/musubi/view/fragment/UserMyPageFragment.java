@@ -1,5 +1,6 @@
 package com.example.musubi.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -7,19 +8,30 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import com.example.musubi.R;
 import com.example.musubi.model.entity.User;
 import com.example.musubi.presenter.contract.UserMyPageContract;
+import com.example.musubi.util.service.ForegroundService;
+import com.example.musubi.view.activity.LoginActivity;
+import com.example.musubi.view.activity.MainActivity;
+import com.example.musubi.view.activity.SignupActivity;
 
 public class UserMyPageFragment extends Fragment implements UserMyPageContract.View {
     private View view;
 
+    private Button logoutButton;
     private TextView nameTextView, emailTextView, phoneNumberTextView, homeAddressTextView, districtTextView;
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
+
+        logoutButton = view.findViewById(R.id.logout);
+        logoutButton.setOnClickListener(v -> {
+            logoutUser();
+        });
 
         nameTextView = view.findViewById(R.id.name);
         emailTextView = view.findViewById(R.id.email);
@@ -43,5 +55,13 @@ public class UserMyPageFragment extends Fragment implements UserMyPageContract.V
         phoneNumberTextView.setText(user.getPhone());
         homeAddressTextView.setText(user.getAddress());
         districtTextView.setText(user.getDistrict());
+    }
+
+    private void logoutUser() {
+        Intent serviceIntent = new Intent(requireActivity(), ForegroundService.class);
+
+        User.getInstance().initUser(null, null);
+        requireActivity().finish();
+        requireActivity().stopService(serviceIntent);
     }
 }
