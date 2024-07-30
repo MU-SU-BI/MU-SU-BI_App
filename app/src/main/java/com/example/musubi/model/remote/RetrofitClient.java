@@ -1,7 +1,5 @@
 package com.example.musubi.model.remote;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.example.musubi.model.dto.CallDto;
@@ -9,7 +7,6 @@ import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.LocationDto;
-import com.example.musubi.model.dto.MsgDto;
 import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
 import com.example.musubi.util.callback.ResultCallback;
@@ -202,7 +199,6 @@ public class RetrofitClient {
             }
         });
     }
-}
 
     public void getFindMyUser(long guardianId, ResultCallback<Dto<UserDto>> resultCallback) {
         Call<Dto<UserDto>> call = retrofitService.findMyUser(guardianId);

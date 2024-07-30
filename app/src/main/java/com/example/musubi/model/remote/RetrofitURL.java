@@ -5,7 +5,6 @@ import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.LocationDto;
-import com.example.musubi.model.dto.MsgDto;
 import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
 
