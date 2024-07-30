@@ -33,24 +33,16 @@ import com.example.musubi.presenter.contract.MapContract;
 import com.example.musubi.presenter.implementation.MapPresenter;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, MapContract.View {
-
-    private static final String TAG = "MapFragment";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
     private MapView mapView;
     private NaverMap naverMap;
     private FusedLocationSource locationSource;
-    private FusedLocationProviderClient fusedLocationClient;
     private MapContract.Presenter presenter;
     private ActivityResultLauncher<String[]> requestPermissionLauncher;
-
-    public MapFragment() {
-        // Required empty public constructor
-    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         mapView = view.findViewById(R.id.map_view);
@@ -58,26 +50,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
         mapView.getMapAsync(this);
 
         locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
-
-        presenter = new MapPresenter(this);
-
         requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
             Boolean fineLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false);
             Boolean coarseLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false);
-
-            if (fineLocationGranted != null && fineLocationGranted) {
-                // Precise location access granted.
-                presenter.onLocationPermissionsResult(true);
-            } else if (coarseLocationGranted != null && coarseLocationGranted) {
-                // Only approximate location access granted.
-                presenter.onLocationPermissionsResult(true);
-            } else {
-                // No location access granted.
-                presenter.onLocationPermissionsResult(false);
-            }
         });
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+        presenter = new MapPresenter(this);
 
         return view;
     }
@@ -85,7 +63,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMap = naverMap;
-        presenter.requestLocationPermissions();
+        showLocationPermissionRequest();
         setupMap();
     }
 
@@ -95,21 +73,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
             return;
         }
 
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(requireActivity(), new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                            double latitude = location.getLatitude();
-                            double longitude = location.getLongitude();
-                            Log.d(TAG, "현재 위치: " + latitude + ", " + longitude);
-                            showCurrentLocation(latitude, longitude);
-                            // 서버로 좌표 전송 로직 추가
-                            sendLocationToServer(latitude, longitude);
-                        }
-                    }
-                });
-
         naverMap.setLocationSource(locationSource);
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
 
@@ -117,22 +80,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
         uiSettings.setLocationButtonEnabled(true);
     }
 
-    @Override
-    public void showLocationPermissionRequest() {
+    private void showLocationPermissionRequest() {
         requestPermissionLauncher.launch(new String[]{
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
         });
-    }
-
-    @Override
-    public void showCurrentLocation(double latitude, double longitude) {
-        String Coordinate = latitude + ", " + longitude;
-    }
-
-    @Override
-    public void showLocationPermissionDenied() {
-        // 권한 거부 시의 처리 로직
     }
 
     @Override
@@ -169,9 +121,5 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
-    }
-
-    private void sendLocationToServer(double latitude, double longitude) {
-        // 서버로 위치 정보를 전송하는 로직 구현
     }
 }
