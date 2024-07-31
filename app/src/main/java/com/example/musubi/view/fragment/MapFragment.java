@@ -74,10 +74,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
 
         new Thread(() -> {
             while (isRunning) {
-                double latitude = Guardian.getInstance().getUser().getLatitude();
-                double longitude = Guardian.getInstance().getUser().getLongitude();
+                if (isAdded() && !isDetached() && !isRemoving() && Guardian.getInstance().getUser() != null) {
+                    double latitude = Guardian.getInstance().getUser().getLatitude();
+                    double longitude = Guardian.getInstance().getUser().getLongitude();
 
-                if (isAdded() && !isDetached() && !isRemoving()) {
                     requireActivity().runOnUiThread(() -> setUserMarker(latitude, longitude));
                 }
                 try {
