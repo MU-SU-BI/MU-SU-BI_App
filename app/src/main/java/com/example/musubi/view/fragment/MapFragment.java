@@ -97,8 +97,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
 
         naverMap.setLocationSource(locationSource);
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
-        naverMap.setOnMapClickListener((point, coord) ->
-                setSafeZone(coord.latitude, coord.longitude));
+//        naverMap.setOnMapClickListener((point, coord) ->
+//                setSafeZone(coord.latitude, coord.longitude));
         UiSettings uiSettings = naverMap.getUiSettings();
         uiSettings.setLocationButtonEnabled(true);
     }
