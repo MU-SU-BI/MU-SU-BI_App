@@ -55,12 +55,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         initView();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        initView();
-    }
-
     private void initView() {
         redirectLoginButton = findViewById(R.id.redirectLogin);
         redirectLoginButton.setOnClickListener(v -> mainLauncher.launch(new Intent(MainActivity.this, LoginActivity.class)));
