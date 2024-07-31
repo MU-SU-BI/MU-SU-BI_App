@@ -59,14 +59,13 @@ public class ForegroundService extends Service implements currentLocationContrac
                     String type;
                     if (User.getInstance().getId() == -1) {
                         type = "guardian";
-                    } else if (Guardian.getInstance().getId() == -1) {
-                        type = "user";
-                    } else {
-                        // Handle case where both IDs are not -1 or other logic as needed
-                        continue;
                     }
-                    Log.d(TAG, "Location: " + latitude + ", " + longitude + " Type: " + type);
+                    else {
+                        type = "user";
+                    }
                     currentLocationPresenter.putCurrentLocation(type, latitude, longitude);
+                    if (type.equals("guardian") ||Guardian.getInstance().getUser() != null)
+                        currentLocationPresenter.getFindMyUserLocation();
                 }
             }
         };
@@ -124,4 +123,6 @@ public class ForegroundService extends Service implements currentLocationContrac
     public void onCurrentLocationFailure(String message) {
         Log.d(TAG, "Location update failure: " + message);
     }
+
+
 }

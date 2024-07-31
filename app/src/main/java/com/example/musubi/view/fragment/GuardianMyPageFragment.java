@@ -72,7 +72,6 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
         dialog = builder.create();
         submitButton.setOnClickListener(v -> {
             String name = nameEditText.getText().toString();
-
             String phone = phoneEditText.getText().toString();
             presenter.connectUser(name, phone);
         });

@@ -42,7 +42,6 @@ public class GuardianNavActivity extends AppCompatActivity {
             }
         });
 
-        // 초기 프래그먼트 설정
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MapFragment()).commit();
         }

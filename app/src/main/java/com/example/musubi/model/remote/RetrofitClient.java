@@ -7,6 +7,7 @@ import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.LocationDto;
+import com.example.musubi.model.dto.MyUserDto;
 import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
 import com.example.musubi.util.callback.ResultCallback;
@@ -75,7 +76,6 @@ public class RetrofitClient {
         }));
     }
 
-    ;
 
     public void postLoginUser(Map<String, String> loginData, ResultCallback<Dto<UserDto>> resultCallback) {
         Call<Dto<UserDto>> call = retrofitService.userLogin(loginData);
@@ -96,7 +96,6 @@ public class RetrofitClient {
         });
     }
 
-    ;
 
     public void postLoginGuardian(Map<String, String> loginData, ResultCallback<Dto<GuardianDto>> resultCallback) {
         Call<Dto<GuardianDto>> call = retrofitService.guardianLogin(loginData);
@@ -187,7 +186,7 @@ public class RetrofitClient {
         call.enqueue(new Callback<Dto<Void>>() {
             @Override
             public void onResponse(Call<Dto<Void>> call, Response<Dto<Void>> response) {
-                if (response.isSuccessful() && response.code() == 201) {
+                if (response.isSuccessful() && response.code() == 200) {
                     resultCallback.onSuccess(response.body());
                 } else
                     resultCallback.onFailure("위치 정보 업데이트에 실패했습니다.", new Exception("status code is not 200"));
@@ -237,4 +236,23 @@ public class RetrofitClient {
             }
         });
     };
+
+    public void getFindMyUserLocation(long userId, ResultCallback<Dto<MyUserDto>> resultCallback) {
+        Call<Dto<MyUserDto>> call = retrofitService.findMyUserLocation(userId);
+
+        call.enqueue(new Callback<Dto<MyUserDto>>() {
+            @Override
+            public void onResponse(Call<Dto<MyUserDto>> call, Response<Dto<MyUserDto>> response) {
+                if (response.isSuccessful() && response.code() == 200)
+                    resultCallback.onSuccess(response.body());
+                else
+                    resultCallback.onFailure("나의 위치 조회에 실패했습니다.", new Exception("status code is not 200"));
+            }
+
+            @Override
+            public void onFailure(Call<Dto<MyUserDto>> call, Throwable t) {
+                resultCallback.onFailure(t.getMessage(), t);
+            }
+        });
+    }
 }
