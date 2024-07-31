@@ -1,8 +1,8 @@
 package com.example.musubi.view.fragment;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -10,22 +10,25 @@ import androidx.annotation.Nullable;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
+import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.musubi.R;
+import com.example.musubi.model.entity.Guardian;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.NaverMap;
-import com.naver.maps.map.NaverMapSdk;
 import com.naver.maps.map.UiSettings;
+import com.naver.maps.map.overlay.CircleOverlay;
+import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.util.FusedLocationSource;
 import com.naver.maps.map.LocationTrackingMode;
 
@@ -39,6 +42,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
     private FusedLocationSource locationSource;
     private MapContract.Presenter presenter;
     private ActivityResultLauncher<String[]> requestPermissionLauncher;
+
+    Marker marker = new Marker();
+    private boolean isRunning = true;
 
     @Nullable
     @Override
@@ -65,6 +71,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
         this.naverMap = naverMap;
         showLocationPermissionRequest();
         setupMap();
+
+        new Thread(() -> {
+            while (isRunning) {
+                double latitude = Guardian.getInstance().getUser().getLatitude();
+                double longitude = Guardian.getInstance().getUser().getLongitude();
+
+                if (isAdded() && !isDetached() && !isRemoving()) {
+                    requireActivity().runOnUiThread(() -> setUserMarker(latitude, longitude));
+                }
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
     }
 
     private void setupMap() {
@@ -75,7 +97,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
 
         naverMap.setLocationSource(locationSource);
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
-
+        naverMap.setOnMapClickListener((point, coord) ->
+                setSafeZone(coord.latitude, coord.longitude));
         UiSettings uiSettings = naverMap.getUiSettings();
         uiSettings.setLocationButtonEnabled(true);
     }
@@ -85,6 +108,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
         });
+    }
+    public void setUserMarker(double latitude, double longitude) {
+        marker.setMap(null);
+        marker.setPosition(new LatLng(latitude, longitude));
+        marker.setMap(naverMap);
+    }
+
+    public void setSafeZone(double latitude, double longitude) {
+        CircleOverlay circle = new CircleOverlay();
+        circle.setCenter(new LatLng(latitude, longitude));
+        circle.setRadius(100);
+        int semiTransparentGreen = ColorUtils.setAlphaComponent(Color.GREEN, 50); // 128은 50% 투명도를 의미함 (0~255)
+        circle.setColor(semiTransparentGreen);
+        circle.setMap(naverMap);
     }
 
     @Override
@@ -102,18 +139,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
     @Override
     public void onPause() {
         super.onPause();
+        isRunning = false; // Stop the thread when the fragment is paused
         mapView.onPause();
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        isRunning = false; // Stop the thread when the fragment is stopped
         mapView.onStop();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        isRunning = false; // Stop the thread when the fragment is destroyed
         mapView.onDestroy();
     }
 

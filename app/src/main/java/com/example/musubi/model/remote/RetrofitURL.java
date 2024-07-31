@@ -5,6 +5,7 @@ import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.LocationDto;
+import com.example.musubi.model.dto.MyUserDto;
 import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
 
@@ -39,4 +40,6 @@ public interface RetrofitURL {
     Call<Dto<UserDto>> findMyUser(@Path("id") long id);
     @GET("api/v1/users/{id}/guardian")
     Call<Dto<GuardianDto>> findMyGuardian(@Path("id") long id);
+    @GET("api/v1/current-location/{id}")
+    Call<Dto<MyUserDto>> findMyUserLocation(@Path("id") long id);
 }

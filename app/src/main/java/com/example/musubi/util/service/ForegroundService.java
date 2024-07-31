@@ -56,15 +56,14 @@ public class ForegroundService extends Service implements currentLocationContrac
                     double longitude = location.getLongitude();
                     String type;
 
-                    if (User.getInstance().getId() == -1) {
+                    if (User.getInstance().getId() == -1)
                         type = "guardian";
-                    } else if (Guardian.getInstance().getId() == -1) {
+                    else
                         type = "user";
-                    } else
-                        continue;
 
-                    Log.d(TAG, "Location: " + latitude + ", " + longitude + " Type: " + type);
                     currentLocationPresenter.putCurrentLocation(type, latitude, longitude);
+                    if (type.equals("guardian") ||Guardian.getInstance().getUser() != null)
+                        currentLocationPresenter.getFindMyUserLocation();
                 }
             }
         };
