@@ -41,10 +41,9 @@ public class CallFragment extends Fragment implements CallContract.View, OnActio
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
         presenter = new CallPresenter(this);
-        spfManager = new SPFManager(requireContext(), "CallFragment");
+        spfManager = new SPFManager(requireContext(), "ACCOUNT");
         initView();
         initButtonList();
-//        spfManager.getEditor().clear();
     }
 
     @Nullable

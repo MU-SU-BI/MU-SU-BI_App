@@ -1,6 +1,7 @@
 package com.example.musubi.presenter.implementation;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.musubi.model.dto.UserDto;
 import com.example.musubi.model.entity.User;
@@ -22,6 +23,12 @@ public class UserMyPagePresenter implements UserMyPageContract.Presenter {
         spfManager.getEditor().remove("EMAIL").apply();
         spfManager.getEditor().remove("PASSWORD").apply();
         spfManager.getEditor().remove("USER_TYPE").apply();
+
+        int i = 1;
+        while (spfManager.getSharedPreferences().getString("newBtn" + i, null) != null) {
+            spfManager.getEditor().remove("newBtn" + i).apply();
+            i++;
+        }
         view.onLogoutSuccess();
     }
 }
