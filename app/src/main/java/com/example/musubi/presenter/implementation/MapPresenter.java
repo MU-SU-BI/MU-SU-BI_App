@@ -4,10 +4,13 @@ import android.util.Log;
 
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GpsDto;
+import com.example.musubi.model.dto.SafeAreaDto;
 import com.example.musubi.model.entity.User;
 import com.example.musubi.model.remote.RetrofitClient;
 import com.example.musubi.util.callback.ResultCallback;
 import com.example.musubi.presenter.contract.MapContract;
+
+import java.util.List;
 
 public class MapPresenter implements MapContract.Presenter {
     private final MapContract.View view;
@@ -33,5 +36,23 @@ public class MapPresenter implements MapContract.Presenter {
             @Override
             public void onFailure(String result, Throwable t) {}
         });
+    }
+
+    public void setMyUserSafeArea(List<SafeAreaDto> safeAreas) {
+        long userId = User.getInstance().getId();
+
+        for (SafeAreaDto safeArea : safeAreas) {
+            retrofitClient.setSafeZone(userId, safeArea, new ResultCallback<Dto<Void>>() {
+                @Override
+                public void onSuccess(Dto<Void> result) {
+                    // 성공 처리
+                }
+
+                @Override
+                public void onFailure(String result, Throwable t) {
+                    // 실패 처리
+                }
+            });
+        }
     }
 }

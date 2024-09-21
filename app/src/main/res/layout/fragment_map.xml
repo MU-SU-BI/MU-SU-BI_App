@@ -7,4 +7,11 @@
         android:id="@+id/map_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_add_safezone"
+        android:text="안전구역추가"
+        android:layout_gravity="bottom"
+        android:layout_margin="20dp"/>
 </FrameLayout>

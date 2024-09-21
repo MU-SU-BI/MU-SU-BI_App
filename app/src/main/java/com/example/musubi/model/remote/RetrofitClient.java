@@ -8,6 +8,8 @@ import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.LocationDto;
 import com.example.musubi.model.dto.MyUserDto;
+import com.example.musubi.model.dto.SafeAreaDto;
+import com.example.musubi.model.dto.SafeAreaRequestDto;
 import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
 import com.example.musubi.util.callback.ResultCallback;
@@ -255,4 +257,27 @@ public class RetrofitClient {
             }
         });
     }
+
+    public void setSafeZone(long userId, SafeAreaDto safeAreaDto, ResultCallback<Dto<Void>> resultCallback) {
+        // 새로운 DTO 객체를 만들어 userId와 safeAreaDto를 같이 전송
+        SafeAreaRequestDto requestDto = new SafeAreaRequestDto(userId, safeAreaDto);
+
+        Call<Dto<Void>> call = retrofitService.setUserSafeZone(requestDto);
+
+        call.enqueue(new Callback<Dto<Void>>() {
+            @Override
+            public void onResponse(Call<Dto<Void>> call, Response<Dto<Void>> response) {
+                if (response.isSuccessful() && response.code() == 201)
+                    resultCallback.onSuccess(response.body());
+                else
+                    resultCallback.onFailure("위험 지역 설정에 실패했습니다.", new Exception("status code is not 200"));
+            }
+
+            @Override
+            public void onFailure(Call<Dto<Void>> call, Throwable t) {
+                resultCallback.onFailure(t.getMessage(), t);
+            }
+        });
+    }
+
 }
