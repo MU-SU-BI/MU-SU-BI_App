@@ -16,8 +16,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.musubi.R;
+import com.example.musubi.model.dto.SafeAreaDto;
 import com.example.musubi.model.entity.Guardian;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -35,14 +38,19 @@ import com.naver.maps.map.LocationTrackingMode;
 import com.example.musubi.presenter.contract.MapContract;
 import com.example.musubi.presenter.implementation.MapPresenter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MapFragment extends Fragment implements OnMapReadyCallback, MapContract.View {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
     private MapView mapView;
     private NaverMap naverMap;
     private FusedLocationSource locationSource;
     private MapContract.Presenter presenter;
+    private Button btnAddSafeZone;
+    private LatLng selectedLatLng;
     private ActivityResultLauncher<String[]> requestPermissionLauncher;
-
+    private List<SafeAreaDto> safeAreas = new ArrayList<>();
     Marker marker = new Marker();
     private boolean isRunning = true;
 
@@ -52,8 +60,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         mapView = view.findViewById(R.id.map_view);
+        btnAddSafeZone = view.findViewById(R.id.btn_add_safezone);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
+        btnAddSafeZone.setOnClickListener(v -> {
+            if (!safeAreas.isEmpty()) {
+                presenter.setMyUserSafeArea(safeAreas);
+                Toast.makeText(requireContext(), "안전구역 설정 완료.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(requireContext(), "안전구역을 선택하세요.", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
         requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
@@ -72,6 +90,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
         showLocationPermissionRequest();
         setupMap();
 
+        naverMap.setOnMapClickListener((point, coord) -> {
+            SafeAreaDto safeArea = new SafeAreaDto(coord.longitude, coord.latitude, 100);
+            safeAreas.add(safeArea);
+            setSafeZone(coord.latitude, coord.longitude);
+        });
         new Thread(() -> {
             while (isRunning) {
                 if (isAdded() && !isDetached() && !isRemoving() && Guardian.getInstance().getUser() != null) {
@@ -97,8 +120,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
 
         naverMap.setLocationSource(locationSource);
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
-//        naverMap.setOnMapClickListener((point, coord) ->
-//                setSafeZone(coord.latitude, coord.longitude));
+        naverMap.setOnMapClickListener((point, coord) ->
+                setSafeZone(coord.latitude, coord.longitude));
         UiSettings uiSettings = naverMap.getUiSettings();
         uiSettings.setLocationButtonEnabled(true);
     }
@@ -161,5 +184,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
+    }
+
+    @Override
+    public void onSetSafeAreaSuccess(String responseMessage) {
+
+    }
+
+    @Override
+    public void onSetSafeAreaFailure(String result) {
+
     }
 }
