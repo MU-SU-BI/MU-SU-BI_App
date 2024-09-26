@@ -27,14 +27,18 @@ public class LoginPresenter  implements LoginContract.Presenter {
         this.spfManager = new SPFManager(context, "ACCOUNT");
     }
 
-    @Override
-    public void loginUser(String email, String password) {
-        String fcmToken = spfManager.getSharedPreferences().getString("FCM_TOKEN", "");
+    private Map<String, String> getLoginData(String email, String password, String fcmToken) {
         Map<String, String> loginData = new HashMap<>();
-
         loginData.put("email", email);
         loginData.put("password", password);
         loginData.put("fcmToken", fcmToken);
+        return loginData;
+    }
+
+    @Override
+    public void loginUser(String email, String password) {
+        String fcmToken = spfManager.getSharedPreferences().getString("FCM_TOKEN", "");
+        Map<String, String> loginData = getLoginData(email, password, fcmToken);
 
         retrofitClient.postLoginUser(loginData, new ResultCallback<Dto<UserDto>>() {
             @Override
@@ -65,11 +69,7 @@ public class LoginPresenter  implements LoginContract.Presenter {
     @Override
     public void loginGuardian(String email, String password) {
         String fcmToken = spfManager.getSharedPreferences().getString("FCM_TOKEN", "");
-        Map<String, String> loginData = new HashMap<>();
-
-        loginData.put("email", email);
-        loginData.put("password", password);
-        loginData.put("fcmToken", fcmToken);
+        Map<String, String> loginData = getLoginData(email, password, fcmToken);
 
         retrofitClient.postLoginGuardian(loginData, new ResultCallback<Dto<GuardianDto>>() {
             @Override
