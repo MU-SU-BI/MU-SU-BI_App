@@ -1,15 +1,18 @@
 package com.example.musubi.presenter.contract;
 
+import android.content.Intent;
+
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+
 public interface LoginContract {
     interface View {
         void onLoginSuccess(String message);
         void onLoginFailure(String message);
-        void redirectToSignup();
+        void redirectToGoogleLogin(GoogleSignInClient mGoogleSignInClient);
     }
 
     interface Presenter {
-        void loginUser(String email, String password);
-        void loginGuardian(String email, String password);
-        void redirectToSignup();
+        void startGoogleLogin();
+        void handleGoogleSignInResult(Intent data, String userType);
     }
 }

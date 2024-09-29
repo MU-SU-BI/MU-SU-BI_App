@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         });
 
         presenter = new MainPresenter(this, this);
-        checkAutoLogin();
+//        checkAutoLogin();
         initView();
     }
 

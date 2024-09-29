@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -28,16 +29,14 @@ import com.example.musubi.model.local.SPFManager;
 import com.example.musubi.presenter.contract.LoginContract;
 import com.example.musubi.presenter.implementation.LoginPresenter;
 import com.example.musubi.util.service.ForegroundService;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 
 public class LoginActivity extends AppCompatActivity implements LoginContract.View {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     LoginPresenter presenter;
 
-    EditText emailEditText;
-    EditText passEditText;
-    Button loginButton;
-    Button signupButton;
+    ImageButton googleLoginButton;
     RadioButton userRadioButton;
     RadioButton guardianRadioButton;
 
@@ -58,36 +57,20 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     }
 
     private void initView() {
-        emailEditText = findViewById(R.id.email);
-        passEditText = findViewById(R.id.password);
-        loginButton = findViewById(R.id.login);
-        signupButton = findViewById(R.id.login_go_signup);
+        googleLoginButton = findViewById(R.id.googleLogin);
         userRadioButton = findViewById(R.id.userRadioButton);
         guardianRadioButton = findViewById(R.id.guardianRadioButton);
 
-        loginButton.setOnClickListener(v -> {
-            String email = emailEditText.getText().toString();
-            String password = passEditText.getText().toString();
-
-            if (isInputWrongLoginData(email, password)) {
-                onLoginFailure("이메일 또는 비밀번호를 작성하세요.");
-                return;
-            }
-            if (userRadioButton.isChecked())
-                presenter.loginUser(email, password);
-            else if (guardianRadioButton.isChecked())
-                presenter.loginGuardian(email, password);
-            else
-                onLoginFailure("사용자 또는 보호자 구분을 필요합니다.");
+        googleLoginButton.setOnClickListener(v -> {
+            if (userRadioButton.isChecked() || guardianRadioButton.isChecked())
+                presenter.startGoogleLogin();
         });
-
-        signupButton.setOnClickListener(v -> {
-            presenter.redirectToSignup();
-        });
-    }
-
-    private boolean isInputWrongLoginData(String email, String password) {
-        return email.isEmpty() || password.isEmpty();
+//        if (userRadioButton.isChecked())
+//            presenter.loginUser("Google");
+//        else if (guardianRadioButton.isChecked())
+//            presenter.loginGuardian("Google");
+//        else
+//            onLoginFailure("사용자 또는 보호자 구분을 필요합니다.");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
@@ -126,6 +109,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == LoginPresenter.RC_SIGN_IN)
+            presenter.handleGoogleSignInResult(data, userRadioButton.isChecked() ? "USER" : "GUARDIAN");
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
@@ -144,8 +135,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     }
 
     @Override
-    public void redirectToSignup() {
-        Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
-        startActivity(intent);
+    public void redirectToGoogleLogin(GoogleSignInClient mGoogleSignInClient) {
+        Intent intent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(intent, LoginPresenter.RC_SIGN_IN);
     }
 }

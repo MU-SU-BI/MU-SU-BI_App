@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MUSUBI</string>
     <string name="title_activity_signup">SignupActivity</string>
+    <string name="default_web_client_id">233857328268-m58lhvj49bcuqhij98rb4bp8afurvof3.apps.googleusercontent.com</string>
 </resources>
