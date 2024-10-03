@@ -9,108 +9,60 @@
         android:id="@+id/completedFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
-
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:hint="이메일"
-        android:inputType="textEmailAddress" />
-
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:hint="비밀번호"
-        android:inputType="textPassword" />
-
-    <EditText
-        android:id="@+id/passwordRe"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="5dp"
-        android:hint="비밀번호 확인"
-        android:inputType="textPassword" />
+        android:visibility="gone" />
 
     <TextView
-        android:id="@+id/passwordMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_gravity="end"
-        android:textColor="#FF0000" />
+        android:layout_marginBottom="40dp"
+        android:text="회원가입"
+        android:textSize="50dp"/>
 
     <EditText
         android:id="@+id/name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:hint="이름"
+        android:layout_height="50dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/edittext"
+        android:enabled="false"
         android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/nickname"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/edittext"
         android:hint="닉네임"
         android:inputType="textPersonName" />
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/age"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/age"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="나이"
-            android:inputType="number" />
-
-        <RadioGroup
-            android:id="@+id/genderRadioGroup"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/maleRadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="남성" />
-
-            <RadioButton
-                android:id="@+id/femaleRadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="여성" />
-
-        </RadioGroup>
-    </LinearLayout>
+        android:layout_height="50dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/edittext"
+        android:hint="나이"
+        android:inputType="number" />
 
     <EditText
         android:id="@+id/phone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/edittext"
         android:hint="휴대폰 번호"
         android:inputType="phone"
         android:maxLength="13" />
@@ -118,32 +70,89 @@
     <EditText
         android:id="@+id/address"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/edittext"
         android:hint="자택 주소를 입력하세요"
         android:inputType="textPostalAddress" />
+
+    <RadioGroup
+        android:id="@+id/genderRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/maleRadioButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/radio_btn_selector"
+            android:button="@null"
+            android:checked="false"
+            android:text="남성"
+            android:textAlignment="center"
+            android:textColor="@color/white"/>
+
+        <RadioButton
+            android:id="@+id/femaleRadioButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/radio_btn_selector"
+            android:button="@null"
+            android:checked="false"
+            android:text="여성"
+            android:textAlignment="center"
+            android:textColor="@color/white"/>
+
+    </RadioGroup>
 
     <RadioGroup
         android:id="@+id/userType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
         android:gravity="center"
         android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/userRadioButton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_marginEnd="5dp"
-            android:text="사용자" />
+            android:background="@drawable/radio_btn_selector"
+            android:button="@null"
+            android:checked="false"
+            android:text="사용자"
+            android:textAlignment="center"
+            android:textColor="@color/white"/>
 
         <RadioButton
             android:id="@+id/guardianRadioButton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_marginStart="5dp"
-            android:text="보호자" />
+            android:background="@drawable/radio_btn_selector"
+            android:button="@null"
+            android:checked="false"
+            android:text="보호자"
+            android:textAlignment="center"
+            android:textColor="@color/white"/>
+
     </RadioGroup>
 
     <TextView
@@ -155,13 +164,14 @@
         android:layout_gravity="end"
         android:textColor="#FF0000" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/signup"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/radio_btn_checked"
         android:text="회원가입"
-        android:textColor="@android:color/holo_blue_light"
-        android:textSize="20dp" />
+        android:textColor="@color/white" />
 
 </LinearLayout>

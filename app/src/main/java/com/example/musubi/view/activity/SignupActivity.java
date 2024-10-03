@@ -31,15 +31,10 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
     private SignupPresenter presenter;
 
     // view
-    private EditText emailEditText;
-    private EditText passwordEditText;
-    private EditText passwordReEditText;
-    private EditText nameEditText;
     private EditText nicknameEditText;
     private EditText phoneEditText;
     private EditText addressEditText;
     private EditText ageEditText;
-    private TextView passwordMessageTextView;
     private RadioButton userRadioButton;
     private RadioButton guardianRadioButton;
 
@@ -60,15 +55,10 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
     }
 
     private void initView() {
-        emailEditText = findViewById(R.id.email);
-        passwordEditText = findViewById(R.id.password);
-        passwordReEditText = findViewById(R.id.passwordRe);
-        nameEditText = findViewById(R.id.name);
         nicknameEditText = findViewById(R.id.nickname);
         phoneEditText = findViewById(R.id.phone);
         addressEditText = findViewById(R.id.address);
         ageEditText = findViewById(R.id.age);
-        passwordMessageTextView = findViewById(R.id.passwordMessage);
         userRadioButton = findViewById(R.id.userRadioButton);
         guardianRadioButton = findViewById(R.id.guardianRadioButton);
 
@@ -88,34 +78,14 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
                 onSignupFailure("사용자 또는 보호자 항목을 선택하세요.");
         });
 
-        // password 일치 여부 검사
-        passwordReEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String password1 = passwordEditText.getText().toString();
-                String password2 = passwordReEditText.getText().toString();
-
-                presenter.checkPasswordMatch(password1, password2);
-            }
-        });
-
         // 휴대폰 번호 자동 하이픈(-) 설정
         phoneEditText.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
     }
 
     private UserDto readUserSignupData() {
-        String email = emailEditText.getText().toString();
-        String password = passwordEditText.getText().toString();
-        String name = nameEditText.getText().toString();
+        String email = "";
+        String name = "";
         String nickname = nicknameEditText.getText().toString();
         String phone = phoneEditText.getText().toString();
         String address = addressEditText.getText().toString();
@@ -123,26 +93,25 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
         String ageStr = ageEditText.getText().toString();
         int age = ageStr.isEmpty() ? 0 : Integer.parseInt(ageStr);
 
-        return new UserDto(-1, email, password, name, gender, age, nickname, phone, address, null);
+        return new UserDto(-1, email, name, gender, age, nickname, phone, address, null);
     }
 
     private boolean isInputWrongSignupData(UserDto user) {
-        return user.getEmail().isEmpty() || user.getPassword().isEmpty() || user.getName().isEmpty()
+        return user.getEmail().isEmpty() || user.getName().isEmpty()
                 || user.getNickname().isEmpty() || user.getPhoneNumber().isEmpty() || user.getHomeAddress().isEmpty()
                 || user.getAge() == 0;
     }
 
     private GuardianDto readGuardianSignupData() {
-        String email = emailEditText.getText().toString();
-        String password = passwordEditText.getText().toString();
-        String name = nameEditText.getText().toString();
+        String email = "";
+        String name = "";
         String nickname = nicknameEditText.getText().toString();
         String phone = phoneEditText.getText().toString();
         String address = addressEditText.getText().toString();
         Gender gender = getGender();
         int age = Integer.parseInt(ageEditText.getText().toString());
 
-        return new GuardianDto(-1, email, password, name, gender, age, nickname, phone, address, null);
+        return new GuardianDto(-1, email, name, gender, age, nickname, phone, address, null);
     }
 
     public Gender getGender() {
@@ -172,15 +141,5 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
     public void onSignupFailure(String message) {
         TextView signupMessage = findViewById(R.id.signupMessage);
         signupMessage.setText(message);
-    }
-
-    @Override
-    public void onPasswordMatchSuccess() {
-        passwordMessageTextView.setText("");
-    }
-
-    @Override
-    public void onPasswordMatchFailure() {
-        passwordMessageTextView.setText("비밀번호가 일치하지 않습니다.");
     }
 }
