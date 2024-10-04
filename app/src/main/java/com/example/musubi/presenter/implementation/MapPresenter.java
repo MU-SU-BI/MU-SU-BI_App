@@ -1,7 +1,5 @@
 package com.example.musubi.presenter.implementation;
 
-import android.util.Log;
-
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.SafeAreaDto;
@@ -45,12 +43,10 @@ public class MapPresenter implements MapContract.Presenter {
             retrofitClient.setSafeZone(Guardian.getInstance().getId(), safeArea, new ResultCallback<Dto<Void>>() {
                 @Override
                 public void onSuccess(Dto<Void> result) {
-                    Log.d("SafeZone", "SafeArea sent successfully to server.");
                 }
 
                 @Override
                 public void onFailure(String result, Throwable t) {
-                    Log.e("SafeZone", "Failed to send SafeArea to server: " + result, t);
                 }
             });
         }
@@ -71,7 +67,6 @@ public class MapPresenter implements MapContract.Presenter {
 
             @Override
             public void onFailure(String result, Throwable t) {
-                Log.e("SafeZone", "Failed to retrieve SafeAreas: " + result, t);
             }
         });
     }
