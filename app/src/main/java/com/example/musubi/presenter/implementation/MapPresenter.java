@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.SafeAreaDto;
+import com.example.musubi.model.entity.Guardian;
 import com.example.musubi.model.entity.User;
 import com.example.musubi.model.remote.RetrofitClient;
 import com.example.musubi.util.callback.ResultCallback;
@@ -25,7 +26,7 @@ public class MapPresenter implements MapContract.Presenter {
     @Override
     public void createDistrict(double latitude, double longitude) {
         String gps = longitude + ", " + latitude;
-        GpsDto dto = new GpsDto(gps,User.getInstance().getId());
+        GpsDto dto = new GpsDto(gps, User.getInstance().getId());
 
         retrofitClient.setMyDistrict(dto, new ResultCallback<Dto<String>>() {
             @Override
@@ -38,21 +39,41 @@ public class MapPresenter implements MapContract.Presenter {
         });
     }
 
+    @Override
     public void setMyUserSafeArea(List<SafeAreaDto> safeAreas) {
-        long userId = User.getInstance().getId();
-
         for (SafeAreaDto safeArea : safeAreas) {
-            retrofitClient.setSafeZone(userId, safeArea, new ResultCallback<Dto<Void>>() {
+            retrofitClient.setSafeZone(Guardian.getInstance().getId(), safeArea, new ResultCallback<Dto<Void>>() {
                 @Override
                 public void onSuccess(Dto<Void> result) {
-                    // 성공 처리
+                    Log.d("SafeZone", "SafeArea sent successfully to server.");
                 }
 
                 @Override
                 public void onFailure(String result, Throwable t) {
-                    // 실패 처리
+                    Log.e("SafeZone", "Failed to send SafeArea to server: " + result, t);
                 }
             });
         }
     }
+
+    @Override
+    public void getMyUserSafeArea(long userId) {
+        retrofitClient.getSafeZones(userId, new ResultCallback<Dto<List<SafeAreaDto>>>() {
+            @Override
+            public void onSuccess(Dto<List<SafeAreaDto>> result) {
+                List<SafeAreaDto> safeAreas = result.getData(); // 안전구역 리스트
+                if (safeAreas != null) {
+                    for (SafeAreaDto safeArea : safeAreas) {
+                        view.addSafeZone(safeArea); // View에 안전구역 추가
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(String result, Throwable t) {
+                Log.e("SafeZone", "Failed to retrieve SafeAreas: " + result, t);
+            }
+        });
+    }
+
 }

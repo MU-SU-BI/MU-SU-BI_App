@@ -1,6 +1,7 @@
 package com.example.musubi.model.dto;
 
 public class SafeAreaDto {
+    private long userID;
     private final double longitude;
     private final double latitude;
     private final double radius;
@@ -9,6 +10,15 @@ public class SafeAreaDto {
         this.longitude = longitude;
         this.latitude = latitude;
         this.radius = radius;
+    }
+
+    public long getUserId() {
+        return userID;
+    }
+
+    public void setUserID(long userId)
+    {
+        this.userID = userId;
     }
 
     public double getLongitude() {

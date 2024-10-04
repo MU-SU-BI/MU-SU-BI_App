@@ -12,6 +12,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/btn_add_safezone"
         android:text="안전구역추가"
-        android:layout_gravity="bottom"
+        android:layout_gravity="bottom|end"
         android:layout_margin="20dp"/>
 </FrameLayout>

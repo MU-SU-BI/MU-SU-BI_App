@@ -1,19 +1,30 @@
 package com.example.musubi.model.dto;
-
 public class SafeAreaRequestDto {
-    private final long userId;
-    private final SafeAreaDto safeArea;
+    private long userId;
+    private double longitude;
+    private double latitude;
+    private double radius;
 
-    public SafeAreaRequestDto(long userId, SafeAreaDto safeArea) {
+    public SafeAreaRequestDto(long userId, double longitude, double latitude, double radius) {
         this.userId = userId;
-        this.safeArea = safeArea;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.radius = radius;
     }
 
     public long getUserId() {
         return userId;
     }
 
-    public SafeAreaDto getSafeArea() {
-        return safeArea;
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getRadius() {
+        return radius;
     }
 }

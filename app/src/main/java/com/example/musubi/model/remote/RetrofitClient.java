@@ -1,5 +1,7 @@
 package com.example.musubi.model.remote;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.example.musubi.model.dto.CallDto;
@@ -14,6 +16,7 @@ import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
 import com.example.musubi.util.callback.ResultCallback;
 
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -259,22 +262,44 @@ public class RetrofitClient {
     }
 
     public void setSafeZone(long userId, SafeAreaDto safeAreaDto, ResultCallback<Dto<Void>> resultCallback) {
-        // 새로운 DTO 객체를 만들어 userId와 safeAreaDto를 같이 전송
-        SafeAreaRequestDto requestDto = new SafeAreaRequestDto(userId, safeAreaDto);
+        // SafeAreaRequestDto로 변환하여 전송
+        SafeAreaRequestDto requestDto = new SafeAreaRequestDto(userId, safeAreaDto.getLongitude(), safeAreaDto.getLatitude(), safeAreaDto.getRadius());
 
         Call<Dto<Void>> call = retrofitService.setUserSafeZone(requestDto);
 
         call.enqueue(new Callback<Dto<Void>>() {
             @Override
             public void onResponse(Call<Dto<Void>> call, Response<Dto<Void>> response) {
-                if (response.isSuccessful() && response.code() == 201)
+                if (response.isSuccessful() && response.code() == 200) {
                     resultCallback.onSuccess(response.body());
-                else
+                } else {
+                    Log.e("SafeZone", "Error: " + response.code() + " - " + response.message());
                     resultCallback.onFailure("위험 지역 설정에 실패했습니다.", new Exception("status code is not 200"));
+                }
             }
 
             @Override
             public void onFailure(Call<Dto<Void>> call, Throwable t) {
+                resultCallback.onFailure(t.getMessage(), t);
+            }
+        });
+    }
+
+    public void getSafeZones(long guardianId, ResultCallback<Dto<List<SafeAreaDto>>> resultCallback) {
+        Call<Dto<List<SafeAreaDto>>> call = retrofitService.setSafeZones(guardianId);
+
+        call.enqueue(new Callback<Dto<List<SafeAreaDto>>>() {
+            @Override
+            public void onResponse(Call<Dto<List<SafeAreaDto>>> call, Response<Dto<List<SafeAreaDto>>> response) {
+                if (response.isSuccessful() && response.code() == 200) {
+                    resultCallback.onSuccess(response.body()); // List<SafeAreaDto>를 포함한 Dto 객체 전달
+                } else {
+                    resultCallback.onFailure("안전 지역 조회에 실패했습니다.", new Exception("status code is not 200"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Dto<List<SafeAreaDto>>> call, Throwable t) {
                 resultCallback.onFailure(t.getMessage(), t);
             }
         });
