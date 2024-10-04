@@ -1,21 +1,19 @@
 package com.example.musubi.presenter.implementation;
 
-import android.util.Log;
-
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.LocationDto;
 import com.example.musubi.model.dto.MyUserDto;
 import com.example.musubi.model.entity.Guardian;
 import com.example.musubi.model.entity.User;
 import com.example.musubi.model.remote.RetrofitClient;
-import com.example.musubi.presenter.contract.currentLocationContract;
+import com.example.musubi.presenter.contract.CurrentLocationContract;
 import com.example.musubi.util.callback.ResultCallback;
 
 public class CurrentLocationPresenter {
-    private final currentLocationContract.View view;
+    private final CurrentLocationContract.View view;
     private final RetrofitClient retrofitClient;
 
-    public CurrentLocationPresenter(currentLocationContract.View view) {
+    public CurrentLocationPresenter(CurrentLocationContract.View view) {
         this.view = view;
         this.retrofitClient = new RetrofitClient();
         this.retrofitClient.initRetrofit();

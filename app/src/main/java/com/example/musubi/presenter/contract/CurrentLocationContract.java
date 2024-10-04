@@ -1,6 +1,6 @@
 package com.example.musubi.presenter.contract;
 
-public interface currentLocationContract {
+public interface CurrentLocationContract {
     interface View {
         void onCurrentLocationSuccess(String message);
         void onCurrentLocationFailure(String message);

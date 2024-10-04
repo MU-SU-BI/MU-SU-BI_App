@@ -3,7 +3,6 @@ package com.example.musubi.view.fragment;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Location;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,9 +21,6 @@ import android.widget.Toast;
 import com.example.musubi.R;
 import com.example.musubi.model.dto.SafeAreaDto;
 import com.example.musubi.model.entity.Guardian;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.OnMapReadyCallback;
@@ -90,11 +86,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
         showLocationPermissionRequest();
         setupMap();
 
+        // 지도 로딩이 완료되었을 때 서버로부터 안전구역을 받아 지도에 표시
+        presenter.getMyUserSafeArea(Guardian.getInstance().getId());
+
         naverMap.setOnMapClickListener((point, coord) -> {
-            SafeAreaDto safeArea = new SafeAreaDto(coord.longitude, coord.latitude, 100);
+            SafeAreaDto safeArea = new SafeAreaDto(coord.longitude, coord.latitude, 1000);
             safeAreas.add(safeArea);
             setSafeZone(coord.latitude, coord.longitude);
         });
+
         new Thread(() -> {
             while (isRunning) {
                 if (isAdded() && !isDetached() && !isRemoving() && Guardian.getInstance().getUser() != null) {
@@ -132,6 +132,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
                 Manifest.permission.ACCESS_COARSE_LOCATION
         });
     }
+
     public void setUserMarker(double latitude, double longitude) {
         marker.setMap(null);
         marker.setPosition(new LatLng(latitude, longitude));
@@ -142,9 +143,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
         CircleOverlay circle = new CircleOverlay();
         circle.setCenter(new LatLng(latitude, longitude));
         circle.setRadius(100);
-        int semiTransparentGreen = ColorUtils.setAlphaComponent(Color.GREEN, 50); // 128은 50% 투명도를 의미함 (0~255)
+        int semiTransparentGreen = ColorUtils.setAlphaComponent(Color.parseColor("#76A66F"), 128); // 128은 50% 투명도를 의미함 (0~255)
         circle.setColor(semiTransparentGreen);
         circle.setMap(naverMap);
+
+        Marker safeZoneMarker = new Marker();
+        safeZoneMarker.setIconTintColor(Color.parseColor("#FF0000"));
+        safeZoneMarker.setPosition(new LatLng(latitude, longitude));
+        safeZoneMarker.setMap(naverMap);
     }
 
     @Override
@@ -188,11 +194,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
 
     @Override
     public void onSetSafeAreaSuccess(String responseMessage) {
-
+        // 안전구역 설정 성공 처리
     }
 
     @Override
     public void onSetSafeAreaFailure(String result) {
+        // 안전구역 설정 실패 처리
+    }
 
+    @Override
+    public void addSafeZone(SafeAreaDto safeArea) {
+        // 서버에서 받은 안전구역을 지도에 표시
+        setSafeZone(safeArea.getLatitude(), safeArea.getLongitude());
     }
 }

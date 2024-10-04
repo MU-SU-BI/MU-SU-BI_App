@@ -18,14 +18,14 @@ import com.example.musubi.R;
 import com.example.musubi.model.entity.Guardian;
 import com.example.musubi.model.entity.User;
 import com.example.musubi.presenter.implementation.CurrentLocationPresenter;
-import com.example.musubi.presenter.contract.currentLocationContract;
+import com.example.musubi.presenter.contract.CurrentLocationContract;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
-public class ForegroundService extends Service implements currentLocationContract.View {
+public class ForegroundService extends Service implements CurrentLocationContract.View {
     private static final String TAG = "ForegroundService";
     private static final String CHANNEL_ID = "ForegroundServiceChannel";
     private static final long LOCATION_UPDATE_INTERVAL = 5000L; // 5 seconds
