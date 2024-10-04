@@ -6,36 +6,87 @@
     android:gravity="center"
     android:padding="15dp">
 
-    <Button
-        android:id="@+id/button1"
+    <FrameLayout
+        android:id="@+id/buttonLayout1"
         android:layout_width="match_parent"
         android:layout_height="75dp"
-        android:layout_marginBottom="10dp"
-        android:text="배고파요" />
+        android:layout_marginBottom="30dp">
 
-    <Button
-        android:id="@+id/button2"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/radio_btn_checked"
+            android:text="배고파요"
+            android:textColor="@color/white"
+            android:textSize="40dp"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/closeBtn1"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/baseline_close_24"
+            android:layout_gravity="end|center_vertical"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/buttonLayout2"
         android:layout_width="match_parent"
         android:layout_height="75dp"
-        android:layout_marginBottom="10dp"
-        android:layout_below="@id/button1"
-        android:text="목 말라요" />
+        android:layout_marginBottom="30dp"
+        android:layout_below="@id/buttonLayout1">
 
-    <Button
-        android:id="@+id/button3"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/radio_btn_checked"
+            android:text="목말라요"
+            android:textColor="@color/white"
+            android:textSize="40dp"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/closeBtn2"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/baseline_close_24"
+            android:layout_gravity="end|center_vertical"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/buttonLayout3"
         android:layout_width="match_parent"
         android:layout_height="75dp"
-        android:layout_marginBottom="10dp"
-        android:layout_below="@id/button2"
-        android:text="화장실이 급해요" />
+        android:layout_marginBottom="30dp"
+        android:layout_below="@id/buttonLayout2">
 
-    <Button
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/radio_btn_checked"
+            android:text="화장실이 급해요"
+            android:textColor="@color/white"
+            android:textSize="40dp"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/closeBtn3"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/baseline_close_24"
+            android:layout_gravity="end|center_vertical"/>
+
+    </FrameLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/addCustomAction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
-        android:layout_below="@id/button3"
+        android:layout_below="@id/buttonLayout3"
         android:background="@drawable/baseline_add_24" />
 
 </RelativeLayout>
