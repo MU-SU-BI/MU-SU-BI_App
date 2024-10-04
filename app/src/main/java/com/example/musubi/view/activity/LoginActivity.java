@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     EditText emailEditText;
     EditText passEditText;
     Button loginButton;
-    Button signupButton;
+    TextView signupButton;
     RadioButton userRadioButton;
     RadioButton guardianRadioButton;
 
