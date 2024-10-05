@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.musubi.R;
@@ -57,7 +56,7 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
         linkedUserAgeTextView = view.findViewById(R.id.linkedUserAge);
         linkedUserHomeAddressTextView = view.findViewById(R.id.linkedUserHomeAddress);
         linkedUserGenderTextView = view.findViewById(R.id.linkedUserGender);
-        linkedUserCardView = view.findViewById(R.id.linkedUserCardView);
+        linkedUserCardView = view.findViewById(R.id.linkedUserCard);
         showLinkedUserInfo();
     }
 
