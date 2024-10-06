@@ -7,6 +7,7 @@ import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.LocationDto;
 import com.example.musubi.model.dto.MyUserDto;
 import com.example.musubi.model.dto.SafeAreaDto;
+import com.example.musubi.model.dto.SosDto;
 import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
 
@@ -17,6 +18,8 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -55,4 +58,6 @@ public interface RetrofitURL {
     @Multipart
     @POST("api/v1/[~~~~]")
     Call<Dto<Void>> postMyUserImage(@Part("userId") RequestBody idPart, @Part MultipartBody.Part imagePart);
+    @POST("api/v1/guardians/sos")
+    Call<Dto<Void>> requestSosToCommunity(@Body SosDto sosDto);
 }

@@ -79,6 +79,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
         });
 
         sosRequestButton = view.findViewById(R.id.sosRequset);
+        sosRequestButton.setOnClickListener(v -> presenter.requestSosToCommunity(Guardian.getInstance().getId()));
 
         presenter = new MapPresenter(this);
 
@@ -214,7 +215,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
     }
 
     @Override
-    public void onCallSosSuccess(String responseMessage) {
+    public void onCallSosSuccess(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+    }
 
+    @Override
+    public void onCallSosFailure(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

@@ -31,6 +31,19 @@
         android:theme="@style/Theme.MUSUBI"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+        <activity
+            android:name=".view.activity.SosRequestActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="NOTIFICATION_CLICK" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+
         <receiver
             android:name=".view.widget.HomeAppWidget"
             android:exported="false">

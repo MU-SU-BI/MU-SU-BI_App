@@ -12,7 +12,8 @@ public interface MapContract {
 
         void addSafeZone(SafeAreaDto safeArea); // 안전구역을 지도에 추가하는 메서드
 
-        void onCallSosSuccess(String responseMessage);
+        void onCallSosSuccess(String message);
+        void onCallSosFailure(String message);
     }
 
     interface Presenter {

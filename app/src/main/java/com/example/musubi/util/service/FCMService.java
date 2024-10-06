@@ -1,10 +1,13 @@
 package com.example.musubi.util.service;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.musubi.model.local.SPFManager;
+import com.google.firebase.messaging.Constants;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -35,5 +38,22 @@ public class FCMService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {// lets create a notification with these data
         super.onMessageReceived(remoteMessage);
+
+        Log.d("FCMTextService", "From: " + remoteMessage.getFrom());
+//        Log.d("FCMTextService", "Notification Message Body: " + remoteMessage.getNotification().getBody());
+        Log.d("FCMTextService", "From: " + remoteMessage.getFrom() + ": " + remoteMessage.getData().get("userId"));
     }
+
+//    @Override
+//    public void handleIntent(Intent intent) {
+//        if (intent != null) {
+//            Bundle extras = intent.getExtras();
+//            if (extras != null) {
+//                extras.remove(Constants.MessageNotificationKeys.ENABLE_NOTIFICATION);
+////                extras.remove(keyWithOldPrefix(Constants.MessageNotificationKeys.ENABLE_NOTIFICATION));
+//            }
+//            intent.replaceExtras(extras);
+//        }
+//        super.handleIntent(intent);
+//    }
 }
