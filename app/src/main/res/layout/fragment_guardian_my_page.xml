@@ -125,24 +125,42 @@
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:padding="16dp">
 
                     <TextView
+                        android:id="@+id/linkedUserInfoTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         android:text="연동된 사용자 정보"
-                        android:textAppearance="?attr/textAppearanceHeadline6" />
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <ImageView
+                        android:id="@+id/linkedUserPhoto"
+                        android:layout_width="135dp"
+                        android:layout_height="135dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@android:color/white"
+                        android:scaleType="centerCrop"
+                        android:text="사진 등록"
+                        app:layout_constraintTop_toBottomOf="@id/linkedUserInfoTitle"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
+                        android:id="@+id/linkedUserNameLayout"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:hint="이름">
+                        android:layout_marginEnd="16dp"
+                        android:hint="이름"
+                        app:layout_constraintTop_toTopOf="@id/linkedUserPhoto"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/linkedUserPhoto">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/linkedUserName"
@@ -154,10 +172,15 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
+                        android:id="@+id/linkedUserAgeLayout"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:hint="나이">
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:hint="나이"
+                        app:layout_constraintTop_toBottomOf="@id/linkedUserNameLayout"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/linkedUserPhoto">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/linkedUserAge"
@@ -169,10 +192,14 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/linkedUserHomeAddressLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:hint="주소">
+                        android:layout_marginTop="16dp"
+                        android:hint="주소"
+                        app:layout_constraintTop_toBottomOf="@id/linkedUserAgeLayout"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/linkedUserHomeAddress"
@@ -184,9 +211,14 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/linkedUserGenderLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="성별">
+                        android:layout_marginTop="8dp"
+                        android:hint="성별"
+                        app:layout_constraintTop_toBottomOf="@id/linkedUserHomeAddressLayout"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/linkedUserGender"
@@ -197,7 +229,7 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
 

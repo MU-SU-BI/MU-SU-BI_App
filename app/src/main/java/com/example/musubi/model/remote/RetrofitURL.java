@@ -14,11 +14,15 @@ import com.example.musubi.model.dto.UserDto;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.Path;
 
@@ -49,4 +53,7 @@ public interface RetrofitURL {
     Call<Dto<Void>> setUserSafeZone(@Body SafeAreaRequestDto safeAreaRequestDto);
     @GET("api/v1/safe-area/{guardianId}")
     Call<Dto<List<SafeAreaDto>>> setSafeZones(@Path("guardianId") long guardianId);
+    @Multipart
+    @POST("api/v1/[~~~~]")
+    Call<Dto<Void>> postMyUserImage(@Part("userId") RequestBody idPart, @Part MultipartBody.Part imagePart);
 }

@@ -19,6 +19,8 @@ import com.example.musubi.util.callback.ResultCallback;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,7 +41,7 @@ public class RetrofitClient {
         retrofitService = retrofit.create(RetrofitURL.class);
     }
 
-    public void postSignupUser(UserDto user, ResultCallback<String> resultCallback){
+    public void postSignupUser(UserDto user, ResultCallback<String> resultCallback) {
         Call<Dto<Void>> call = retrofitService.userSignup(user);
 
         call.enqueue((new Callback<Dto<Void>>() {
@@ -60,10 +62,10 @@ public class RetrofitClient {
             }
         }));
     }
-  
-    public void postSignupGuardian(GuardianDto guardian, ResultCallback<String> resultCallback){
+
+    public void postSignupGuardian(GuardianDto guardian, ResultCallback<String> resultCallback) {
         Call<Dto<Void>> call = retrofitService.guardianSignup(guardian);
-      
+
         call.enqueue((new Callback<Dto<Void>>() {
             @Override
             public void onResponse(@NonNull Call<Dto<Void>> call, @NonNull Response<Dto<Void>> response) {
@@ -221,7 +223,9 @@ public class RetrofitClient {
                 resultCallback.onFailure(t.getMessage(), t);
             }
         });
-    };
+    }
+
+    ;
 
     public void getFindMyGuardian(long userId, ResultCallback<Dto<GuardianDto>> resultCallback) {
         Call<Dto<GuardianDto>> call = retrofitService.findMyGuardian(userId);
@@ -240,7 +244,9 @@ public class RetrofitClient {
                 resultCallback.onFailure(t.getMessage(), t);
             }
         });
-    };
+    }
+
+    ;
 
     public void getFindMyUserLocation(long userId, ResultCallback<Dto<MyUserDto>> resultCallback) {
         Call<Dto<MyUserDto>> call = retrofitService.findMyUserLocation(userId);
@@ -305,4 +311,24 @@ public class RetrofitClient {
         });
     }
 
+    public void postMyUserImage(RequestBody idPart, MultipartBody.Part imagePart, ResultCallback<Dto<Void>> resultCallback) {
+        Call<Dto<Void>> call = retrofitService.postMyUserImage(idPart, imagePart);
+
+        call.enqueue(new Callback<Dto<Void>>() {
+            @Override
+            public void onResponse(Call<Dto<Void>> call, Response<Dto<Void>> response) {
+                if (response.isSuccessful() && response.code() == 200)
+                    resultCallback.onSuccess(response.body()); // List<SafeAreaDto>를 포함한 Dto 객체 전달
+                else
+                    resultCallback.onFailure("나의 사용자 이미지 업로드에 실패했습니다.", new Exception("status code is not 200"));
+
+            }
+
+            @Override
+            public void onFailure(Call<Dto<Void>> call, Throwable t) {
+                Log.e("ImageUpload", "Error:" + t.getMessage());
+                resultCallback.onFailure(t.getMessage(), t);
+            }
+        });
+    }
 }
