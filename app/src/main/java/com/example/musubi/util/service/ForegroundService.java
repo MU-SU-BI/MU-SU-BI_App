@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -113,11 +112,9 @@ public class ForegroundService extends Service implements CurrentLocationContrac
 
     @Override
     public void onCurrentLocationSuccess(String message) {
-        Log.d(TAG, "Location update success: " + message);
     }
 
     @Override
     public void onCurrentLocationFailure(String message) {
-        Log.d(TAG, "Location update failure: " + message);
     }
 }
