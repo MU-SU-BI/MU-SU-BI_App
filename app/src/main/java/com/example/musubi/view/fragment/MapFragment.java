@@ -39,16 +39,19 @@ import java.util.List;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, MapContract.View {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
+    private boolean isRunning = true;
+
     private MapView mapView;
     private NaverMap naverMap;
     private FusedLocationSource locationSource;
     private MapContract.Presenter presenter;
-    private Button btnAddSafeZone;
-    private LatLng selectedLatLng;
     private ActivityResultLauncher<String[]> requestPermissionLauncher;
     private List<SafeAreaDto> safeAreas = new ArrayList<>();
     Marker marker = new Marker();
-    private boolean isRunning = true;
+
+    private Button btnAddSafeZone;
+    private androidx.appcompat.widget.AppCompatButton sosRequestButton;
+
 
     @Nullable
     @Override
@@ -74,6 +77,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
             Boolean fineLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false);
             Boolean coarseLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false);
         });
+
+        sosRequestButton = view.findViewById(R.id.sosRequset);
 
         presenter = new MapPresenter(this);
 
@@ -206,5 +211,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
     public void addSafeZone(SafeAreaDto safeArea) {
         // 서버에서 받은 안전구역을 지도에 표시
         setSafeZone(safeArea.getLatitude(), safeArea.getLongitude());
+    }
+
+    @Override
+    public void onCallSosSuccess(String responseMessage) {
+
     }
 }

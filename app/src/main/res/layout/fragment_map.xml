@@ -7,11 +7,24 @@
         android:id="@+id/map_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <Button
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_add_safezone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_add_safezone"
+        android:layout_gravity="top|end"
+        android:layout_margin="20dp"
+        android:background="@drawable/radio_btn_checked"
         android:text="안전구역추가"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="20dp"/>
+        android:textColor="@color/white"
+        android:textSize="20dp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/sosRequset"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="bottom|center"
+        android:layout_margin="20dp"
+        android:background="@drawable/main_sos_button" />
+
 </FrameLayout>
