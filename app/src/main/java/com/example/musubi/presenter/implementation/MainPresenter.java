@@ -19,12 +19,14 @@ public class MainPresenter implements MainContract.Presenter {
     private final MainContract.View view;
     private final RetrofitClient retrofitClient;
     private final SPFManager spfManager;
+    private final Context context;
 
     public MainPresenter(MainContract.View view, Context context) {
         this.view = view;
         this.retrofitClient = new RetrofitClient();
         this.retrofitClient.initRetrofit();
         this.spfManager = new SPFManager(context, "ACCOUNT");
+        this.context = context;
     }
 
     @Override

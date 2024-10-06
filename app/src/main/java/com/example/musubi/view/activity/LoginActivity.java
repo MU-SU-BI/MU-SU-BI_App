@@ -24,7 +24,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.musubi.R;
-import com.example.musubi.model.local.SPFManager;
 import com.example.musubi.presenter.contract.LoginContract;
 import com.example.musubi.presenter.implementation.LoginPresenter;
 import com.example.musubi.util.service.ForegroundService;

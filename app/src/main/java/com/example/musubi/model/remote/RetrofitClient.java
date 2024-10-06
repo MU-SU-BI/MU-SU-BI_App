@@ -1,12 +1,10 @@
 package com.example.musubi.model.remote;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.example.musubi.model.dto.CallDto;
-import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
+import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.LocationDto;
 import com.example.musubi.model.dto.MyUserDto;
@@ -98,7 +96,7 @@ public class RetrofitClient {
 
             @Override
             public void onFailure(@NonNull Call<Dto<UserDto>> call, @NonNull Throwable t) {
-                resultCallback.onFailure("NETWORK_ERROR", t);
+                resultCallback.onFailure(t.getMessage(), t);
             }
         });
     }
@@ -272,7 +270,6 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 200) {
                     resultCallback.onSuccess(response.body());
                 } else {
-                    Log.e("SafeZone", "Error: " + response.code() + " - " + response.body().getResponseMessage());
                     resultCallback.onFailure("위험 지역 설정에 실패했습니다.", new Exception("status code is not 200"));
                 }
             }
@@ -310,16 +307,14 @@ public class RetrofitClient {
         call.enqueue(new Callback<Dto<Void>>() {
             @Override
             public void onResponse(Call<Dto<Void>> call, Response<Dto<Void>> response) {
-                if (response.isSuccessful() && response.code() == 200)
+                if (response.isSuccessful() && response.code() == 201)
                     resultCallback.onSuccess(response.body()); // List<SafeAreaDto>를 포함한 Dto 객체 전달
                 else
                     resultCallback.onFailure("나의 사용자 이미지 업로드에 실패했습니다.", new Exception("status code is not 200"));
-
             }
 
             @Override
             public void onFailure(Call<Dto<Void>> call, Throwable t) {
-                Log.e("ImageUpload", "Error:" + t.getMessage());
                 resultCallback.onFailure(t.getMessage(), t);
             }
         });

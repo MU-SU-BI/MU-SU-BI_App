@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,8 +16,8 @@ import androidx.core.app.NotificationCompat;
 import com.example.musubi.R;
 import com.example.musubi.model.entity.Guardian;
 import com.example.musubi.model.entity.User;
-import com.example.musubi.presenter.implementation.CurrentLocationPresenter;
 import com.example.musubi.presenter.contract.CurrentLocationContract;
+import com.example.musubi.presenter.implementation.CurrentLocationPresenter;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -113,11 +112,9 @@ public class ForegroundService extends Service implements CurrentLocationContrac
 
     @Override
     public void onCurrentLocationSuccess(String message) {
-        Log.d(TAG, "Location update success: " + message);
     }
 
     @Override
     public void onCurrentLocationFailure(String message) {
-        Log.d(TAG, "Location update failure: " + message);
     }
 }

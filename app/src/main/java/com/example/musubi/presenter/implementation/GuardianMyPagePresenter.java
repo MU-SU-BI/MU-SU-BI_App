@@ -11,8 +11,8 @@ import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.entity.Guardian;
 import com.example.musubi.model.local.SPFManager;
 import com.example.musubi.model.remote.RetrofitClient;
-import com.example.musubi.util.callback.ResultCallback;
 import com.example.musubi.presenter.contract.GuardianMyPageContract;
+import com.example.musubi.util.callback.ResultCallback;
 
 import java.io.File;
 
@@ -63,7 +63,7 @@ public class GuardianMyPagePresenter implements GuardianMyPageContract.Presenter
         File file = new File(getPathFromImageUri(context, imageUri));
         RequestBody requestFile = RequestBody.create(MultipartBody.FORM, file);
         MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
-        RequestBody idPart = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(Guardian.getInstance().getUser().getId()));
+        RequestBody idPart = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(Guardian.getInstance().getId()));
 
         retrofitClient.postMyUserImage(idPart, imagePart, new ResultCallback<Dto<Void>>() {
             @Override

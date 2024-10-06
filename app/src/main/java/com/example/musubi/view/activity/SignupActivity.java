@@ -123,7 +123,7 @@ public class SignupActivity extends AppCompatActivity implements SignupContract.
         String ageStr = ageEditText.getText().toString();
         int age = ageStr.isEmpty() ? 0 : Integer.parseInt(ageStr);
 
-        return new UserDto(-1, email, password, name, gender, age, nickname, phone, address, null);
+        return new UserDto(-1, email, password, name, gender, age, nickname, phone, address);
     }
 
     private boolean isInputWrongSignupData(UserDto user) {

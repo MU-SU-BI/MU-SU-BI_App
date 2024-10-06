@@ -12,9 +12,22 @@ public class UserDto {
     private final String nickname;
     private final String phoneNumber;
     private final String homeAddress;
-    private final String district;
+    private String district;
+    private String profile;
 
-    public UserDto(long userId, String email, String password, String name, Gender sex, int age, String nickname, String phoneNumber, String homeAddress, String district) {
+    public UserDto(long userId, String email, String password, String name, Gender sex, int age, String nickname, String phoneNumber, String homeAddress) {
+        this.userId = userId;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.sex = sex;
+        this.age = age;
+        this.nickname = nickname;
+        this.phoneNumber = phoneNumber;
+        this.homeAddress = homeAddress;
+    }
+
+    public UserDto(long userId, String email, String password, String name, Gender sex, int age, String nickname, String phoneNumber, String homeAddress, String district, String profile) {
         this.userId = userId;
         this.email = email;
         this.password = password;
@@ -25,6 +38,7 @@ public class UserDto {
         this.phoneNumber = phoneNumber;
         this.homeAddress = homeAddress;
         this.district = district;
+        this.profile = profile;
     }
 
     public long getUserId() {
@@ -64,4 +78,8 @@ public class UserDto {
     }
 
     public String getDistrict() { return district; }
+
+    public String getProfile() {
+        return profile;
+    }
 }

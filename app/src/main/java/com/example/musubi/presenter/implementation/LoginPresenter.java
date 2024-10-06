@@ -9,8 +9,8 @@ import com.example.musubi.model.entity.Guardian;
 import com.example.musubi.model.entity.User;
 import com.example.musubi.model.local.SPFManager;
 import com.example.musubi.model.remote.RetrofitClient;
-import com.example.musubi.util.callback.ResultCallback;
 import com.example.musubi.presenter.contract.LoginContract;
+import com.example.musubi.util.callback.ResultCallback;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,12 +19,14 @@ public class LoginPresenter  implements LoginContract.Presenter {
     private final LoginContract.View view;
     private final RetrofitClient retrofitClient;
     private final SPFManager spfManager;
+    private final Context context;
 
     public LoginPresenter(LoginContract.View view, Context context) {
         this.view = view;
         this.retrofitClient = new RetrofitClient();
         this.retrofitClient.initRetrofit();
         this.spfManager = new SPFManager(context, "ACCOUNT");
+        this.context = context;
     }
 
     private Map<String, String> getLoginData(String email, String password, String fcmToken) {

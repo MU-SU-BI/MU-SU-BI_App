@@ -1,8 +1,8 @@
 package com.example.musubi.model.remote;
 
 import com.example.musubi.model.dto.CallDto;
-import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
+import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.LocationDto;
 import com.example.musubi.model.dto.MyUserDto;
@@ -18,15 +18,13 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
-import retrofit2.http.Query;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface RetrofitURL {
     @POST("api/v1/users/signup")
@@ -56,8 +54,8 @@ public interface RetrofitURL {
     @GET("api/v1/safe-area/{guardianId}")
     Call<Dto<List<SafeAreaDto>>> setSafeZones(@Path("guardianId") long guardianId);
     @Multipart
-    @POST("api/v1/[~~~~]")
-    Call<Dto<Void>> postMyUserImage(@Part("userId") RequestBody idPart, @Part MultipartBody.Part imagePart);
+    @POST("api/v1/guardians/profile")
+    Call<Dto<Void>> postMyUserImage(@Part("userId") RequestBody idPart, @Part MultipartBody.Part image);
     @POST("api/v1/guardians/sos")
     Call<Dto<Void>> requestSosToCommunity(@Body SosDto sosDto);
 }

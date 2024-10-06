@@ -4,11 +4,10 @@ import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.SafeAreaDto;
 import com.example.musubi.model.dto.SosDto;
-import com.example.musubi.model.entity.Guardian;
 import com.example.musubi.model.entity.User;
 import com.example.musubi.model.remote.RetrofitClient;
-import com.example.musubi.util.callback.ResultCallback;
 import com.example.musubi.presenter.contract.MapContract;
+import com.example.musubi.util.callback.ResultCallback;
 
 import java.util.List;
 
