@@ -22,22 +22,6 @@ public class MapPresenter implements MapContract.Presenter {
     }
 
     @Override
-    public void createDistrict(double latitude, double longitude) {
-        String gps = longitude + ", " + latitude;
-        GpsDto dto = new GpsDto(gps, User.getInstance().getId());
-
-        retrofitClient.setMyDistrict(dto, new ResultCallback<Dto<String>>() {
-            @Override
-            public void onSuccess(Dto<String> result) {
-                User.getInstance().setDistrict(result.getData());
-            }
-
-            @Override
-            public void onFailure(String result, Throwable t) {}
-        });
-    }
-
-    @Override
     public void setMyUserSafeArea(List<SafeAreaDto> safeAreas) {
         for (SafeAreaDto safeArea : safeAreas) {
             retrofitClient.setSafeZone(Guardian.getInstance().getId(), safeArea, new ResultCallback<Dto<Void>>() {

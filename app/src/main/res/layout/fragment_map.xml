@@ -13,5 +13,6 @@
         android:id="@+id/btn_add_safezone"
         android:text="안전구역추가"
         android:layout_gravity="bottom|end"
+        android:backgroundTint="#76A66F"
         android:layout_margin="20dp"/>
 </FrameLayout>

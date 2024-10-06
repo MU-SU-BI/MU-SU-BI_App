@@ -5,15 +5,21 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.musubi.model.dto.CallDto;
+import com.example.musubi.model.dto.CommentDto;
+import com.example.musubi.model.dto.DistrictDto;
 import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.LocationDto;
 import com.example.musubi.model.dto.MyUserDto;
+import com.example.musubi.model.dto.PostDetailDto;
+import com.example.musubi.model.dto.PostDto;
 import com.example.musubi.model.dto.SafeAreaDto;
 import com.example.musubi.model.dto.SafeAreaRequestDto;
+import com.example.musubi.model.dto.SendCommentDto;
 import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
+import com.example.musubi.model.dto.WritePostDto;
 import com.example.musubi.util.callback.ResultCallback;
 
 import java.util.List;
@@ -45,13 +51,16 @@ public class RetrofitClient {
         call.enqueue((new Callback<Dto<Void>>() {
             @Override
             public void onResponse(@NonNull Call<Dto<Void>> call, @NonNull Response<Dto<Void>> response) {
-                assert response.body() != null;
-                String responseMessage = response.body().getResponseMessage();
-
-                if (response.isSuccessful() && response.code() == 201)
-                    resultCallback.onSuccess(responseMessage);
-                else
+                if (response.isSuccessful() && response.code() == 201) {
+                    if (response.body() != null) {
+                        String responseMessage = response.body().getResponseMessage();
+                        resultCallback.onSuccess(responseMessage);
+                    } else {
+                        resultCallback.onFailure("Response body is null", new Exception("Response body is null"));
+                    }
+                } else {
                     resultCallback.onFailure("이메일 또는 휴대폰 번호가 중복입니다.\n다시 시도해주세요.", new Exception("status code is not 201"));
+                }
             }
 
             @Override
@@ -60,18 +69,23 @@ public class RetrofitClient {
             }
         }));
     }
-  
+
+
     public void postSignupGuardian(GuardianDto guardian, ResultCallback<String> resultCallback){
         Call<Dto<Void>> call = retrofitService.guardianSignup(guardian);
-      
+
         call.enqueue((new Callback<Dto<Void>>() {
             @Override
             public void onResponse(@NonNull Call<Dto<Void>> call, @NonNull Response<Dto<Void>> response) {
                 if (response.isSuccessful() && response.code() == 201) {
-                    assert response.body() != null;
-                    resultCallback.onSuccess(response.body().getResponseMessage());
-                } else
+                    if (response.body() != null) {
+                        resultCallback.onSuccess(response.body().getResponseMessage());
+                    } else {
+                        resultCallback.onFailure("Response body is null", new Exception("Response body is null"));
+                    }
+                } else {
                     resultCallback.onFailure("이메일 또는 휴대폰 번호가 중복입니다.\n다시 시도해주세요.", new Exception("status code is not 201"));
+                }
             }
 
             @Override
@@ -80,6 +94,7 @@ public class RetrofitClient {
             }
         }));
     }
+
 
 
     public void postLoginUser(Map<String, String> loginData, ResultCallback<Dto<UserDto>> resultCallback) {
@@ -89,7 +104,11 @@ public class RetrofitClient {
             @Override
             public void onResponse(@NonNull Call<Dto<UserDto>> call, @NonNull Response<Dto<UserDto>> response) {
                 if (response.isSuccessful() && response.code() == 200)
-                    resultCallback.onSuccess(response.body());
+                {
+                    if (response.body() != null) {
+                        resultCallback.onSuccess(response.body());
+                    }
+                }
                 else
                     resultCallback.onFailure("이메일 또는 비밀번호가 틀립니다.", new Exception("status code is not 200"));
             }
@@ -109,6 +128,7 @@ public class RetrofitClient {
             @Override
             public void onResponse(@NonNull Call<Dto<GuardianDto>> call, @NonNull Response<Dto<GuardianDto>> response) {
                 if (response.isSuccessful() && response.code() == 200)
+                    if (response.body() != null)
                     resultCallback.onSuccess(response.body());
                 else
                     resultCallback.onFailure("이메일 또는 비밀번호가 틀립니다.", new Exception("status code is not 200"));
@@ -119,30 +139,34 @@ public class RetrofitClient {
                 resultCallback.onFailure("NETWORK_ERROR", t);
             }
         });
-    }
+    };
 
-    ;
-
-    public void setMyDistrict(GpsDto gps, ResultCallback<Dto<String>> resultCallback) {
-        Call<Dto<String>> call = retrofitService.setMyDistrict(gps);
-
-        call.enqueue(new Callback<Dto<String>>() {
+    public void setMyDistrict(String type, GpsDto gps, ResultCallback<Dto<DistrictDto>> resultCallback) {
+        Call<Dto<DistrictDto>> call = retrofitService.setMyDistrict(type, gps);
+        Log.d("gps", "gps: " + gps.getCoordinate());
+        Log.d("gps", "userId: " + gps.getUserId());
+        call.enqueue(new Callback<Dto<DistrictDto>>() {
             @Override
-            public void onResponse(Call<Dto<String>> call, Response<Dto<String>> response) {
-                assert response.body() != null;
-
+            public void onResponse(Call<Dto<DistrictDto>> call, Response<Dto<DistrictDto>> response) {
+                Log.d("RetrofitClient", "Response received: " + response.code());
+                if (response.body() == null) {
+                    resultCallback.onFailure("Response body is null", new Exception("Response body is null"));
+                    return;
+                }
                 if (response.isSuccessful()) {
                     resultCallback.onSuccess(response.body());
-                } else
-                    resultCallback.onFailure(response.body().getResponseMessage(), new Exception("status code in not 200"));
+                } else {
+                    resultCallback.onFailure("Error: " + response.message(), new Exception("Response not successful"));
+                }
             }
 
             @Override
-            public void onFailure(Call<Dto<String>> call, Throwable t) {
+            public void onFailure(Call<Dto<DistrictDto>> call, Throwable t) {
                 resultCallback.onFailure("NETWORK_ERROR", t);
             }
         });
     }
+
 
     public void postConnectUserWithGuardian(UserConnectDto userDto, ResultCallback<Dto<Void>> resultCallback) {
         Call<Dto<Void>> call = retrofitService.connectGuardian(userDto);
@@ -210,7 +234,7 @@ public class RetrofitClient {
         call.enqueue(new Callback<Dto<UserDto>>() {
             @Override
             public void onResponse(@NonNull Call<Dto<UserDto>> call, @NonNull Response<Dto<UserDto>> response) {
-                if (response.isSuccessful() && response.code() == 200)
+                if (response.isSuccessful() && response.code() == 200 && response.body() != null)
                     resultCallback.onSuccess(response.body());
                 else
                     resultCallback.onFailure("나의 사용자 조회에 실패했습니다.", new Exception("status code is not 200"));
@@ -304,5 +328,100 @@ public class RetrofitClient {
             }
         });
     }
+    public void getGuardianPosts(String type, long userId, ResultCallback<Dto<List<PostDto>>> resultCallback) {
+        Call<Dto<List<PostDto>>> call = retrofitService.getGuardianPosts(type, userId);
+        call.enqueue(new Callback<Dto<List<PostDto>>>() {
+            @Override
+            public void onResponse(Call<Dto<List<PostDto>>> call, Response<Dto<List<PostDto>>> response) {
+                if (response.isSuccessful() && response.code() == 200) {
+                    resultCallback.onSuccess(response.body());
+                }
+                else {
+                    resultCallback.onFailure("게시물 조회에 실패했습니다.", new Exception("status code is not 200"));
+                }
+            }
+            @Override
+            public void onFailure(Call<Dto<List<PostDto>>> call, Throwable t) {
+                resultCallback.onFailure(t.getMessage(), t);
+            }
+        });
+    }
 
+    public void postCreatePost(String type, WritePostDto postDto, ResultCallback<Dto<Void>> resultCallback) {
+        Call<Dto<Void>> call = retrofitService.createPost(type, postDto);
+        call.enqueue(new Callback<Dto<Void>>() {
+            @Override
+            public void onResponse(Call<Dto<Void>> call, Response<Dto<Void>> response) {
+                if (response.isSuccessful() && response.code() == 201) {
+                    resultCallback.onSuccess(response.body());
+                } else {
+                    resultCallback.onFailure("게시물 생성에 실패했습니다.", new Exception("status code is not 201"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Dto<Void>> call, Throwable t) {
+                resultCallback.onFailure(t.getMessage(), t);
+            }
+        });  // enqueue 메서드를 닫는 괄호 위치 수정
+    }
+
+    public void getPostDetail(long postId, String type, long userId, ResultCallback<Dto<PostDetailDto>> resultCallback) {
+        Call<Dto<PostDetailDto>> call = retrofitService.getPostDetail(postId, type, userId);
+
+        call.enqueue(new Callback<Dto<PostDetailDto>>() {
+            @Override
+            public void onResponse(Call<Dto<PostDetailDto>> call, Response<Dto<PostDetailDto>> response) {
+                if (response.isSuccessful() && response.code() == 200) {
+                    resultCallback.onSuccess(response.body());
+                } else {
+                    resultCallback.onFailure("게시물 조회에 실패했습니다.", new Exception("status code is not 200"));
+                }
+            }
+            @Override
+            public void onFailure(Call<Dto<PostDetailDto>> call, Throwable t) {
+                resultCallback.onFailure(t.getMessage(), t);
+            }
+        });
+    }
+
+    public void getPostComments(long postId,String type, long userId, ResultCallback<Dto<List<CommentDto>>> resultCallback) {
+        Call<Dto<List<CommentDto>>> call = retrofitService.getComments(postId, userId, type);
+
+        call.enqueue(new Callback<Dto<List<CommentDto>>>() {
+            @Override
+            public void onResponse(Call<Dto<List<CommentDto>>> call, Response<Dto<List<CommentDto>>> response) {
+                Log.d("RetrofitClient", "코드 내놔라: " + response.code());
+                if (response.isSuccessful() && response.code() == 200) {
+                    resultCallback.onSuccess(response.body());
+                } else {
+                    resultCallback.onFailure("게시물 조회에 실패했습니다.", new Exception("status code is not 200"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Dto<List<CommentDto>>> call, Throwable t) {
+                resultCallback.onFailure(t.getMessage(), t);
+            }
+        });
+    }
+
+    public void postCreateComment(long postId,String type, long userId,SendCommentDto sendCommentDto, ResultCallback<Dto<Void>> resultCallback) {
+        Call<Dto<Void>> call = retrofitService.createComment(postId, type, userId,sendCommentDto);
+        call.enqueue(new Callback<Dto<Void>>() {
+            @Override
+            public void onResponse(Call<Dto<Void>>call, Response<Dto<Void>>  response) {
+                Log.d("RetrofitClient", "코드 내놔라: " + response.code());
+                if (response.isSuccessful() && response.code() == 201) {
+                    resultCallback.onSuccess(response.body());
+                } else {
+                    resultCallback.onFailure("게시물 조회에 실패했습니다.", new Exception("status code is not 200"));
+                }
+            }
+            @Override
+            public void onFailure(Call<Dto<Void>>  call, Throwable t) {
+                resultCallback.onFailure(t.getMessage(), t);
+            }
+        });
+    }
 }
