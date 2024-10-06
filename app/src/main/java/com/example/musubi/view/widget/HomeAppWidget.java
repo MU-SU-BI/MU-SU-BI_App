@@ -1,11 +1,22 @@
 package com.example.musubi.view.widget;
 
+import static com.google.firebase.messaging.Constants.MessageNotificationKeys.CLICK_ACTION;
+
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.example.musubi.R;
+import com.example.musubi.model.dto.CallDto;
+import com.example.musubi.model.dto.Dto;
+import com.example.musubi.model.entity.User;
+import com.example.musubi.model.local.SPFManager;
+import com.example.musubi.model.remote.RetrofitClient;
+import com.example.musubi.util.callback.ResultCallback;
 
 /**
  * Implementation of App Widget functionality.
@@ -14,14 +25,44 @@ public class HomeAppWidget extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.home_app_widget);
-        views.setTextViewText(R.id.widget, widgetText);
+
+        // 버튼 클릭 이벤트 설정
+        Intent intent = new Intent(context, HomeAppWidget.class);
+        intent.setAction(CLICK_ACTION);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        views.setOnClickPendingIntent(R.id.widget, pendingIntent);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+        if (CLICK_ACTION.equals(intent.getAction())) {
+            performButtonClickAction(context);
+        }
+    }
+
+    private void performButtonClickAction(Context context) {
+        Toast.makeText(context, "위젯 버튼이 클릭되었습니다!", Toast.LENGTH_SHORT).show();
+        SPFManager spfManager = new SPFManager(context, "ACCOUNT");
+        RetrofitClient retrofitClient = new RetrofitClient();
+        retrofitClient.initRetrofit();
+
+        retrofitClient.postCallGuardianWithMessage(new CallDto(spfManager.getSharedPreferences().getLong("USER_ID", -1), "도움이 필요해요" ), new ResultCallback<Dto<Void>>() {
+            @Override
+            public void onSuccess(Dto<Void> result) {
+                Toast.makeText(context, "보호자 호출 완료", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(String result, Throwable t) {
+                Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

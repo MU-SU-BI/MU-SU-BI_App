@@ -47,7 +47,7 @@ public class LoginPresenter  implements LoginContract.Presenter {
                     @Override
                     public void onSuccess(Dto<GuardianDto> result2) {
                         User.getInstance().initUser(result1.getData(), result2.getData());
-                        storeAutoLoginData(email, password, "USER");
+                        storeAutoLoginData(User.getInstance().getId(), email, password, "USER");
                         view.onLoginSuccess("사용자 로그인 성공");
                     }
 
@@ -78,7 +78,7 @@ public class LoginPresenter  implements LoginContract.Presenter {
                     @Override
                     public void onSuccess(Dto<UserDto> result2) {
                         Guardian.getInstance().initGuardian(result1.getData(), result2.getData());
-                        storeAutoLoginData(email, password, "GUARDIAN");
+                        storeAutoLoginData(-1, email, password, "GUARDIAN");
                         view.onLoginSuccess("보호자 로그인 성공");
                     }
 
@@ -102,7 +102,8 @@ public class LoginPresenter  implements LoginContract.Presenter {
         view.redirectToSignup();
     }
 
-    private void storeAutoLoginData(String email, String password, String userType) {
+    private void storeAutoLoginData(long id, String email, String password, String userType) {
+        spfManager.getEditor().putLong("USER_ID", id).apply();
         spfManager.getEditor().putString("EMAIL", email).apply();
         spfManager.getEditor().putString("PASSWORD", password).apply();
         spfManager.getEditor().putString("USER_TYPE", userType).apply();
