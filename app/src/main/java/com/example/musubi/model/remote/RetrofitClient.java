@@ -175,7 +175,7 @@ public class RetrofitClient {
         call.enqueue(new Callback<Dto<Void>>() {
             @Override
             public void onResponse(@NonNull Call<Dto<Void>> call, @NonNull Response<Dto<Void>> response) {
-                if (response.isSuccessful() && response.code() == 201)
+                if (response.isSuccessful() && response.code() == 200)
                     resultCallback.onSuccess(response.body());
                 else
                     resultCallback.onFailure("보호자 호출에 실패했습니다.", new Exception("status code is not 200"));
