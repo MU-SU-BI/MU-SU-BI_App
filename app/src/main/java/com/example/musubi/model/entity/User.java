@@ -1,7 +1,5 @@
 package com.example.musubi.model.entity;
 
-import android.util.Log;
-
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.UserDto;
 
@@ -57,7 +55,6 @@ public class User extends Person{
     public void initUser (UserDto userDto, GuardianDto guardianDto) {
         Guardian myGuardian;
 
-        Log.d("guardianDto", userDto.getProfile());
         if (guardianDto == null)
             myGuardian = null;
         else
