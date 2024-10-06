@@ -15,7 +15,6 @@ import com.example.musubi.model.dto.PostDetailDto;
 import com.example.musubi.model.dto.PostDto;
 import com.example.musubi.model.dto.SafeAreaDto;
 import com.example.musubi.model.dto.SosDto;
-import com.example.musubi.model.dto.SafeAreaRequestDto;
 import com.example.musubi.model.dto.SendCommentDto;
 import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
@@ -127,13 +126,12 @@ public class RetrofitClient {
         });
     }
 
+    public void setMyDistrict(String type, GpsDto gps, ResultCallback<Dto<DistrictDto>> resultCallback) {
+        Call<Dto<DistrictDto>> call = retrofitService.setMyDistrict(type, gps);
 
-    public void setMyDistrict(GpsDto gps, ResultCallback<Dto<String>> resultCallback) {
-        Call<Dto<String>> call = retrofitService.setMyDistrict(gps);
-
-        call.enqueue(new Callback<Dto<String>>() {
+        call.enqueue(new Callback<Dto<DistrictDto>>() {
             @Override
-            public void onResponse(Call<Dto<String>> call, Response<Dto<String>> response) {
+            public void onResponse(Call<Dto<DistrictDto>> call, Response<Dto<DistrictDto>> response) {
                 assert response.body() != null;
 
                 if (response.isSuccessful()) {
@@ -143,7 +141,7 @@ public class RetrofitClient {
             }
 
             @Override
-            public void onFailure(Call<Dto<String>> call, Throwable t) {
+            public void onFailure(Call<Dto<DistrictDto>> call, Throwable t) {
                 resultCallback.onFailure("NETWORK_ERROR", t);
             }
         });
@@ -407,7 +405,6 @@ public class RetrofitClient {
         call.enqueue(new Callback<Dto<List<CommentDto>>>() {
             @Override
             public void onResponse(Call<Dto<List<CommentDto>>> call, Response<Dto<List<CommentDto>>> response) {
-                Log.d("RetrofitClient", "코드 내놔라: " + response.code());
                 if (response.isSuccessful() && response.code() == 200) {
                     resultCallback.onSuccess(response.body());
                 } else {
@@ -427,7 +424,6 @@ public class RetrofitClient {
         call.enqueue(new Callback<Dto<Void>>() {
             @Override
             public void onResponse(Call<Dto<Void>>call, Response<Dto<Void>>  response) {
-                Log.d("RetrofitClient", "코드 내놔라: " + response.code());
                 if (response.isSuccessful() && response.code() == 201) {
                     resultCallback.onSuccess(response.body());
                 } else {
