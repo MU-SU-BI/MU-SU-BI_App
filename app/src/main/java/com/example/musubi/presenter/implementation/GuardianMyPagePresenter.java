@@ -11,8 +11,8 @@ import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.entity.Guardian;
 import com.example.musubi.model.local.SPFManager;
 import com.example.musubi.model.remote.RetrofitClient;
-import com.example.musubi.util.callback.ResultCallback;
 import com.example.musubi.presenter.contract.GuardianMyPageContract;
+import com.example.musubi.util.callback.ResultCallback;
 
 import java.io.File;
 
@@ -36,7 +36,7 @@ public class GuardianMyPagePresenter implements GuardianMyPageContract.Presenter
 
     @Override
     public void logoutGuardian() {
-        Guardian.getInstance().initGuardian(null, null, null);
+        Guardian.getInstance().initGuardian(null, null);
         spfManager.getEditor().remove("EMAIL").apply();
         spfManager.getEditor().remove("PASSWORD").apply();
         spfManager.getEditor().remove("USER_TYPE").apply();

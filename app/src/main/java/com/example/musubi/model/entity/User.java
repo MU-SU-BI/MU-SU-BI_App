@@ -1,16 +1,15 @@
 package com.example.musubi.model.entity;
 
-import android.net.Uri;
 import android.util.Log;
 
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.UserDto;
 
-import java.util.Arrays;
+import java.net.URL;
 
 public class User extends Person{
     private String failureLevel;
-    private Uri profileImage;
+    private URL profileImage;
     private Person guardian;
 
     private static User instance;
@@ -25,7 +24,7 @@ public class User extends Person{
 //        super(id, email, name, gender, age, nickname, phone, address, district);
 //    }
 
-    public User(long id, String email, String name, Gender gender, int age, String nickname, String phone, String address, String district, Uri profileImage) {
+    public User(long id, String email, String name, Gender gender, int age, String nickname, String phone, String address, String district, URL profileImage) {
         super(id, email, name, gender, age, nickname, phone, address, district);
         this.profileImage = profileImage;
     }
@@ -35,7 +34,7 @@ public class User extends Person{
 //        this.guardian = guardian;
 //    }
 
-    private User(long id, String email, String name, Gender gender, int age, String nickname, String phone, String address, String district, Uri profileImage, Person guardian) {
+    private User(long id, String email, String name, Gender gender, int age, String nickname, String phone, String address, String district, URL profileImage, Person guardian) {
         super(id, email, name, gender, age, nickname, phone, address, district);
         this.profileImage = profileImage;
         this.guardian = guardian;
@@ -77,7 +76,7 @@ public class User extends Person{
         return failureLevel;
     }
 
-    public Uri getProfileImage() {
+    public URL getProfileImage() {
         return profileImage;
     }
 

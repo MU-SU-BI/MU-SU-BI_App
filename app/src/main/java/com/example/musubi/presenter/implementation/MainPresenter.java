@@ -10,7 +10,6 @@ import com.example.musubi.model.entity.User;
 import com.example.musubi.model.local.SPFManager;
 import com.example.musubi.model.remote.RetrofitClient;
 import com.example.musubi.presenter.contract.MainContract;
-import com.example.musubi.util.ImageUtil;
 import com.example.musubi.util.callback.ResultCallback;
 
 import java.util.HashMap;
@@ -77,13 +76,13 @@ public class MainPresenter implements MainContract.Presenter {
                     retrofitClient.getFindMyUser(result1.getData().getUserId(), new ResultCallback<Dto<UserDto>>() {
                         @Override
                         public void onSuccess(Dto<UserDto> result2) {
-                            Guardian.getInstance().initGuardian(result1.getData(), result2.getData(), ImageUtil.byteStringToUri(context, result2.getData().getProfile(), "profile_temp_img"));
+                            Guardian.getInstance().initGuardian(result1.getData(), result2.getData());
                             view.onAutoLoginSuccess(result1.getResponseMessage(), userType);
                         }
 
                         @Override
                         public void onFailure(String result, Throwable t) {
-                            Guardian.getInstance().initGuardian(result1.getData(), null, null);
+                            Guardian.getInstance().initGuardian(result1.getData(), null);
                             view.onAutoLoginSuccess(result1.getResponseMessage(), userType);
                         }
                     });

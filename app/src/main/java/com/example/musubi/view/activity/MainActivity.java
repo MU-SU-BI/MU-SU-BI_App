@@ -3,13 +3,11 @@ package com.example.musubi.view.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
@@ -17,11 +15,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.musubi.R;
-import com.example.musubi.model.entity.Guardian;
-import com.example.musubi.model.entity.User;
-import com.example.musubi.model.local.SPFManager;
 import com.example.musubi.presenter.contract.MainContract;
-import com.example.musubi.presenter.implementation.LoginPresenter;
 import com.example.musubi.presenter.implementation.MainPresenter;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
