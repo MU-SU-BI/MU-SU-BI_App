@@ -3,15 +3,23 @@ package com.example.musubi.model.remote;
 import androidx.annotation.NonNull;
 
 import com.example.musubi.model.dto.CallDto;
+import com.example.musubi.model.dto.CommentDto;
+import com.example.musubi.model.dto.DistrictDto;
+import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.LocationDto;
 import com.example.musubi.model.dto.MyUserDto;
+import com.example.musubi.model.dto.PostDetailDto;
+import com.example.musubi.model.dto.PostDto;
 import com.example.musubi.model.dto.SafeAreaDto;
 import com.example.musubi.model.dto.SosDto;
+import com.example.musubi.model.dto.SafeAreaRequestDto;
+import com.example.musubi.model.dto.SendCommentDto;
 import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
+import com.example.musubi.model.dto.WritePostDto;
 import com.example.musubi.util.callback.ResultCallback;
 
 import java.util.List;
@@ -39,7 +47,7 @@ public class RetrofitClient {
         retrofitService = retrofit.create(RetrofitURL.class);
     }
 
-    public void postSignupUser(UserDto user, ResultCallback<String> resultCallback) {
+    public void postSignupUser(UserDto user, ResultCallback<String> resultCallback){
         Call<Dto<Void>> call = retrofitService.userSignup(user);
 
         call.enqueue((new Callback<Dto<Void>>() {
@@ -81,7 +89,6 @@ public class RetrofitClient {
         }));
     }
 
-
     public void postLoginUser(Map<String, String> loginData, ResultCallback<Dto<UserDto>> resultCallback) {
         Call<Dto<UserDto>> call = retrofitService.userLogin(loginData);
 
@@ -96,11 +103,10 @@ public class RetrofitClient {
 
             @Override
             public void onFailure(@NonNull Call<Dto<UserDto>> call, @NonNull Throwable t) {
-                resultCallback.onFailure(t.getMessage(), t);
+                resultCallback.onFailure("NETWORK_ERROR", t);
             }
         });
     }
-
 
     public void postLoginGuardian(Map<String, String> loginData, ResultCallback<Dto<GuardianDto>> resultCallback) {
         Call<Dto<GuardianDto>> call = retrofitService.guardianLogin(loginData);
@@ -121,7 +127,6 @@ public class RetrofitClient {
         });
     }
 
-    ;
 
     public void setMyDistrict(GpsDto gps, ResultCallback<Dto<String>> resultCallback) {
         Call<Dto<String>> call = retrofitService.setMyDistrict(gps);
@@ -335,6 +340,102 @@ public class RetrofitClient {
 
             @Override
             public void onFailure(Call<Dto<Void>> call, Throwable t) {
+                resultCallback.onFailure(t.getMessage(), t);
+            }
+        });
+    }
+    public void getGuardianPosts(String type, long userId, ResultCallback<Dto<List<PostDto>>> resultCallback) {
+        Call<Dto<List<PostDto>>> call = retrofitService.getGuardianPosts(type, userId);
+        call.enqueue(new Callback<Dto<List<PostDto>>>() {
+            @Override
+            public void onResponse(Call<Dto<List<PostDto>>> call, Response<Dto<List<PostDto>>> response) {
+                if (response.isSuccessful() && response.code() == 200) {
+                    resultCallback.onSuccess(response.body());
+                }
+                else {
+                    resultCallback.onFailure("게시물 조회에 실패했습니다.", new Exception("status code is not 200"));
+                }
+            }
+            @Override
+            public void onFailure(Call<Dto<List<PostDto>>> call, Throwable t) {
+                resultCallback.onFailure(t.getMessage(), t);
+            }
+        });
+    }
+
+    public void postCreatePost(String type, WritePostDto postDto, ResultCallback<Dto<Void>> resultCallback) {
+        Call<Dto<Void>> call = retrofitService.createPost(type, postDto);
+        call.enqueue(new Callback<Dto<Void>>() {
+            @Override
+            public void onResponse(Call<Dto<Void>> call, Response<Dto<Void>> response) {
+                if (response.isSuccessful() && response.code() == 201) {
+                    resultCallback.onSuccess(response.body());
+                } else {
+                    resultCallback.onFailure("게시물 생성에 실패했습니다.", new Exception("status code is not 201"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Dto<Void>> call, Throwable t) {
+                resultCallback.onFailure(t.getMessage(), t);
+            }
+        });  // enqueue 메서드를 닫는 괄호 위치 수정
+    }
+
+    public void getPostDetail(long postId, String type, long userId, ResultCallback<Dto<PostDetailDto>> resultCallback) {
+        Call<Dto<PostDetailDto>> call = retrofitService.getPostDetail(postId, type, userId);
+
+        call.enqueue(new Callback<Dto<PostDetailDto>>() {
+            @Override
+            public void onResponse(Call<Dto<PostDetailDto>> call, Response<Dto<PostDetailDto>> response) {
+                if (response.isSuccessful() && response.code() == 200) {
+                    resultCallback.onSuccess(response.body());
+                } else {
+                    resultCallback.onFailure("게시물 조회에 실패했습니다.", new Exception("status code is not 200"));
+                }
+            }
+            @Override
+            public void onFailure(Call<Dto<PostDetailDto>> call, Throwable t) {
+                resultCallback.onFailure(t.getMessage(), t);
+            }
+        });
+    }
+
+    public void getPostComments(long postId,String type, long userId, ResultCallback<Dto<List<CommentDto>>> resultCallback) {
+        Call<Dto<List<CommentDto>>> call = retrofitService.getComments(postId, userId, type);
+
+        call.enqueue(new Callback<Dto<List<CommentDto>>>() {
+            @Override
+            public void onResponse(Call<Dto<List<CommentDto>>> call, Response<Dto<List<CommentDto>>> response) {
+                Log.d("RetrofitClient", "코드 내놔라: " + response.code());
+                if (response.isSuccessful() && response.code() == 200) {
+                    resultCallback.onSuccess(response.body());
+                } else {
+                    resultCallback.onFailure("게시물 조회에 실패했습니다.", new Exception("status code is not 200"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Dto<List<CommentDto>>> call, Throwable t) {
+                resultCallback.onFailure(t.getMessage(), t);
+            }
+        });
+    }
+
+    public void postCreateComment(long postId,String type, long userId,SendCommentDto sendCommentDto, ResultCallback<Dto<Void>> resultCallback) {
+        Call<Dto<Void>> call = retrofitService.createComment(postId, type, userId,sendCommentDto);
+        call.enqueue(new Callback<Dto<Void>>() {
+            @Override
+            public void onResponse(Call<Dto<Void>>call, Response<Dto<Void>>  response) {
+                Log.d("RetrofitClient", "코드 내놔라: " + response.code());
+                if (response.isSuccessful() && response.code() == 201) {
+                    resultCallback.onSuccess(response.body());
+                } else {
+                    resultCallback.onFailure("게시물 조회에 실패했습니다.", new Exception("status code is not 200"));
+                }
+            }
+            @Override
+            public void onFailure(Call<Dto<Void>>  call, Throwable t) {
                 resultCallback.onFailure(t.getMessage(), t);
             }
         });

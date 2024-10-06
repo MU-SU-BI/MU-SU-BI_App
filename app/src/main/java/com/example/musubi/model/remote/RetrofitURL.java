@@ -1,15 +1,23 @@
 package com.example.musubi.model.remote;
 
 import com.example.musubi.model.dto.CallDto;
+import com.example.musubi.model.dto.CommentDto;
+import com.example.musubi.model.dto.DistrictDto;
+import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.LocationDto;
 import com.example.musubi.model.dto.MyUserDto;
+import com.example.musubi.model.dto.PostDetailDto;
+import com.example.musubi.model.dto.PostDto;
 import com.example.musubi.model.dto.SafeAreaDto;
 import com.example.musubi.model.dto.SosDto;
+import com.example.musubi.model.dto.SafeAreaRequestDto;
+import com.example.musubi.model.dto.SendCommentDto;
 import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
+import com.example.musubi.model.dto.WritePostDto;
 
 import java.util.List;
 import java.util.Map;
@@ -36,7 +44,7 @@ public interface RetrofitURL {
     @POST("api/v1/guardians/login")
     Call<Dto<GuardianDto>> guardianLogin(@Body Map<String, String> loginData);
     @POST("api/v1/location")
-    Call<Dto<String>> setMyDistrict(@Body GpsDto gpsDto);
+    Call<Dto<DistrictDto>> setMyDistrict(@Query("type") String type, @Body GpsDto gpsDto);
     @POST("api/v1/guardians/connection")
     Call<Dto<Void>> connectGuardian(@Body UserConnectDto userDto);
     @POST("api/v1/guardians/help")
@@ -58,4 +66,14 @@ public interface RetrofitURL {
     Call<Dto<Void>> postMyUserImage(@Part("userId") RequestBody idPart, @Part MultipartBody.Part image);
     @POST("api/v1/guardians/sos")
     Call<Dto<Void>> requestSosToCommunity(@Body SosDto sosDto);
+    @GET("api/v1/posts")
+    Call<Dto<List<PostDto>>> getGuardianPosts(@Query("type") String type, @Query("userId") long userId);
+    @POST("api/v1/posts")
+    Call<Dto<Void>> createPost(@Query("type") String type, @Body WritePostDto writePostDto);
+    @GET("api/v1/posts/{postId}")
+    Call<Dto<PostDetailDto>> getPostDetail(@Path("postId") long postId, @Query("type") String type, @Query("userId") long userId);
+    @GET("api/v1/posts/{postId}/comments")
+    Call<Dto<List<CommentDto>>> getComments(@Path("postId") long postId, @Query("userId") long userId, @Query("type") String type);
+    @POST("api/v1/posts/{postId}/comments")
+    Call<Dto<Void>> createComment(@Path("postId") long postId, @Query("type") String type, @Query("userId") long userId, @Body SendCommentDto sendCommentDto);
 }

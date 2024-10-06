@@ -1,51 +1,48 @@
 package com.example.musubi.model.dto;
 
-public class PostDto {
-    private String title;
-    private String content;
-    private int commentCount;
-    private String imageUrl;
+import java.io.Serializable;
 
-    public PostDto(String title, String content, int commentCount, String imageUrl) {
+public class PostDto implements Serializable {  // Serializable 인터페이스 구현
+    private static final long serialVersionUID = 1L;  // 직렬화 ID
+
+    final private long postId;
+    final private String title;
+    final private String authorName; // 글쓴이
+    private String createAt; // 생성날짜
+    final private int commentsCount;
+
+    // 생성자와 기타 필드들 (필요에 따라 추가)
+
+    public PostDto(long postId, String title, String author, String creationDate, int commentsCount) {
+        this.postId = postId;
         this.title = title;
-        this.content = content;
-        this.commentCount = commentCount;
-        this.imageUrl = imageUrl;
+        this.authorName = author;
+        this.createAt = creationDate;
+        this.commentsCount = commentsCount;
+    }
+
+    public long getPostId() {
+        return postId;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getContent() {
-        return content;
+    public String getAuthorName() {
+        return authorName;
     }
 
-    public int getCommentCount() {
-        return commentCount;
+    public String getCreateAt() {
+        return createAt;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public int getCommentsCount() {
+        return commentsCount;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public void setCommentCount(int commentCount) {
-        this.commentCount = commentCount;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public boolean hasImage() {
-        return imageUrl != null && !imageUrl.isEmpty();
+    public void setCreateAt( String createAt)
+    {
+        this.createAt = createAt;
     }
 }

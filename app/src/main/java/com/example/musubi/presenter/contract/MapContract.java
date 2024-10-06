@@ -17,7 +17,6 @@ public interface MapContract {
     }
 
     interface Presenter {
-        void createDistrict(double latitude, double longitude);
 
         void setMyUserSafeArea(List<SafeAreaDto> safeAreas);
 
