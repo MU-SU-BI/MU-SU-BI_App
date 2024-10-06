@@ -40,7 +40,7 @@ public class MapPresenter implements MapContract.Presenter {
     @Override
     public void setMyUserSafeArea(List<SafeAreaDto> safeAreas) {
         for (SafeAreaDto safeArea : safeAreas) {
-            retrofitClient.setSafeZone(Guardian.getInstance().getId(), safeArea, new ResultCallback<Dto<Void>>() {
+            retrofitClient.setSafeZone(safeArea, new ResultCallback<Dto<Void>>() {
                 @Override
                 public void onSuccess(Dto<Void> result) {
                 }

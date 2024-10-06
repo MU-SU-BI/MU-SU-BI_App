@@ -90,7 +90,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
         presenter.getMyUserSafeArea(Guardian.getInstance().getId());
 
         naverMap.setOnMapClickListener((point, coord) -> {
-            SafeAreaDto safeArea = new SafeAreaDto(coord.longitude, coord.latitude, 1000);
+            SafeAreaDto safeArea = new SafeAreaDto(Guardian.getInstance().getId(), coord.longitude, coord.latitude, 1000);
             safeAreas.add(safeArea);
             setSafeZone(coord.latitude, coord.longitude);
         });

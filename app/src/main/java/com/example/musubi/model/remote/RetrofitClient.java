@@ -11,7 +11,6 @@ import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.LocationDto;
 import com.example.musubi.model.dto.MyUserDto;
 import com.example.musubi.model.dto.SafeAreaDto;
-import com.example.musubi.model.dto.SafeAreaRequestDto;
 import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
 import com.example.musubi.util.callback.ResultCallback;
@@ -225,8 +224,6 @@ public class RetrofitClient {
         });
     }
 
-    ;
-
     public void getFindMyGuardian(long userId, ResultCallback<Dto<GuardianDto>> resultCallback) {
         Call<Dto<GuardianDto>> call = retrofitService.findMyGuardian(userId);
 
@@ -245,8 +242,6 @@ public class RetrofitClient {
             }
         });
     }
-
-    ;
 
     public void getFindMyUserLocation(long userId, ResultCallback<Dto<MyUserDto>> resultCallback) {
         Call<Dto<MyUserDto>> call = retrofitService.findMyUserLocation(userId);
@@ -267,11 +262,8 @@ public class RetrofitClient {
         });
     }
 
-    public void setSafeZone(long userId, SafeAreaDto safeAreaDto, ResultCallback<Dto<Void>> resultCallback) {
-        // SafeAreaRequestDto로 변환하여 전송
-        SafeAreaRequestDto requestDto = new SafeAreaRequestDto(userId, safeAreaDto.getLongitude(), safeAreaDto.getLatitude(), safeAreaDto.getRadius());
-
-        Call<Dto<Void>> call = retrofitService.setUserSafeZone(requestDto);
+    public void setSafeZone(SafeAreaDto safeAreaDto, ResultCallback<Dto<Void>> resultCallback) {
+        Call<Dto<Void>> call = retrofitService.setUserSafeZone(safeAreaDto);
 
         call.enqueue(new Callback<Dto<Void>>() {
             @Override
@@ -279,7 +271,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 200) {
                     resultCallback.onSuccess(response.body());
                 } else {
-                    Log.e("SafeZone", "Error: " + response.code() + " - " + response.message());
+                    Log.e("SafeZone", "Error: " + response.code() + " - " + response.body().getResponseMessage());
                     resultCallback.onFailure("위험 지역 설정에 실패했습니다.", new Exception("status code is not 200"));
                 }
             }

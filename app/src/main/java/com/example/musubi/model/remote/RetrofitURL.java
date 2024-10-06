@@ -7,7 +7,6 @@ import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.LocationDto;
 import com.example.musubi.model.dto.MyUserDto;
 import com.example.musubi.model.dto.SafeAreaDto;
-import com.example.musubi.model.dto.SafeAreaRequestDto;
 import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
 
@@ -50,7 +49,7 @@ public interface RetrofitURL {
     @GET("api/v1/current-location/{id}")
     Call<Dto<MyUserDto>> findMyUserLocation(@Path("id") long id);
     @POST("api/v1/safe-area")
-    Call<Dto<Void>> setUserSafeZone(@Body SafeAreaRequestDto safeAreaRequestDto);
+    Call<Dto<Void>> setUserSafeZone(@Body SafeAreaDto safeAreaDto);
     @GET("api/v1/safe-area/{guardianId}")
     Call<Dto<List<SafeAreaDto>>> setSafeZones(@Path("guardianId") long guardianId);
     @Multipart
