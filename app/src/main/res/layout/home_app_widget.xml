@@ -1,0 +1,14 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/radio_btn_checked"
+        android:text="보호자 호출"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:gravity="center"/>
+</RelativeLayout>
