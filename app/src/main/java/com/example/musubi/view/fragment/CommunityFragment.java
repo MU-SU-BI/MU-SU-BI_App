@@ -1,21 +1,21 @@
 package com.example.musubi.view.fragment;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.musubi.R;
 import com.example.musubi.model.dto.PostDto;
-import com.example.musubi.view.adapter.PostAdapter;  // RecyclerView Adapter 클래스 (필요시 추가)
+import com.example.musubi.view.adapter.PostAdapter;
 
 import java.util.List;
 

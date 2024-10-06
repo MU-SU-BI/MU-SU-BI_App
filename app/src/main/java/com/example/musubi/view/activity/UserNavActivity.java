@@ -1,16 +1,18 @@
 package com.example.musubi.view.activity;
 
 import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
+
 import com.example.musubi.R;
 import com.example.musubi.view.fragment.CallFragment;
 import com.example.musubi.view.fragment.CommunityFragment;
 import com.example.musubi.view.fragment.UserMyPageFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import android.view.MenuItem;
 
 public class UserNavActivity extends AppCompatActivity {
 

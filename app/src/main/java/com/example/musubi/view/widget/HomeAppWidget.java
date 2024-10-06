@@ -13,7 +13,6 @@ import android.widget.Toast;
 import com.example.musubi.R;
 import com.example.musubi.model.dto.CallDto;
 import com.example.musubi.model.dto.Dto;
-import com.example.musubi.model.entity.User;
 import com.example.musubi.model.local.SPFManager;
 import com.example.musubi.model.remote.RetrofitClient;
 import com.example.musubi.util.callback.ResultCallback;

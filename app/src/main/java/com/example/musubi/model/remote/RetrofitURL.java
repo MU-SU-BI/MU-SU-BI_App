@@ -1,8 +1,8 @@
 package com.example.musubi.model.remote;
 
 import com.example.musubi.model.dto.CallDto;
-import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
+import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.LocationDto;
 import com.example.musubi.model.dto.MyUserDto;
@@ -22,8 +22,8 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
-import retrofit2.http.Query;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface RetrofitURL {
     @POST("api/v1/users/signup")

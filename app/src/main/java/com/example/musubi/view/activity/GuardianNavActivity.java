@@ -1,6 +1,8 @@
 package com.example.musubi.view.activity;
 
 import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -11,7 +13,6 @@ import com.example.musubi.view.fragment.CommunityFragment;
 import com.example.musubi.view.fragment.GuardianMyPageFragment;
 import com.example.musubi.view.fragment.MapFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import android.view.MenuItem;
 
 public class GuardianNavActivity extends AppCompatActivity {
 

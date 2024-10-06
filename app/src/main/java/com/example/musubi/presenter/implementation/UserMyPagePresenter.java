@@ -1,9 +1,7 @@
 package com.example.musubi.presenter.implementation;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.example.musubi.model.dto.UserDto;
 import com.example.musubi.model.entity.User;
 import com.example.musubi.model.local.SPFManager;
 import com.example.musubi.presenter.contract.UserMyPageContract;
