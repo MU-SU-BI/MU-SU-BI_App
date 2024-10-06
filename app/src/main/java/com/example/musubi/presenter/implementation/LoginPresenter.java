@@ -9,6 +9,7 @@ import com.example.musubi.model.entity.Guardian;
 import com.example.musubi.model.entity.User;
 import com.example.musubi.model.local.SPFManager;
 import com.example.musubi.model.remote.RetrofitClient;
+import com.example.musubi.util.ImageUtil;
 import com.example.musubi.util.callback.ResultCallback;
 import com.example.musubi.presenter.contract.LoginContract;
 
@@ -19,12 +20,14 @@ public class LoginPresenter  implements LoginContract.Presenter {
     private final LoginContract.View view;
     private final RetrofitClient retrofitClient;
     private final SPFManager spfManager;
+    private final Context context;
 
     public LoginPresenter(LoginContract.View view, Context context) {
         this.view = view;
         this.retrofitClient = new RetrofitClient();
         this.retrofitClient.initRetrofit();
         this.spfManager = new SPFManager(context, "ACCOUNT");
+        this.context = context;
     }
 
     private Map<String, String> getLoginData(String email, String password, String fcmToken) {
@@ -77,14 +80,14 @@ public class LoginPresenter  implements LoginContract.Presenter {
                 retrofitClient.getFindMyUser(result1.getData().getUserId(), new ResultCallback<Dto<UserDto>>() {
                     @Override
                     public void onSuccess(Dto<UserDto> result2) {
-                        Guardian.getInstance().initGuardian(result1.getData(), result2.getData());
+                        Guardian.getInstance().initGuardian(result1.getData(), result2.getData(), ImageUtil.byteStringToUri(context, result2.getData().getProfile(), "profile_temp_img"));
                         storeAutoLoginData(-1, email, password, "GUARDIAN");
                         view.onLoginSuccess("보호자 로그인 성공");
                     }
 
                     @Override
                     public void onFailure(String result, Throwable t) {
-                        Guardian.getInstance().initGuardian(result1.getData(), null);
+                        Guardian.getInstance().initGuardian(result1.getData(), null, null);
                         view.onLoginSuccess("보호자 로그인 성공");
                     }
                 });

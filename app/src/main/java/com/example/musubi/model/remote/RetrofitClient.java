@@ -97,6 +97,7 @@ public class RetrofitClient {
 
             @Override
             public void onFailure(@NonNull Call<Dto<UserDto>> call, @NonNull Throwable t) {
+                Log.d("NETWORK_ERROR", t.getMessage());
                 resultCallback.onFailure("NETWORK_ERROR", t);
             }
         });
@@ -271,7 +272,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 200) {
                     resultCallback.onSuccess(response.body());
                 } else {
-                    Log.e("SafeZone", "Error: " + response.code() + " - " + response.body().getResponseMessage());
+                    Log.e("SafeZone", "Error: " + response.code());
                     resultCallback.onFailure("위험 지역 설정에 실패했습니다.", new Exception("status code is not 200"));
                 }
             }
@@ -309,10 +310,12 @@ public class RetrofitClient {
         call.enqueue(new Callback<Dto<Void>>() {
             @Override
             public void onResponse(Call<Dto<Void>> call, Response<Dto<Void>> response) {
-                if (response.isSuccessful() && response.code() == 200)
+                if (response.isSuccessful() && response.code() == 201)
                     resultCallback.onSuccess(response.body()); // List<SafeAreaDto>를 포함한 Dto 객체 전달
-                else
+                else {
+                    Log.d("ImageUpload", response.code() + "");
                     resultCallback.onFailure("나의 사용자 이미지 업로드에 실패했습니다.", new Exception("status code is not 200"));
+                }
 
             }
 

@@ -1,5 +1,8 @@
 package com.example.musubi.model.entity;
 
+import android.net.Uri;
+import android.util.Log;
+
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.UserDto;
 
@@ -23,12 +26,13 @@ public class Guardian extends Person{
         this.user = user;
     }
 
-    public void initGuardian (GuardianDto guardianDto, UserDto userDto) {
+    public void initGuardian (GuardianDto guardianDto, UserDto userDto, Uri profileImage) {
         User myUser;
+
         if (userDto == null)
             myUser = null;
         else
-            myUser = new User(userDto.getUserId(), userDto.getEmail(), userDto.getName(), userDto.getSex(), userDto.getAge(), userDto.getNickname(), userDto.getPhoneNumber(), userDto.getHomeAddress(), userDto.getDistrict());
+            myUser = new User(userDto.getUserId(), userDto.getEmail(), userDto.getName(), userDto.getSex(), userDto.getAge(), userDto.getNickname(), userDto.getPhoneNumber(), userDto.getHomeAddress(), userDto.getDistrict(), profileImage);
         if (guardianDto == null)
             instance = null;
         else

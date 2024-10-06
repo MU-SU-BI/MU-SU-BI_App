@@ -2,6 +2,7 @@ package com.example.musubi.view.fragment;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -22,6 +23,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.musubi.R;
 import com.example.musubi.model.entity.Gender;
 import com.example.musubi.model.entity.User;
@@ -101,6 +106,26 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
         linkedUserHomeAddressTextView.setText(user.getAddress());
         linkedUserGenderTextView.setText(user.getGender() == Gender.MALE ? "남성" : "여성");
         connectUserButton.setVisibility(View.GONE);
+
+        Log.d("userDto", user.getProfileImage().toString());
+        Glide.with(this)
+                .load(user.getProfileImage())
+                .centerCrop()
+                .error(R.drawable.baseline_close_24) // 에러 시 표시할 기본 이미지
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        Log.e("GlideError", "Image load failed", e);
+                        // 여기서 에러 처리 로직을 추가할 수 있습니다.
+                        return false; // false를 반환하여 에러 이미지가 설정되도록 합니다.
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        return false; // 리소스 로드 성공 시 처리
+                    }
+                })
+                .into(linkedUserPhotoImageView);
     }
 
     private void showInputDialog() {

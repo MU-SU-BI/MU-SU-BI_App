@@ -10,6 +10,7 @@ import com.example.musubi.model.entity.User;
 import com.example.musubi.model.local.SPFManager;
 import com.example.musubi.model.remote.RetrofitClient;
 import com.example.musubi.presenter.contract.MainContract;
+import com.example.musubi.util.ImageUtil;
 import com.example.musubi.util.callback.ResultCallback;
 
 import java.util.HashMap;
@@ -19,12 +20,14 @@ public class MainPresenter implements MainContract.Presenter {
     private final MainContract.View view;
     private final RetrofitClient retrofitClient;
     private final SPFManager spfManager;
+    private final Context context;
 
     public MainPresenter(MainContract.View view, Context context) {
         this.view = view;
         this.retrofitClient = new RetrofitClient();
         this.retrofitClient.initRetrofit();
         this.spfManager = new SPFManager(context, "ACCOUNT");
+        this.context = context;
     }
 
     @Override
@@ -74,13 +77,13 @@ public class MainPresenter implements MainContract.Presenter {
                     retrofitClient.getFindMyUser(result1.getData().getUserId(), new ResultCallback<Dto<UserDto>>() {
                         @Override
                         public void onSuccess(Dto<UserDto> result2) {
-                            Guardian.getInstance().initGuardian(result1.getData(), result2.getData());
+                            Guardian.getInstance().initGuardian(result1.getData(), result2.getData(), ImageUtil.byteStringToUri(context, result2.getData().getProfile(), "profile_temp_img"));
                             view.onAutoLoginSuccess(result1.getResponseMessage(), userType);
                         }
 
                         @Override
                         public void onFailure(String result, Throwable t) {
-                            Guardian.getInstance().initGuardian(result1.getData(), null);
+                            Guardian.getInstance().initGuardian(result1.getData(), null, null);
                             view.onAutoLoginSuccess(result1.getResponseMessage(), userType);
                         }
                     });

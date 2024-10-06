@@ -53,6 +53,6 @@ public interface RetrofitURL {
     @GET("api/v1/safe-area/{guardianId}")
     Call<Dto<List<SafeAreaDto>>> setSafeZones(@Path("guardianId") long guardianId);
     @Multipart
-    @POST("api/v1/[~~~~]")
-    Call<Dto<Void>> postMyUserImage(@Part("userId") RequestBody idPart, @Part MultipartBody.Part imagePart);
+    @POST("api/v1/guardians/profile")
+    Call<Dto<Void>> postMyUserImage(@Part("userId") RequestBody idPart, @Part MultipartBody.Part image);
 }

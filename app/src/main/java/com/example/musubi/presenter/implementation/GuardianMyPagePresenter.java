@@ -36,7 +36,7 @@ public class GuardianMyPagePresenter implements GuardianMyPageContract.Presenter
 
     @Override
     public void logoutGuardian() {
-        Guardian.getInstance().initGuardian(null, null);
+        Guardian.getInstance().initGuardian(null, null, null);
         spfManager.getEditor().remove("EMAIL").apply();
         spfManager.getEditor().remove("PASSWORD").apply();
         spfManager.getEditor().remove("USER_TYPE").apply();
@@ -63,7 +63,7 @@ public class GuardianMyPagePresenter implements GuardianMyPageContract.Presenter
         File file = new File(getPathFromImageUri(context, imageUri));
         RequestBody requestFile = RequestBody.create(MultipartBody.FORM, file);
         MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
-        RequestBody idPart = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(Guardian.getInstance().getUser().getId()));
+        RequestBody idPart = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(Guardian.getInstance().getId()));
 
         retrofitClient.postMyUserImage(idPart, imagePart, new ResultCallback<Dto<Void>>() {
             @Override
