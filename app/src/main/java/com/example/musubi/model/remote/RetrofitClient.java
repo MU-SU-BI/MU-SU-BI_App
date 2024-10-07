@@ -7,14 +7,13 @@ import com.example.musubi.model.dto.CommentDto;
 import com.example.musubi.model.dto.DistrictDto;
 import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.Dto;
-import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.LocationDto;
 import com.example.musubi.model.dto.MyUserDto;
 import com.example.musubi.model.dto.PostDetailDto;
 import com.example.musubi.model.dto.PostDto;
 import com.example.musubi.model.dto.SafeAreaDto;
-import com.example.musubi.model.dto.SosDto;
+import com.example.musubi.model.dto.SosRequestDto;
 import com.example.musubi.model.dto.SendCommentDto;
 import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
@@ -323,8 +322,8 @@ public class RetrofitClient {
         });
     }
 
-    public void postSosCall(SosDto sosDto, ResultCallback<Dto<Void>> resultCallback) {
-        Call<Dto<Void>> call = retrofitService.requestSosToCommunity(sosDto);
+    public void postSosRequestToCommunity(SosRequestDto sosDto, ResultCallback<Dto<Void>> resultCallback) {
+        Call<Dto<Void>> call = retrofitService.postSosRequestToCommunity(sosDto);
 
         call.enqueue(new Callback<Dto<Void>>() {
             @Override
@@ -332,8 +331,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 200)
                     resultCallback.onSuccess(response.body()); // List<SafeAreaDto>를 포함한 Dto 객체 전달
                 else
-                    resultCallback.onFailure("커뮤니티 SoS 요청에 실패했습니다.", new Exception("status code is not 200"));
-
+                    resultCallback.onFailure("지역 커뮤니티 SoS 요청에 실패했습니다.", new Exception("status code is not 200"));
             }
 
             @Override
@@ -342,6 +340,7 @@ public class RetrofitClient {
             }
         });
     }
+
     public void getGuardianPosts(String type, long userId, ResultCallback<Dto<List<PostDto>>> resultCallback) {
         Call<Dto<List<PostDto>>> call = retrofitService.getGuardianPosts(type, userId);
         call.enqueue(new Callback<Dto<List<PostDto>>>() {
@@ -436,4 +435,6 @@ public class RetrofitClient {
             }
         });
     }
+
+
 }

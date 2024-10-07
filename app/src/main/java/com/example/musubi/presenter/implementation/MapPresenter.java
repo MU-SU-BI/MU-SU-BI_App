@@ -1,10 +1,8 @@
 package com.example.musubi.presenter.implementation;
 
 import com.example.musubi.model.dto.Dto;
-import com.example.musubi.model.dto.GpsDto;
 import com.example.musubi.model.dto.SafeAreaDto;
-import com.example.musubi.model.dto.SosDto;
-import com.example.musubi.model.entity.User;
+import com.example.musubi.model.dto.SosRequestDto;
 import com.example.musubi.model.remote.RetrofitClient;
 import com.example.musubi.presenter.contract.MapContract;
 import com.example.musubi.util.callback.ResultCallback;
@@ -57,7 +55,7 @@ public class MapPresenter implements MapContract.Presenter {
 
     @Override
     public void requestSosToCommunity(long userId) {
-        retrofitClient.postSosCall(new SosDto(userId), new ResultCallback<Dto<Void>>() {
+        retrofitClient.postSosRequestToCommunity(new SosRequestDto(userId), new ResultCallback<Dto<Void>>() {
             @Override
             public void onSuccess(Dto<Void> result) {
                 view.onCallSosSuccess(result.getResponseMessage());
