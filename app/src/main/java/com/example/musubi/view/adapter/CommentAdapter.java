@@ -66,11 +66,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
         try {
+            // 서버로부터 받은 형식을 파싱
             Date date = inputFormat.parse(rawDate);
             return outputFormat.format(date);
         } catch (ParseException e) {
-            e.printStackTrace();
-            return "잘못된 날짜 형식";
+            // 이미 포맷된 날짜로 처리
+            return rawDate;
         }
     }
+
 }

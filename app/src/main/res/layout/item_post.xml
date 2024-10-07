@@ -1,50 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp">
+    android:background="@drawable/rounded_background"
+    android:padding="16dp"
+        android:layout_margin="8dp">
 
     <TextView
-        android:id="@+id/title_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="제목"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:id="@+id/title_text"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="제목"
+    android:textSize="20sp"
+    android:textStyle="bold"
+    android:textColor="#333333"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/author_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="글쓴이"
-        android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/title_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    android:id="@+id/author_text"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="글쓴이"
+    android:textSize="14sp"
+    android:textColor="#666666"
+    app:layout_constraintTop_toBottomOf="@id/title_text"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginTop="4dp"/>
 
     <TextView
-        android:id="@+id/date_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="생성 날짜"
-        android:textSize="12sp"
-        app:layout_constraintTop_toBottomOf="@id/author_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    android:id="@+id/date_text"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="생성 날짜"
+    android:textSize="12sp"
+    android:textColor="#999999"
+    app:layout_constraintTop_toBottomOf="@id/author_text"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginTop="4dp"/>
 
-    <!-- 구분선 추가 -->
+    <TextView
+    android:id="@+id/comment_count_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:drawableLeft="@drawable/baseline_chat_bubble_24"
+    android:drawablePadding="4dp"
+    android:text="0"
+    android:textSize="12sp"
+    android:textColor="#999999"
+    app:layout_constraintTop_toBottomOf="@id/date_text"
+    app:layout_constraintStart_toStartOf="parent"
+    android:layout_marginTop="8dp"/>
+
     <View
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="#D3D3D3"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/date_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    android:layout_width="0dp"
+    android:layout_height="1dp"
+    android:background="#D3D3D3"
+    android:layout_marginTop="8dp"
+    app:layout_constraintTop_toBottomOf="@id/comment_count_text"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

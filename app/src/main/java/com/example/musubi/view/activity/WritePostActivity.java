@@ -1,5 +1,7 @@
 package com.example.musubi.view.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Button;
@@ -11,9 +13,9 @@ import com.example.musubi.model.entity.User;
 import com.example.musubi.presenter.contract.CommunityContract;
 import com.example.musubi.presenter.implementation.CommunityPresenter;
 import com.example.musubi.model.dto.PostDetailDto;
-import com.example.musubi.model.dto.CommentDto; // CommentDto import 추가
+import com.example.musubi.model.dto.CommentDto;
 
-import java.util.List; // List import 추가
+import java.util.List;
 
 public class WritePostActivity extends AppCompatActivity implements CommunityContract.View {
     private EditText titleEditText, contentEditText;
@@ -31,19 +33,20 @@ public class WritePostActivity extends AppCompatActivity implements CommunityCon
         submitButton = findViewById(R.id.btn_submit_post);
 
         // CommunityPresenter 생성 시 this와 context를 함께 전달
-        presenter = new CommunityPresenter(this, this);  // Context 추가
+        presenter = new CommunityPresenter(this, this);
 
         // 제출 버튼 클릭 리스너
         submitButton.setOnClickListener(v -> {
             String title = titleEditText.getText().toString();
             String content = contentEditText.getText().toString();
-            long userId;
-            if (User.getInstance().getId() == -1)
-                userId = Guardian.getInstance().getId();
-            else
-                userId = User.getInstance().getId();
+            long userId = (User.getInstance().getId() == -1) ? Guardian.getInstance().getId() : User.getInstance().getId();
+
             if (!title.isEmpty() && !content.isEmpty()) {
                 presenter.createPost(title, content, userId);  // 사용자의 ID를 전달
+
+                // 작성 성공을 알리는 인텐트를 생성하고, 결과를 설정한 후 종료
+                Intent returnIntent = new Intent();
+                setResult(Activity.RESULT_OK, returnIntent);
                 finish();
             } else {
                 Toast.makeText(WritePostActivity.this, "제목과 내용을 입력하세요.", Toast.LENGTH_SHORT).show();
@@ -71,12 +74,8 @@ public class WritePostActivity extends AppCompatActivity implements CommunityCon
     public void onPostsLoaded(List<com.example.musubi.model.dto.PostDto> data) {}
 
     @Override
-    public void onPostDetailLoaded(PostDetailDto postDetail) {
-        // 이 메서드는 작성 화면에서 사용되지 않으므로 빈 메서드로 처리
-    }
+    public void onPostDetailLoaded(PostDetailDto postDetail) {}
 
     @Override
-    public void onCommentsLoaded(List<CommentDto> comments) {
-        // 댓글 로드 기능이 필요 없으므로 빈 메서드로 처리
-    }
+    public void onCommentsLoaded(List<CommentDto> comments) {}
 }
