@@ -35,12 +35,14 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@id/btn_write_post"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/location_text"
         app:layout_constraintVertical_bias="0.0" />
+
 
     <!-- 글쓰기 버튼 -->
     <androidx.appcompat.widget.AppCompatButton
@@ -52,7 +54,7 @@
         android:drawablePadding="3dp"
         android:backgroundTint="#76A66F"
         android:background="@drawable/round_btn_checked"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
