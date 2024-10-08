@@ -125,24 +125,29 @@
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:padding="16dp">
 
                     <TextView
+                        android:id="@+id/linkedGuardianInfoTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         android:text="연동된 보호자 정보"
-                        android:textAppearance="?attr/textAppearanceHeadline6" />
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
+                        android:id="@+id/linkedGuardianNameLayout"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:hint="이름">
+                        android:hint="이름"
+                        app:layout_constraintTop_toBottomOf="@id/linkedGuardianInfoTitle"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/linkedGuardianName"
@@ -154,10 +159,15 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
+                        android:id="@+id/linkedGuardianAgeLayout"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:hint="나이">
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:hint="나이"
+                        app:layout_constraintTop_toBottomOf="@id/linkedGuardianNameLayout"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/linkedGuardianGenderLayout">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/linkedGuardianAge"
@@ -169,24 +179,15 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
+                        android:id="@+id/linkedGuardianGenderLayout"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:hint="주소">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/linkedGuardianHomeAddress"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:enabled="false"
-                            android:inputType="textPostalAddress" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="성별">
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="8dp"
+                        android:hint="성별"
+                        app:layout_constraintTop_toBottomOf="@id/linkedGuardianNameLayout"
+                        app:layout_constraintStart_toEndOf="@id/linkedGuardianAgeLayout"
+                        app:layout_constraintEnd_toEndOf="parent">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/linkedGuardianGender"
@@ -197,7 +198,26 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                </LinearLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/linkedGuardianHomeAddressLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:hint="주소"
+                        app:layout_constraintTop_toBottomOf="@id/linkedGuardianAgeLayout"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/linkedGuardianHomeAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:enabled="false"
+                            android:inputType="textPostalAddress" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
 
