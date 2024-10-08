@@ -100,7 +100,7 @@ public class CallFragment extends Fragment implements CallContract.View, OnActio
         layoutParams.setMargins(0, 0, 0, getPixelToDp(30));
 
         newButtonLayout.setLayoutParams(layoutParams);
-        newButtonLayout.setBackgroundResource(R.drawable.radio_btn_checked);
+        newButtonLayout.setBackgroundResource(R.drawable.main_button2);
 
         TextView buttonText = new TextView(requireContext());
         RelativeLayout.LayoutParams textParams = new RelativeLayout.LayoutParams(

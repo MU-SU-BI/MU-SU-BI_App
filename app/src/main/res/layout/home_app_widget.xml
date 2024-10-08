@@ -6,7 +6,7 @@
         android:id="@+id/widget"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/radio_btn_checked"
+        android:background="@drawable/main_button2"
         android:gravity="center"
         android:text="보호자 호출"
         android:textColor="@color/white"

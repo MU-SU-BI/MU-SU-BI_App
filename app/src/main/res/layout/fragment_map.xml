@@ -14,10 +14,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
         android:layout_margin="20dp"
-        android:background="@drawable/radio_btn_checked"
+        android:background="@drawable/main_button2"
         android:text="안전구역추가"
         android:textColor="@color/white"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        android:padding="10dp"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/sosRequset"
