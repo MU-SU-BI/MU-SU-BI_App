@@ -50,20 +50,20 @@
                         android:layout_marginTop="16dp"
                         android:background="@android:color/white"
                         android:scaleType="centerCrop"
-                        android:text="사진 등록"
                         app:layout_constraintTop_toBottomOf="@id/sosUserInfoTitle"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/sosUserNameLayout"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="16dp"
                         android:hint="이름"
-                        app:layout_constraintTop_toTopOf="@id/sosUserPhoto"
+                        app:layout_constraintTop_toBottomOf="@id/sosUserPhoto"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/sosUserPhoto">
+                        app:layout_constraintEnd_toEndOf="parent">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/sosUserName"
@@ -79,11 +79,11 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginEnd="8dp"
                         android:hint="나이"
                         app:layout_constraintTop_toBottomOf="@id/sosUserNameLayout"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/sosUserPhoto">
+                        app:layout_constraintEnd_toStartOf="@id/sosUserGenderLayout">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/sosUserAge"
@@ -96,12 +96,13 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/sosUserGenderLayout"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:layout_marginStart="8dp"
                         android:hint="성별"
-                        app:layout_constraintTop_toBottomOf="@id/sosUserAgeLayout"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/sosUserNameLayout"
+                        app:layout_constraintStart_toEndOf="@id/sosUserAgeLayout"
                         app:layout_constraintEnd_toEndOf="parent">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -117,9 +118,9 @@
                         android:id="@+id/sosUserHomeAddressLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="8dp"
                         android:hint="주소"
-                        app:layout_constraintTop_toBottomOf="@id/sosUserGenderLayout"
+                        app:layout_constraintTop_toBottomOf="@id/sosUserAgeLayout"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent">
 
@@ -169,6 +170,41 @@
                             android:inputType="phone" />
 
                     </com.google.android.material.textfield.TextInputLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="SoS 사용자 최근 위치"
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <ImageView
+                        android:id="@+id/sosUserMap"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

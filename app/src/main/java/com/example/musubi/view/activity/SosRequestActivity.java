@@ -3,7 +3,6 @@ package com.example.musubi.view.activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +28,7 @@ public class SosRequestActivity extends AppCompatActivity implements SosRequestC
     private TextView sosUserPhoneNumberTextView;
     private TextView sosGuardianPhoneNumberTextView;
     private ImageView sosUserPhotoImageView;
+    private ImageView sosUserMapImageView;
 
     private SosRequestContract.Presenter presenter;
 
@@ -60,19 +60,17 @@ public class SosRequestActivity extends AppCompatActivity implements SosRequestC
         sosUserPhoneNumberTextView = findViewById(R.id.sosUserPhoneNumber);
         sosGuardianPhoneNumberTextView = findViewById(R.id.sosGuardianPhoneNumber);
         sosUserPhotoImageView = findViewById(R.id.sosUserPhoto);
+        sosUserMapImageView = findViewById(R.id.sosUserMap);
     }
 
     @Override
     public void onInquirySosUserInfoSuccess(SosUserInfoDto sosUserInfoDto, String message) {
-        Log.d("SosRequestActivity", "onInquirySosUserInfoSuccess: " + message);
-
         sosUserNameTextView.setText(sosUserInfoDto.getName());
         sosUserAgeTextView.setText(String.valueOf(sosUserInfoDto.getAge()));
-        sosUserGenderTextView.setText(sosUserInfoDto.getSex().equals("남") ? "남자" : "여자" );
+        sosUserGenderTextView.setText(sosUserInfoDto.getSex().equals("남") ? "남자" : "여자");
         sosUserHomeAddressTextView.setText(sosUserInfoDto.getHomeAddress());
         sosUserPhoneNumberTextView.setText(sosUserInfoDto.getPhoneNumber());
         sosGuardianPhoneNumberTextView.setText(sosUserInfoDto.getGuardianPhoneNumber());
-        sosUserPhotoImageView.setImageResource(R.drawable.ic_launcher_background);
         if (sosUserInfoDto.getProfile() == null)
             sosUserPhotoImageView.setImageResource(R.drawable.baseline_close_24);
         else
@@ -87,10 +85,23 @@ public class SosRequestActivity extends AppCompatActivity implements SosRequestC
                     }
                 }
             }.start();
+        if (sosUserInfoDto.getMapImage() == null)
+            sosUserMapImageView.setImageResource(R.drawable.baseline_close_24);
+        else
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        Bitmap bitmap = BitmapFactory.decodeStream(new URL(sosUserInfoDto.getMapImage()).openStream());
+                        runOnUiThread(() -> sosUserMapImageView.setImageBitmap(bitmap));
+                    } catch (IOException e) {
+//                        runOnUiThread(() -> sosUserMapImageView.setImageResource(R.drawable.baseline_close_24));
+                    }
+                }
+            }.start();
     }
 
     @Override
     public void onInquirySosUserInfoFailure(String message) {
-        Log.d("SosRequestActivity", "onInquirySosUserInfoFailure: " + message);
     }
 }
