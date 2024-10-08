@@ -36,9 +36,11 @@ import com.naver.maps.map.util.FusedLocationSource;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class MapFragment extends Fragment implements OnMapReadyCallback, MapContract.View {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
     private boolean isRunning = true;
+    private boolean isSafeZoneAdding = false;
 
     private MapView mapView;
     private NaverMap naverMap;
@@ -49,8 +51,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
     Marker marker = new Marker();
 
     private Button btnAddSafeZone;
+    private Button btnAddSafeZoneSet;
     private androidx.appcompat.widget.AppCompatButton sosRequestButton;
-
 
     @Nullable
     @Override
@@ -59,16 +61,32 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
 
         mapView = view.findViewById(R.id.map_view);
         btnAddSafeZone = view.findViewById(R.id.btn_add_safezone);
+        btnAddSafeZoneSet = view.findViewById(R.id.btn_add_safezone_set);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
+        // 안전구역 추가 버튼 클릭 리스너
         btnAddSafeZone.setOnClickListener(v -> {
+            btnAddSafeZoneSet.setEnabled(true);
+            btnAddSafeZoneSet.setVisibility(View.VISIBLE);
+            btnAddSafeZone.setVisibility(View.INVISIBLE);
+            btnAddSafeZone.setEnabled(false);
+            isSafeZoneAdding = true;  // 안전구역 추가 모드 활성화
+            Toast.makeText(requireContext(), "지도를 클릭해 안전구역을 선택하세요.", Toast.LENGTH_SHORT).show();
+        });
+
+        // 안전구역 설정 버튼 클릭 리스너
+        btnAddSafeZoneSet.setOnClickListener(v -> {
             if (!safeAreas.isEmpty()) {
                 presenter.setMyUserSafeArea(safeAreas);
                 Toast.makeText(requireContext(), "안전구역 설정 완료.", Toast.LENGTH_SHORT).show();
+                btnAddSafeZoneSet.setEnabled(false);
+                btnAddSafeZoneSet.setVisibility(View.INVISIBLE);
+                btnAddSafeZone.setVisibility(View.VISIBLE);
             } else {
                 Toast.makeText(requireContext(), "안전구역을 선택하세요.", Toast.LENGTH_SHORT).show();
             }
+            isSafeZoneAdding = false;  // 안전구역 추가 모드 비활성화
         });
 
         locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
@@ -94,10 +112,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
         // 지도 로딩이 완료되었을 때 서버로부터 안전구역을 받아 지도에 표시
         presenter.getMyUserSafeArea(Guardian.getInstance().getId());
 
+        // 지도 클릭 리스너 - 안전구역 추가 모드에서만 안전구역 추가
         naverMap.setOnMapClickListener((point, coord) -> {
-            SafeAreaDto safeArea = new SafeAreaDto(Guardian.getInstance().getId(), coord.longitude, coord.latitude, 1000);
-            safeAreas.add(safeArea);
-            setSafeZone(coord.latitude, coord.longitude);
+            if (isSafeZoneAdding) {
+                SafeAreaDto safeArea = new SafeAreaDto(Guardian.getInstance().getId(), coord.longitude, coord.latitude, 1000);
+                safeAreas.add(safeArea);
+                setSafeZone(coord.latitude, coord.longitude);
+                Toast.makeText(requireContext(), "안전구역이 선택되었습니다.", Toast.LENGTH_SHORT).show();
+            }
         });
 
         new Thread(() -> {
@@ -125,8 +147,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
 
         naverMap.setLocationSource(locationSource);
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
-        naverMap.setOnMapClickListener((point, coord) ->
-                setSafeZone(coord.latitude, coord.longitude));
         UiSettings uiSettings = naverMap.getUiSettings();
         uiSettings.setLocationButtonEnabled(true);
     }
