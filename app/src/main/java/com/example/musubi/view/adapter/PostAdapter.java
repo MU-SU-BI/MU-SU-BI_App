@@ -35,6 +35,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.authorTextView.setText(post.getAuthorName());
         holder.dateTextView.setText(post.getCreateAt());
 
+        // 댓글 수 설정
+        holder.commentCountTextView.setText(String.valueOf(post.getCommentsCount()));
+
         holder.itemView.setOnClickListener(v -> listener.onPostClick(post));
     }
 
@@ -44,13 +47,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     static class PostViewHolder extends RecyclerView.ViewHolder {
-        TextView titleTextView, authorTextView, dateTextView;
+        TextView titleTextView, authorTextView, dateTextView, commentCountTextView;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.title_text);
             authorTextView = itemView.findViewById(R.id.author_text);
             dateTextView = itemView.findViewById(R.id.date_text);
+            commentCountTextView = itemView.findViewById(R.id.comment_count_text);  // 댓글 수 TextView
         }
     }
 
