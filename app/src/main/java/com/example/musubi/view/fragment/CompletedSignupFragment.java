@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.musubi.R;
+import com.example.musubi.view.activity.LoginActivity;
 import com.example.musubi.view.activity.MainActivity;
 
 public class CompletedSignupFragment extends Fragment {
@@ -39,7 +40,7 @@ public class CompletedSignupFragment extends Fragment {
         Button loginRedirectButton = view.findViewById(R.id.loginRedirect);
 
         loginRedirectButton.setOnClickListener(v -> {
-            Intent intent = new Intent(requireActivity(), MainActivity.class);
+            Intent intent = new Intent(requireActivity(), LoginActivity.class);
             startActivity(intent);
             requireActivity().finish();
         });
