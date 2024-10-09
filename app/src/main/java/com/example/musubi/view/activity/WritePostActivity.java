@@ -78,4 +78,6 @@ public class WritePostActivity extends AppCompatActivity implements CommunityCon
 
     @Override
     public void onCommentsLoaded(List<CommentDto> comments) {}
+    @Override
+    public void setLocationText(String district) {}
 }
