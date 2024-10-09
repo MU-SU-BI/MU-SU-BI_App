@@ -23,8 +23,8 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_add_safezone_set"
         android:layout_width="wrap_content"
-        android:layout_gravity="top|end"
         android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
         android:layout_margin="20dp"
         android:padding="10dp"
         android:background="@drawable/radio_btn_checked"
@@ -32,7 +32,6 @@
         android:visibility="invisible"
         android:textColor="@color/white"
         android:textSize="15dp"/>
-
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/sosRequset"
