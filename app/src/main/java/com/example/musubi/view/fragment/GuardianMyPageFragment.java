@@ -114,9 +114,21 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
                 public void run() {
                     try {
                         Bitmap bitmap = BitmapFactory.decodeStream(new URL(user.getProfileImage()).openStream());
-                        getActivity().runOnUiThread(() -> linkedUserPhotoImageView.setImageBitmap(bitmap));
+                        if (isAdded() && getActivity() != null) {
+                            getActivity().runOnUiThread(() -> {
+                                if (isAdded()) {
+                                    linkedUserPhotoImageView.setImageBitmap(bitmap);
+                                }
+                            });
+                        }
                     } catch (IOException e) {
-                        getActivity().runOnUiThread(() -> linkedUserPhotoImageView.setImageResource(R.drawable.empty_profile_image));
+                        if (isAdded() && getActivity() != null) {
+                            getActivity().runOnUiThread(() -> {
+                                if (isAdded()) {
+                                    linkedUserPhotoImageView.setImageResource(R.drawable.empty_profile_image);
+                                }
+                            });
+                        }
                     }
                 }
             }.start();
