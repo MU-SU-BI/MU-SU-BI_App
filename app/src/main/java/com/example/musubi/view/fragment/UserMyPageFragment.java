@@ -20,6 +20,7 @@ import com.example.musubi.model.entity.User;
 import com.example.musubi.presenter.contract.UserMyPageContract;
 import com.example.musubi.presenter.implementation.UserMyPagePresenter;
 import com.example.musubi.util.service.ForegroundService;
+import com.example.musubi.view.activity.LoginActivity;
 import com.example.musubi.view.activity.MainActivity;
 
 public class UserMyPageFragment extends Fragment implements UserMyPageContract.View {
@@ -89,7 +90,7 @@ public class UserMyPageFragment extends Fragment implements UserMyPageContract.V
     public void onLogoutSuccess() {
         requireActivity().finish();
         requireActivity().stopService(new Intent(requireActivity(), ForegroundService.class));
-        startActivity(new Intent(requireActivity(), MainActivity.class));
+        startActivity(new Intent(requireActivity(), LoginActivity.class));
     }
 
     @Override

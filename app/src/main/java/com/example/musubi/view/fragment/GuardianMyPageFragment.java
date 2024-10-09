@@ -29,6 +29,7 @@ import com.example.musubi.model.entity.User;
 import com.example.musubi.presenter.contract.GuardianMyPageContract;
 import com.example.musubi.presenter.implementation.GuardianMyPagePresenter;
 import com.example.musubi.util.service.ForegroundService;
+import com.example.musubi.view.activity.LoginActivity;
 import com.example.musubi.view.activity.MainActivity;
 
 import java.io.IOException;
@@ -162,7 +163,7 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
     public void onLogoutSuccess() {
         requireActivity().finish();
         requireActivity().stopService(new Intent(requireActivity(), ForegroundService.class));
-        startActivity(new Intent(requireActivity(), MainActivity.class));
+        startActivity(new Intent(requireActivity(), LoginActivity.class));
     }
 
     @Override

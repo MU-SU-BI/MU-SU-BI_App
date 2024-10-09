@@ -53,6 +53,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             return insets;
         });
         presenter = new LoginPresenter(this, getApplicationContext());
+        presenter.loginByAuto();
         initView();
     }
 

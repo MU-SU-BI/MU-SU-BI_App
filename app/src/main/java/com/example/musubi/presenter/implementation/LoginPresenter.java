@@ -19,14 +19,12 @@ public class LoginPresenter  implements LoginContract.Presenter {
     private final LoginContract.View view;
     private final RetrofitClient retrofitClient;
     private final SPFManager spfManager;
-    private final Context context;
 
     public LoginPresenter(LoginContract.View view, Context context) {
         this.view = view;
         this.retrofitClient = new RetrofitClient();
         this.retrofitClient.initRetrofit();
         this.spfManager = new SPFManager(context, "ACCOUNT");
-        this.context = context;
     }
 
     private Map<String, String> getLoginData(String email, String password, String fcmToken) {
@@ -35,6 +33,21 @@ public class LoginPresenter  implements LoginContract.Presenter {
         loginData.put("password", password);
         loginData.put("fcmToken", fcmToken);
         return loginData;
+    }
+
+    @Override
+    public void loginByAuto() {
+        String email = spfManager.getSharedPreferences().getString("EMAIL", "");
+        String password = spfManager.getSharedPreferences().getString("PASSWORD", "");
+        String userType = spfManager.getSharedPreferences().getString("USER_TYPE", "");
+
+        if (email.isEmpty() || password.isEmpty() || userType.isEmpty())
+            return;
+
+        if (userType.equals("USER"))
+            loginUser(email, password);
+        else
+            loginGuardian(email, password);
     }
 
     @Override
