@@ -154,8 +154,7 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
                 .load(imageUri)
                 .centerCrop()
                 .into(linkedUserPhotoImageView);
-//        Log.e("TAG", "loadImageIntoView: " + imageUri.toString() + "\n" + imageUri.getPath());
-        // TODO: 선택된 이미지를 서버에 업로드하거나 로컬에 저장하는 로직 추가
+
         presenter.uploadUserImage(imageUri);
     }
 
@@ -176,8 +175,7 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
-        Toast.makeText(getActivity(), "연결 성공: " + message, Toast.LENGTH_SHORT).show();
-        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new GuardianMyPageFragment()).commit();
+        presenter.loadMyUserInfo(Guardian.getInstance().getId());
     }
 
     @Override
@@ -189,12 +187,19 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
     }
 
     @Override
+    public void onLoadMyUserInfoSuccess(String message) {
+        Toast.makeText(getActivity(), "연결 성공, " + "다시 내 정보 창을 클릭하세요.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLoadMyUserInfoFailure(String message) {
+    }
+
+    @Override
     public void onUploadUserImageSuccess(String message) {
-//        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onUploadUserImageFailure(String message) {
-//        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 }

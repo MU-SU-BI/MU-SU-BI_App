@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.UserConnectDto;
+import com.example.musubi.model.dto.UserDto;
 import com.example.musubi.model.dto.UserProfileDto;
 import com.example.musubi.model.entity.Guardian;
 import com.example.musubi.model.entity.User;
@@ -56,6 +57,22 @@ public class GuardianMyPagePresenter implements GuardianMyPageContract.Presenter
             @Override
             public void onFailure(String result, Throwable t) {
                 view.onConnectFailure(result);
+            }
+        });
+    }
+
+    @Override
+    public void loadMyUserInfo(long guardianId) {
+        retrofitClient.getFindMyUser(guardianId, new ResultCallback<Dto<UserDto>>() {
+            @Override
+            public void onSuccess(Dto<UserDto> result2) {
+                Guardian.getInstance().connectMyUser(result2.getData());
+                view.onLoadMyUserInfoSuccess(result2.getResponseMessage());
+            }
+
+            @Override
+            public void onFailure(String result, Throwable t) {
+                view.onLoadMyUserInfoFailure(result);
             }
         });
     }

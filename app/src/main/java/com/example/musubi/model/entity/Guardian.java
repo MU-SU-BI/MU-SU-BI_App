@@ -40,4 +40,8 @@ public class Guardian extends Person {
     public Person getUser() {
         return user;
     }
+
+    public void connectMyUser(UserDto userDto) {
+        this.user = new User(userDto.getUserId(), userDto.getEmail(), userDto.getName(), userDto.getSex(), userDto.getAge(), userDto.getNickname(), userDto.getPhoneNumber(), userDto.getHomeAddress(), userDto.getDistrict(), userDto.getProfile());
+    }
 }

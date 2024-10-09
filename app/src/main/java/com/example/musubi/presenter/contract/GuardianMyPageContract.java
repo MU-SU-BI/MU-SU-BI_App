@@ -8,6 +8,8 @@ public interface GuardianMyPageContract {
         void onLogoutFailure();
         void onConnectSuccess(String message);
         void onConnectFailure(String message);
+        void onLoadMyUserInfoSuccess(String message);
+        void onLoadMyUserInfoFailure(String message);
         void onUploadUserImageSuccess(String message);
         void onUploadUserImageFailure(String message);
     }
@@ -15,6 +17,7 @@ public interface GuardianMyPageContract {
     interface Presenter {
         void logoutGuardian();
         void connectUser(String userName, String phoneNumber);
+        void loadMyUserInfo(long guardianId);
         void uploadUserImage(Uri imageUri);
     }
 }
