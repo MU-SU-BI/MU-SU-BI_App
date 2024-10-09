@@ -15,5 +15,7 @@ public interface CommunityContract {
         void onPostCreateFailure(String result);
 
         void onCommentsLoaded(List<CommentDto> data);
+
+        void setLocationText(String district);
     }
 }

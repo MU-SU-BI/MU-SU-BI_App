@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.viewmodel.CreationExtras;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -59,7 +58,6 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
         });
 
         fetchLocationData();
-        fetchPostsFromServer();
 
         return view;
     }
@@ -68,8 +66,7 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1001 && resultCode == Activity.RESULT_OK) {
-            // 게시물 작성 후 목록 새로 고침
-            fetchPostsFromServer();
+            fetchLocationData();
         }
     }
 
@@ -78,17 +75,18 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
         presenter.setMyDistrict(type);
     }
 
-    private void fetchPostsFromServer() {
-        String type = (User.getInstance().getId() == -1) ? "guardian" : "user";
-        long userId = (User.getInstance().getId() == -1) ? Guardian.getInstance().getId() : User.getInstance().getId();
-        presenter.getGuardianPosts(type, userId);
-    }
-
     @Override
     public void onSetDistrictSuccess(String data) {
         String[] locationParts = data.split(" ");
         String lastLocation = locationParts[locationParts.length - 1];
-        locationText.setText(lastLocation);
+        setLocationText(lastLocation);
+        fetchPostsFromServer();
+    }
+
+    private void fetchPostsFromServer() {
+        String type = (User.getInstance().getId() == -1) ? "guardian" : "user";
+        long userId = (User.getInstance().getId() == -1) ? Guardian.getInstance().getId() : User.getInstance().getId();
+        presenter.getGuardianPosts(type, userId);
     }
 
     @Override
@@ -121,4 +119,9 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
 
     @Override
     public void onCommentsLoaded(List<CommentDto> comments) {}
+
+    @Override
+    public void setLocationText(String district) {
+        locationText.setText(district);
+    }
 }

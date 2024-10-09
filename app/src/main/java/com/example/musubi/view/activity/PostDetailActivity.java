@@ -101,7 +101,6 @@ public class PostDetailActivity extends AppCompatActivity implements CommunityCo
                 Toast.makeText(PostDetailActivity.this, "댓글을 입력하세요.", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     // 서버에서 게시물 상세 정보를 받아서 UI에 반영
@@ -161,4 +160,7 @@ public class PostDetailActivity extends AppCompatActivity implements CommunityCo
 
     @Override
     public void onSetDistrictFailure(String result) {}
+
+    @Override
+    public void setLocationText(String district) {}
 }
