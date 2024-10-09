@@ -95,7 +95,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 200)
                     resultCallback.onSuccess(response.body());
                 else
-                    resultCallback.onFailure("이메일 또는 비밀번호가 틀립니다.", new Exception("status code is not 200"));
+                    resultCallback.onFailure("이메일 또는 비밀번호가 틀립니다.", new Exception("(" + response.code() + ") code"));
             }
 
             @Override
@@ -114,7 +114,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 200)
                     resultCallback.onSuccess(response.body());
                 else
-                    resultCallback.onFailure("이메일 또는 비밀번호가 틀립니다.", new Exception("status code is not 200"));
+                    resultCallback.onFailure("이메일 또는 비밀번호가 틀립니다.", new Exception("(" + response.code() + ") code"));
             }
 
             @Override
@@ -133,7 +133,7 @@ public class RetrofitClient {
                 if (response.isSuccessful())
                     resultCallback.onSuccess(response.body());
                 else
-                    resultCallback.onFailure(response.body().getResponseMessage(), new Exception("status code in not 200"));
+                    resultCallback.onFailure("내 구역 설정에 실패했습니다.", new Exception("(" + response.code() + ") code"));
             }
 
             @Override
@@ -151,11 +151,8 @@ public class RetrofitClient {
             public void onResponse(Call<Dto<Void>> call, Response<Dto<Void>> response) {
                 if (response.body() != null && response.isSuccessful()) {
                     resultCallback.onSuccess(response.body());
-                } else if (response.body() != null) {
-                    resultCallback.onFailure(response.body().getResponseMessage(), new Exception("status code in not 200"));
-                } else {
-                    resultCallback.onFailure("Response body is null", new Exception("Response body is null"));
-                }
+                } else
+                    resultCallback.onFailure("사용자와 연결에 실패했습니다", new Exception("(" + response.code() + ") code"));
             }
 
             @Override
@@ -174,7 +171,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 200)
                     resultCallback.onSuccess(response.body());
                 else
-                    resultCallback.onFailure("보호자 호출에 실패했습니다.", new Exception("status code is not 200"));
+                    resultCallback.onFailure("보호자 호출에 실패했습니다.", new Exception("(" + response.code() + ") code"));
             }
 
             @Override
@@ -193,7 +190,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 200) {
                     resultCallback.onSuccess(response.body());
                 } else
-                    resultCallback.onFailure("위치 정보 업데이트에 실패했습니다.", new Exception("status code is not 200"));
+                    resultCallback.onFailure("위치 정보 업데이트에 실패했습니다.", new Exception("(" + response.code() + ") code"));
             }
 
             @Override
@@ -212,7 +209,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 200)
                     resultCallback.onSuccess(response.body());
                 else
-                    resultCallback.onFailure("나의 사용자 조회에 실패했습니다.", new Exception("status code is not 200"));
+                    resultCallback.onFailure("나의 사용자 조회에 실패했습니다.", new Exception("(" + response.code() + ") code"));
             }
 
             @Override
@@ -231,7 +228,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 200)
                     resultCallback.onSuccess(response.body());
                 else
-                    resultCallback.onFailure("나의 보호자 조회에 실패했습니다.", new Exception("status code is not 200"));
+                    resultCallback.onFailure("나의 보호자 조회에 실패했습니다.", new Exception("(" + response.code() + ") code"));
             }
 
             @Override
@@ -250,7 +247,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 200)
                     resultCallback.onSuccess(response.body());
                 else
-                    resultCallback.onFailure("나의 위치 조회에 실패했습니다.", new Exception("status code is not 200"));
+                    resultCallback.onFailure("나의 위치 조회에 실패했습니다.", new Exception("(" + response.code() + ") code"));
             }
 
             @Override
@@ -268,7 +265,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 200) {
                     resultCallback.onSuccess(response.body());
                 } else {
-                    resultCallback.onFailure("위험 지역 설정에 실패했습니다.", new Exception("status code is not 200"));
+                    resultCallback.onFailure("위험 지역 설정에 실패했습니다.", new Exception("(" + response.code() + ") code"));
                 }
             }
 
@@ -288,7 +285,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 200) {
                     resultCallback.onSuccess(response.body()); // List<SafeAreaDto>를 포함한 Dto 객체 전달
                 } else {
-                    resultCallback.onFailure("안전 지역 조회에 실패했습니다.", new Exception("status code is not 200"));
+                    resultCallback.onFailure("안전 지역 조회에 실패했습니다.", new Exception("(" + response.code() + ") code"));
                 }
             }
 
@@ -308,7 +305,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 201)
                     resultCallback.onSuccess(response.body()); // List<SafeAreaDto>를 포함한 Dto 객체 전달
                 else
-                    resultCallback.onFailure("나의 사용자 이미지 업로드에 실패했습니다.", new Exception("status code is not 200"));
+                    resultCallback.onFailure("나의 사용자 이미지 업로드에 실패했습니다.", new Exception("(" + response.code() + ") code"));
             }
 
             @Override
@@ -327,8 +324,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 200)
                     resultCallback.onSuccess(response.body()); // List<SafeAreaDto>를 포함한 Dto 객체 전달
                 else
-                    resultCallback.onFailure("커뮤니티 sos 요청 실패(" + response.code() + "):" + response.message(),
-                            new Exception(response.code() + ": " + (response.body().getResponseMessage())));
+                    resultCallback.onFailure("커뮤니티 sos 요청 실패했습니다.", new Exception("(" + response.code() + ") code"));
             }
 
             @Override
@@ -347,8 +343,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 200)
                     resultCallback.onSuccess(response.body());
                 else
-                    resultCallback.onFailure("Sos 요청 사용자 조회에 실패(" + response.code() + "):" + response.message(),
-                            new Exception(response.code() + ": " + (response.body().getResponseMessage())));
+                    resultCallback.onFailure("Sos 요청 사용자 조회에 실패했습니다.", new Exception("(" + response.code() + ") code"));
             }
 
             @Override
@@ -366,7 +361,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 200) {
                     resultCallback.onSuccess(response.body());
                 } else {
-                    resultCallback.onFailure("게시물 조회에 실패했습니다.", new Exception("status code is not 200"));
+                    resultCallback.onFailure("게시물 조회에 실패했습니다.", new Exception("(" + response.code() + ") code"));
                 }
             }
 
@@ -385,7 +380,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 201) {
                     resultCallback.onSuccess(response.body());
                 } else {
-                    resultCallback.onFailure("게시물 생성에 실패했습니다.", new Exception("status code is not 201"));
+                    resultCallback.onFailure("게시물 생성에 실패했습니다.", new Exception("(" + response.code() + ") code"));
                 }
             }
 
@@ -405,7 +400,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 200) {
                     resultCallback.onSuccess(response.body());
                 } else {
-                    resultCallback.onFailure("게시물 조회에 실패했습니다.", new Exception("status code is not 200"));
+                    resultCallback.onFailure("게시물 조회에 실패했습니다.", new Exception("(" + response.code() + ") code"));
                 }
             }
 
@@ -425,7 +420,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 200) {
                     resultCallback.onSuccess(response.body());
                 } else {
-                    resultCallback.onFailure("게시물 조회에 실패했습니다.", new Exception("status code is not 200"));
+                    resultCallback.onFailure("게시물 조회에 실패했습니다.", new Exception("(" + response.code() + ") code"));
                 }
             }
 
@@ -444,7 +439,7 @@ public class RetrofitClient {
                 if (response.isSuccessful() && response.code() == 201) {
                     resultCallback.onSuccess(response.body());
                 } else {
-                    resultCallback.onFailure("게시물 조회에 실패했습니다.", new Exception("status code is not 200"));
+                    resultCallback.onFailure("게시물 조회에 실패했습니다.", new Exception("(" + response.code() + ") code"));
                 }
             }
 
