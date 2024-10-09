@@ -41,7 +41,7 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
     private AlertDialog dialog;
     private Button connectUserButton, logoutButton;
     private TextView nameTextView, emailTextView, phoneNumberTextView, homeAddressTextView, districtTextView;
-    private TextView linkedUserNameTextView, linkedUserAgeTextView, linkedUserHomeAddressTextView, linkedUserGenderTextView;
+    private TextView linkedUserNameTextView, linkedUserAgeTextView, linkedUserHomeAddressTextView, linkedUserGenderTextView, linkedUserPhoneNumberTextView;
     private CardView linkedUserCardView;
     private ImageView linkedUserPhotoImageView;
 
@@ -67,6 +67,7 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
         linkedUserAgeTextView = view.findViewById(R.id.linkedUserAge);
         linkedUserHomeAddressTextView = view.findViewById(R.id.linkedUserHomeAddress);
         linkedUserGenderTextView = view.findViewById(R.id.linkedUserGender);
+        linkedUserPhoneNumberTextView = view.findViewById(R.id.linkedUserPhoneNumber);
         linkedUserCardView = view.findViewById(R.id.linkedUserCard);
         linkedUserPhotoImageView = view.findViewById(R.id.linkedUserPhoto);
         linkedUserPhotoImageView.setOnClickListener(v -> {
@@ -103,6 +104,7 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
         linkedUserAgeTextView.setText(String.valueOf(user.getAge()));
         linkedUserHomeAddressTextView.setText(user.getAddress());
         linkedUserGenderTextView.setText(user.getGender() == Gender.MALE ? "남성" : "여성");
+        linkedUserPhoneNumberTextView.setText(user.getPhone());
         connectUserButton.setVisibility(View.GONE);
         if (user.getProfileImage() == null)
             linkedUserPhotoImageView.setImageResource(R.drawable.empty_profile_image);

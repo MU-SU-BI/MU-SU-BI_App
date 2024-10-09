@@ -29,7 +29,7 @@ public class UserMyPageFragment extends Fragment implements UserMyPageContract.V
 
     private Button logoutButton;
     private TextView nameTextView, emailTextView, phoneNumberTextView, homeAddressTextView, districtTextView;
-    private TextView linkedGuardianNameTextView, linkedGuardianAgeTextView, linkedGuardianHomeAddressTextView, linkedGuardianGenderTextView;
+    private TextView linkedGuardianNameTextView, linkedGuardianAgeTextView, linkedGuardianHomeAddressTextView, linkedGuardianGenderTextView, linkedGuardianPhoneNumber;
     private CardView linkedGuardianCardView;
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -54,6 +54,7 @@ public class UserMyPageFragment extends Fragment implements UserMyPageContract.V
         linkedGuardianAgeTextView = view.findViewById(R.id.linkedGuardianAge);
         linkedGuardianHomeAddressTextView = view.findViewById(R.id.linkedGuardianHomeAddress);
         linkedGuardianGenderTextView = view.findViewById(R.id.linkedGuardianGender);
+        linkedGuardianPhoneNumber = view.findViewById(R.id.linkedGuardianPhoneNumber);
         showGuardianInfo();
     }
 
@@ -84,6 +85,7 @@ public class UserMyPageFragment extends Fragment implements UserMyPageContract.V
         linkedGuardianAgeTextView.setText(String.valueOf(guardian.getAge()));
         linkedGuardianHomeAddressTextView.setText(guardian.getAddress());
         linkedGuardianGenderTextView.setText(guardian.getGender() == Gender.MALE ? "남성" : "여성");
+        linkedGuardianPhoneNumber.setText(guardian.getPhone());
     }
 
     @Override
