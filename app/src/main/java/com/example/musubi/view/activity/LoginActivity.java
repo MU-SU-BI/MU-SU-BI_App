@@ -29,7 +29,8 @@ import com.example.musubi.presenter.implementation.LoginPresenter;
 import com.example.musubi.util.service.ForegroundService;
 
 public class LoginActivity extends AppCompatActivity implements LoginContract.View {
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private static final int USER_PERMISSION_REQUEST_CODE = 1;
+    private static final int GUARDIAN_PERMISSION_REQUEST_CODE = 2;
 
     LoginPresenter presenter;
 
@@ -92,7 +93,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
     @RequiresApi(api = Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     @Override
-    public void onLoginSuccess(String message) {
+    public void onLoginSuccess(String userType, String message) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
@@ -102,15 +103,17 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                     Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.FOREGROUND_SERVICE_LOCATION,
                     Manifest.permission.POST_NOTIFICATIONS
-            }, LOCATION_PERMISSION_REQUEST_CODE);
-        } else
-            startServiceAndNavigate();
+            }, userType.equals("USER") ? USER_PERMISSION_REQUEST_CODE : GUARDIAN_PERMISSION_REQUEST_CODE);
+        }
+        else
+            startServiceAndNavigate(userType);
     }
-    private void startServiceAndNavigate() {
+
+    private void startServiceAndNavigate(String userType) {
         Intent intent;
         Intent serviceIntent = new Intent(this, ForegroundService.class);
 
-        if (userRadioButton.isChecked())
+        if (userRadioButton.isChecked() || userType.equals("USER"))
             intent = new Intent(LoginActivity.this, UserNavActivity.class);
         else
             intent = new Intent(LoginActivity.this, GuardianNavActivity.class);
@@ -128,11 +131,11 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+        if (requestCode == USER_PERMISSION_REQUEST_CODE || requestCode == GUARDIAN_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startServiceAndNavigate();
+                startServiceAndNavigate(requestCode == USER_PERMISSION_REQUEST_CODE ? "USER" : "GUARDIAN");
             } else {
-                onLoginFailure("위치 권한이 필요합니다.");
+                onLoginFailure("권한이 필요합니다. 다시 로그인해주세요.");
             }
         }
     }

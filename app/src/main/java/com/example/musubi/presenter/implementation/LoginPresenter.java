@@ -1,6 +1,7 @@
 package com.example.musubi.presenter.implementation;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.GuardianDto;
@@ -41,6 +42,7 @@ public class LoginPresenter  implements LoginContract.Presenter {
         String password = spfManager.getSharedPreferences().getString("PASSWORD", "");
         String userType = spfManager.getSharedPreferences().getString("USER_TYPE", "");
 
+        Log.d("LoginPresenter", "loginByAuto() called with: email = [" + email + "], password = [" + password + "], userType = [" + userType + "]");
         if (email.isEmpty() || password.isEmpty() || userType.isEmpty())
             return;
 
@@ -63,13 +65,14 @@ public class LoginPresenter  implements LoginContract.Presenter {
                     public void onSuccess(Dto<GuardianDto> result2) {
                         User.getInstance().initUser(result1.getData(), result2.getData());
                         storeAutoLoginData(User.getInstance().getId(), email, password, "USER");
-                        view.onLoginSuccess("사용자 로그인 성공");
+                        view.onLoginSuccess("USER", "사용자 로그인 성공");
                     }
 
                     @Override
                     public void onFailure(String result, Throwable t) {
                         User.getInstance().initUser(result1.getData(), null);
-                        view.onLoginSuccess("사용자 로그인 성공");
+                        storeAutoLoginData(User.getInstance().getId(), email, password, "USER");
+                        view.onLoginSuccess("USER", "사용자 로그인 성공");
                     }
                 });
             }
@@ -94,13 +97,14 @@ public class LoginPresenter  implements LoginContract.Presenter {
                     public void onSuccess(Dto<UserDto> result2) {
                         Guardian.getInstance().initGuardian(result1.getData(), result2.getData());
                         storeAutoLoginData(-1, email, password, "GUARDIAN");
-                        view.onLoginSuccess("보호자 로그인 성공");
+                        view.onLoginSuccess("GUARDIAN", "보호자 로그인 성공");
                     }
 
                     @Override
                     public void onFailure(String result, Throwable t) {
                         Guardian.getInstance().initGuardian(result1.getData(), null);
-                        view.onLoginSuccess("보호자 로그인 성공");
+                        storeAutoLoginData(-1, email, password, "GUARDIAN");
+                        view.onLoginSuccess("GUARDIAN", "보호자 로그인 성공");
                     }
                 });
             }
