@@ -46,8 +46,14 @@ public class HomeAppWidget extends AppWidgetProvider {
     }
 
     private void performButtonClickAction(Context context) {
-        Toast.makeText(context, "위젯 버튼이 클릭되었습니다!", Toast.LENGTH_SHORT).show();
         SPFManager spfManager = new SPFManager(context, "ACCOUNT");
+        String userType = spfManager.getSharedPreferences().getString("USER_TYPE", "");
+
+        if (userType.equals("GUARDIAN") || userType.isEmpty()) {
+            Toast.makeText(context, "사용자로 로그인해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         RetrofitClient retrofitClient = new RetrofitClient();
         retrofitClient.initRetrofit();
 
