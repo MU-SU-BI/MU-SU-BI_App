@@ -18,6 +18,7 @@ import com.example.musubi.model.dto.SendCommentDto;
 import com.example.musubi.model.dto.SosUserInfoDto;
 import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
+import com.example.musubi.model.dto.UserProfileDto;
 import com.example.musubi.model.dto.WritePostDto;
 import com.example.musubi.util.callback.ResultCallback;
 
@@ -52,13 +53,10 @@ public class RetrofitClient {
         call.enqueue((new Callback<Dto<Void>>() {
             @Override
             public void onResponse(@NonNull Call<Dto<Void>> call, @NonNull Response<Dto<Void>> response) {
-                assert response.body() != null;
-                String responseMessage = response.body().getResponseMessage();
-
                 if (response.isSuccessful() && response.code() == 201)
-                    resultCallback.onSuccess(responseMessage);
+                    resultCallback.onSuccess(response.body().getResponseMessage());
                 else
-                    resultCallback.onFailure("이메일 또는 휴대폰 번호가 중복입니다.\n다시 시도해주세요.", new Exception("status code is not 201"));
+                    resultCallback.onFailure("사용자 회원가입 실패, 이메일 또는 휴대폰 번호가 중복입니다.", new Exception("(" + response.code() + ") code"));
             }
 
             @Override
@@ -74,11 +72,11 @@ public class RetrofitClient {
         call.enqueue((new Callback<Dto<Void>>() {
             @Override
             public void onResponse(@NonNull Call<Dto<Void>> call, @NonNull Response<Dto<Void>> response) {
-                if (response.isSuccessful() && response.code() == 201) {
-                    assert response.body() != null;
+                if (response.isSuccessful() && response.code() == 201)
                     resultCallback.onSuccess(response.body().getResponseMessage());
-                } else
-                    resultCallback.onFailure("이메일 또는 휴대폰 번호가 중복입니다.\n다시 시도해주세요.", new Exception("status code is not 201"));
+                else
+                    resultCallback.onFailure("보호자 회원가입 실패, 이메일 또는 휴대폰 번호가 중복입니다.", new Exception("(" + response.code() + ") code"));
+                ;
             }
 
             @Override
@@ -132,11 +130,9 @@ public class RetrofitClient {
         call.enqueue(new Callback<Dto<DistrictDto>>() {
             @Override
             public void onResponse(Call<Dto<DistrictDto>> call, Response<Dto<DistrictDto>> response) {
-                assert response.body() != null;
-
-                if (response.isSuccessful()) {
+                if (response.isSuccessful())
                     resultCallback.onSuccess(response.body());
-                } else
+                else
                     resultCallback.onFailure(response.body().getResponseMessage(), new Exception("status code in not 200"));
             }
 
@@ -304,12 +300,12 @@ public class RetrofitClient {
         });
     }
 
-    public void postMyUserImage(RequestBody idPart, MultipartBody.Part imagePart, ResultCallback<Dto<Void>> resultCallback) {
-        Call<Dto<Void>> call = retrofitService.postMyUserImage(idPart, imagePart);
+    public void postMyUserImage(RequestBody idPart, MultipartBody.Part imagePart, ResultCallback<Dto<UserProfileDto>> resultCallback) {
+        Call<Dto<UserProfileDto>> call = retrofitService.postMyUserImage(idPart, imagePart);
 
-        call.enqueue(new Callback<Dto<Void>>() {
+        call.enqueue(new Callback<Dto<UserProfileDto>>() {
             @Override
-            public void onResponse(Call<Dto<Void>> call, Response<Dto<Void>> response) {
+            public void onResponse(Call<Dto<UserProfileDto>> call, Response<Dto<UserProfileDto>> response) {
                 if (response.isSuccessful() && response.code() == 201)
                     resultCallback.onSuccess(response.body()); // List<SafeAreaDto>를 포함한 Dto 객체 전달
                 else
@@ -317,7 +313,7 @@ public class RetrofitClient {
             }
 
             @Override
-            public void onFailure(Call<Dto<Void>> call, Throwable t) {
+            public void onFailure(Call<Dto<UserProfileDto>> call, Throwable t) {
                 resultCallback.onFailure(t.getMessage(), t);
             }
         });
@@ -333,7 +329,7 @@ public class RetrofitClient {
                     resultCallback.onSuccess(response.body()); // List<SafeAreaDto>를 포함한 Dto 객체 전달
                 else
                     resultCallback.onFailure("커뮤니티 sos 요청 실패(" + response.code() + "):" + response.message(),
-                                                new Exception(response.code() + ": " + (response.body().getResponseMessage())));
+                            new Exception(response.code() + ": " + (response.body().getResponseMessage())));
             }
 
             @Override
@@ -353,7 +349,7 @@ public class RetrofitClient {
                     resultCallback.onSuccess(response.body());
                 else
                     resultCallback.onFailure("Sos 요청 사용자 조회에 실패(" + response.code() + "):" + response.message(),
-                                                new Exception(response.code() + ": " + (response.body().getResponseMessage())));
+                            new Exception(response.code() + ": " + (response.body().getResponseMessage())));
             }
 
             @Override

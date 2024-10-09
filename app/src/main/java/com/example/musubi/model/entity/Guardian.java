@@ -3,15 +3,13 @@ package com.example.musubi.model.entity;
 import com.example.musubi.model.dto.GuardianDto;
 import com.example.musubi.model.dto.UserDto;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-public class Guardian extends Person{
+public class Guardian extends Person {
     private Person user;
 
     private static Guardian instance;
+
     public static synchronized Guardian getInstance() {
-        if(null == instance){
+        if (null == instance) {
             instance = new Guardian(-1, null, null, null, 0, null, null, null, null, null);
         }
         return instance;
@@ -26,18 +24,13 @@ public class Guardian extends Person{
         this.user = user;
     }
 
-    public void initGuardian (GuardianDto guardianDto, UserDto userDto) {
+    public void initGuardian(GuardianDto guardianDto, UserDto userDto) {
         User myUser;
 
         if (userDto == null)
             myUser = null;
-        else {
-            try {
-                myUser = new User(userDto.getUserId(), userDto.getEmail(), userDto.getName(), userDto.getSex(), userDto.getAge(), userDto.getNickname(), userDto.getPhoneNumber(), userDto.getHomeAddress(), userDto.getDistrict(), new URL(userDto.getProfile()));
-            } catch (MalformedURLException e) {
-                myUser = new User(userDto.getUserId(), userDto.getEmail(), userDto.getName(), userDto.getSex(), userDto.getAge(), userDto.getNickname(), userDto.getPhoneNumber(), userDto.getHomeAddress(), userDto.getDistrict(), null);
-            }
-        }
+        else
+            myUser = new User(userDto.getUserId(), userDto.getEmail(), userDto.getName(), userDto.getSex(), userDto.getAge(), userDto.getNickname(), userDto.getPhoneNumber(), userDto.getHomeAddress(), userDto.getDistrict(), userDto.getProfile());
         if (guardianDto == null)
             instance = null;
         else

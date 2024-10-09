@@ -8,7 +8,9 @@ import android.provider.MediaStore;
 
 import com.example.musubi.model.dto.Dto;
 import com.example.musubi.model.dto.UserConnectDto;
+import com.example.musubi.model.dto.UserProfileDto;
 import com.example.musubi.model.entity.Guardian;
+import com.example.musubi.model.entity.User;
 import com.example.musubi.model.local.SPFManager;
 import com.example.musubi.model.remote.RetrofitClient;
 import com.example.musubi.presenter.contract.GuardianMyPageContract;
@@ -65,9 +67,10 @@ public class GuardianMyPagePresenter implements GuardianMyPageContract.Presenter
         MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
         RequestBody idPart = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(Guardian.getInstance().getId()));
 
-        retrofitClient.postMyUserImage(idPart, imagePart, new ResultCallback<Dto<Void>>() {
+        retrofitClient.postMyUserImage(idPart, imagePart, new ResultCallback<Dto<UserProfileDto>>() {
             @Override
-            public void onSuccess(Dto<Void> result) {
+            public void onSuccess(Dto<UserProfileDto> result) {
+                ((User)(Guardian.getInstance().getUser())).setProfileImage(result.getData().getProfileImageUrl());
                 view.onUploadUserImageSuccess(result.getResponseMessage());
             }
 

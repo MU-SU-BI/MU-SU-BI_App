@@ -30,9 +30,9 @@ import com.example.musubi.presenter.contract.GuardianMyPageContract;
 import com.example.musubi.presenter.implementation.GuardianMyPagePresenter;
 import com.example.musubi.util.service.ForegroundService;
 import com.example.musubi.view.activity.LoginActivity;
-import com.example.musubi.view.activity.MainActivity;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class GuardianMyPageFragment extends Fragment implements GuardianMyPageContract.View {
     private View view;
@@ -105,16 +105,16 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
         linkedUserGenderTextView.setText(user.getGender() == Gender.MALE ? "남성" : "여성");
         connectUserButton.setVisibility(View.GONE);
         if (user.getProfileImage() == null)
-            linkedUserPhotoImageView.setImageResource(R.drawable.baseline_close_24);
+            linkedUserPhotoImageView.setImageResource(R.drawable.empty_profile_image);
         else
             new Thread() {
                 @Override
                 public void run() {
                     try {
-                        Bitmap bitmap = BitmapFactory.decodeStream(user.getProfileImage().openStream());
+                        Bitmap bitmap = BitmapFactory.decodeStream(new URL(user.getProfileImage()).openStream());
                         getActivity().runOnUiThread(() -> linkedUserPhotoImageView.setImageBitmap(bitmap));
                     } catch (IOException e) {
-                        getActivity().runOnUiThread(() -> linkedUserPhotoImageView.setImageResource(R.drawable.baseline_close_24));
+                        getActivity().runOnUiThread(() -> linkedUserPhotoImageView.setImageResource(R.drawable.empty_profile_image));
                     }
                 }
             }.start();
@@ -190,11 +190,11 @@ public class GuardianMyPageFragment extends Fragment implements GuardianMyPageCo
 
     @Override
     public void onUploadUserImageSuccess(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onUploadUserImageFailure(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 }

@@ -16,6 +16,7 @@ import com.example.musubi.model.dto.SendCommentDto;
 import com.example.musubi.model.dto.SosUserInfoDto;
 import com.example.musubi.model.dto.UserConnectDto;
 import com.example.musubi.model.dto.UserDto;
+import com.example.musubi.model.dto.UserProfileDto;
 import com.example.musubi.model.dto.WritePostDto;
 
 import java.util.List;
@@ -62,7 +63,7 @@ public interface RetrofitURL {
     Call<Dto<List<SafeAreaDto>>> setSafeZones(@Path("guardianId") long guardianId);
     @Multipart
     @POST("api/v1/guardians/profile")
-    Call<Dto<Void>> postMyUserImage(@Part("userId") RequestBody idPart, @Part MultipartBody.Part image);
+    Call<Dto<UserProfileDto>> postMyUserImage(@Part("userId") RequestBody idPart, @Part MultipartBody.Part image);
     @POST("api/v1/guardians/sos")
     Call<Dto<Void>> postSosRequestToCommunity(@Body SosRequestDto sosDto);
     @GET("api/v1/users/{userId}/user")
