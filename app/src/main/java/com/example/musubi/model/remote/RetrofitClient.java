@@ -262,7 +262,6 @@ public class RetrofitClient {
 
     public void setSafeZone(SafeAreaDto safeAreaDto, ResultCallback<Dto<Void>> resultCallback) {
         Call<Dto<Void>> call = retrofitService.setUserSafeZone(safeAreaDto);
-
         call.enqueue(new Callback<Dto<Void>>() {
             @Override
             public void onResponse(Call<Dto<Void>> call, Response<Dto<Void>> response) {

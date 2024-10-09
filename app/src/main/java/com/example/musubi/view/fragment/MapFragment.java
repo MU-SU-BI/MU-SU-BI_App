@@ -8,16 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.Fragment;
-
 import com.example.musubi.R;
 import com.example.musubi.model.dto.SafeAreaDto;
 import com.example.musubi.model.entity.Guardian;
@@ -32,15 +32,14 @@ import com.naver.maps.map.UiSettings;
 import com.naver.maps.map.overlay.CircleOverlay;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.util.FusedLocationSource;
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, MapContract.View {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
     private boolean isRunning = true;
     private boolean isSafeZoneAdding = false;
+    private double safeZoneRadius = 100; // 기본 반지름 값
 
     private MapView mapView;
     private NaverMap naverMap;
@@ -66,27 +65,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
         mapView.getMapAsync(this);
 
         // 안전구역 추가 버튼 클릭 리스너
-        btnAddSafeZone.setOnClickListener(v -> {
-            btnAddSafeZoneSet.setEnabled(true);
-            btnAddSafeZoneSet.setVisibility(View.VISIBLE);
-            btnAddSafeZone.setVisibility(View.INVISIBLE);
-            btnAddSafeZone.setEnabled(false);
-            isSafeZoneAdding = true;  // 안전구역 추가 모드 활성화
-            Toast.makeText(requireContext(), "지도를 클릭해 안전구역을 선택하세요.", Toast.LENGTH_SHORT).show();
-        });
+        btnAddSafeZone.setOnClickListener(v -> showRadiusInputDialog());
 
         // 안전구역 설정 버튼 클릭 리스너
         btnAddSafeZoneSet.setOnClickListener(v -> {
             if (!safeAreas.isEmpty()) {
                 presenter.setMyUserSafeArea(safeAreas);
                 Toast.makeText(requireContext(), "안전구역 설정 완료.", Toast.LENGTH_SHORT).show();
-                btnAddSafeZoneSet.setEnabled(false);
                 btnAddSafeZoneSet.setVisibility(View.INVISIBLE);
                 btnAddSafeZone.setVisibility(View.VISIBLE);
             } else {
                 Toast.makeText(requireContext(), "안전구역을 선택하세요.", Toast.LENGTH_SHORT).show();
             }
-            isSafeZoneAdding = false;  // 안전구역 추가 모드 비활성화
+            isSafeZoneAdding = false;
         });
 
         locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
@@ -103,21 +94,49 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
         return view;
     }
 
+    private void showRadiusInputDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_radius_input, null);
+        builder.setView(dialogView);
+
+        EditText etRadius = dialogView.findViewById(R.id.et_radius);
+
+        builder.setPositiveButton("확인", (dialog, which) -> {
+            String radiusInput = etRadius.getText().toString();
+            if (!radiusInput.isEmpty()) {
+                safeZoneRadius = Double.parseDouble(radiusInput); // 반지름 값 저장
+                isSafeZoneAdding = true;
+                btnAddSafeZoneSet.setVisibility(View.VISIBLE);
+                btnAddSafeZone.setVisibility(View.INVISIBLE);
+                Toast.makeText(requireContext(), "반지름 " + safeZoneRadius + "m의 안전구역을 선택하세요.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("취소", (dialog, which) -> dialog.dismiss());
+
+        builder.show();
+    }
+
+    private void showLocationPermissionRequest() {
+        requestPermissionLauncher.launch(new String[]{
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+        });
+    }
+
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMap = naverMap;
         showLocationPermissionRequest();
         setupMap();
 
-        // 지도 로딩이 완료되었을 때 서버로부터 안전구역을 받아 지도에 표시
         presenter.getMyUserSafeArea(Guardian.getInstance().getId());
 
-        // 지도 클릭 리스너 - 안전구역 추가 모드에서만 안전구역 추가
         naverMap.setOnMapClickListener((point, coord) -> {
             if (isSafeZoneAdding) {
-                SafeAreaDto safeArea = new SafeAreaDto(Guardian.getInstance().getId(), coord.longitude, coord.latitude, 1000);
+                SafeAreaDto safeArea = new SafeAreaDto(Guardian.getInstance().getId(), coord.longitude, coord.latitude, safeZoneRadius);
                 safeAreas.add(safeArea);
-                setSafeZone(coord.latitude, coord.longitude);
+                setSafeZone(coord.latitude, coord.longitude, safeZoneRadius);
                 Toast.makeText(requireContext(), "안전구역이 선택되었습니다.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -151,24 +170,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
         uiSettings.setLocationButtonEnabled(true);
     }
 
-    private void showLocationPermissionRequest() {
-        requestPermissionLauncher.launch(new String[]{
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-        });
-    }
-
     public void setUserMarker(double latitude, double longitude) {
         marker.setMap(null);
         marker.setPosition(new LatLng(latitude, longitude));
         marker.setMap(naverMap);
     }
 
-    public void setSafeZone(double latitude, double longitude) {
+    public void setSafeZone(double latitude, double longitude, double radius) {
         CircleOverlay circle = new CircleOverlay();
         circle.setCenter(new LatLng(latitude, longitude));
-        circle.setRadius(100);
-        int semiTransparentGreen = ColorUtils.setAlphaComponent(Color.parseColor("#76A66F"), 128); // 128은 50% 투명도를 의미함 (0~255)
+        circle.setRadius(radius); // 입력된 반지름 값 적용
+        int semiTransparentGreen = ColorUtils.setAlphaComponent(Color.parseColor("#76A66F"), 128); // 128은 50% 투명도
         circle.setColor(semiTransparentGreen);
         circle.setMap(naverMap);
 
@@ -193,21 +205,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
     @Override
     public void onPause() {
         super.onPause();
-        isRunning = false; // Stop the thread when the fragment is paused
+        isRunning = false;
         mapView.onPause();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        isRunning = false; // Stop the thread when the fragment is stopped
+        isRunning = false;
         mapView.onStop();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        isRunning = false; // Stop the thread when the fragment is destroyed
+        isRunning = false;
         mapView.onDestroy();
     }
 
@@ -218,19 +230,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
     }
 
     @Override
-    public void onSetSafeAreaSuccess(String responseMessage) {
-        // 안전구역 설정 성공 처리
-    }
+    public void onSetSafeAreaSuccess(String responseMessage) {}
 
     @Override
-    public void onSetSafeAreaFailure(String result) {
-        // 안전구역 설정 실패 처리
-    }
+    public void onSetSafeAreaFailure(String result) {}
 
     @Override
     public void addSafeZone(SafeAreaDto safeArea) {
-        // 서버에서 받은 안전구역을 지도에 표시
-        setSafeZone(safeArea.getLatitude(), safeArea.getLongitude());
+        setSafeZone(safeArea.getLatitude(), safeArea.getLongitude(), safeArea.getRadius());
     }
 
     @Override
